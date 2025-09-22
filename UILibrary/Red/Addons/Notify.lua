@@ -50,7 +50,7 @@ function Chloe:Notify(Notification)
         Title.TextXAlignment = Enum.TextXAlignment.Left
         Title.ZIndex = 12
 
-        local Gradient = Instance.new("UIGradient", Title)
+        local Gradient = Instance.new("UIGradient")
         Gradient.Color = ColorSequence.new({
             ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 42, 255)),
             ColorSequenceKeypoint.new(0.20, Color3.fromRGB(174, 0, 255)),
@@ -60,6 +60,7 @@ function Chloe:Notify(Notification)
             ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 42, 255)),
         })
         Gradient.Rotation = 0
+        Gradient.Parent = Title
 
         local Separator = Instance.new("Frame", Notif)
         Separator.Size = UDim2.new(1, -12, 0, 1)
