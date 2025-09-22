@@ -2770,8 +2770,6 @@ for _, obj in ipairs(components:GetDescendants()) do
 
         if shouldColor then
             obj.TextColor3 = Color3.fromRGB(255, 255, 255)
-            obj.TextStrokeTransparency = 1
-            obj.TextScaled = true
             if not obj:FindFirstChildOfClass("UIGradient") then
                 makeGradient().Parent = obj
             end
