@@ -50,6 +50,17 @@ function Chloe:Notify(Notification)
         Title.TextXAlignment = Enum.TextXAlignment.Left
         Title.ZIndex = 12
 
+        local Gradient = Instance.new("UIGradient", Title)
+        Gradient.Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 42, 255)),
+            ColorSequenceKeypoint.new(0.20, Color3.fromRGB(174, 0, 255)),
+            ColorSequenceKeypoint.new(0.40, Color3.fromRGB(0, 191, 255)),
+            ColorSequenceKeypoint.new(0.60, Color3.fromRGB(174, 0, 255)),
+            ColorSequenceKeypoint.new(0.80, Color3.fromRGB(0, 42, 255)),
+            ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 42, 255)),
+        })
+        Gradient.Rotation = 0
+
         local Separator = Instance.new("Frame", Notif)
         Separator.Size = UDim2.new(1, -12, 0, 1)
         Separator.Position = UDim2.new(0, 6, 0, 23)
@@ -93,7 +104,6 @@ function Chloe:Notify(Notification)
             {Position = UDim2.new(1, -20, 0, 20 + (index * 80))}
         ):Play()
 
-        -- Auto close
         task.delay(NotifData.Duration, function()
             if Notif and Notif.Parent then
                 TweenService:Create(
