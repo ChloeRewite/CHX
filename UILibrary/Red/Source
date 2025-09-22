@@ -1923,34 +1923,41 @@ function Celestial:MakeWindow(Configs)
 			local PName = Configs[1] or Configs.Title or "Paragraph"
 			local PDesc = Configs[2] or Configs.Text or ""
 			
-			local Frame, LabelFunc = ButtonFrame(Container, PName, PDesc, UDim2.new(1, -20))
+			local Frame, LabelFunc = ButtonFrame(Container, PName, PDesc, UDim2.new(1, -20)
 
-			if LabelFunc.Title and not LabelFunc.Title:FindFirstChild("UIGradient") then
-				LabelFunc.Title.TextColor3 = Color3.fromRGB(255,255,255)
-				LabelFunc.Title.RichText = false
-				LabelFunc.Title.TextTransparency = 0
-				LabelFunc.Title.TextStrokeTransparency = 1
-				LabelFunc.Title.TextScaled = true
+			local function ApplyGradient()
+				if LabelFunc.Title then
+					LabelFunc.Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+					LabelFunc.Title.RichText = false
+					LabelFunc.Title.TextTransparency = 0
+					LabelFunc.Title.TextStrokeTransparency = 1
 
-				local gradient = Instance.new("UIGradient")
-				gradient.Color = ColorSequence.new({
-					ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 85, 255)),
-					ColorSequenceKeypoint.new(0.33, Color3.fromRGB(174, 0, 255)),
-					ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0, 191, 255)),
-					ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 85, 255)),
-				})
-				gradient.Rotation = 90
-				gradient.Parent = LabelFunc.Title
+					if not LabelFunc.Title:FindFirstChild("UIGradient") then
+						local gradient = Instance.new("UIGradient")
+						gradient.Color = ColorSequence.new({
+							ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 85, 255)),
+							ColorSequenceKeypoint.new(0.33, Color3.fromRGB(174, 0, 255)),
+                    		ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0, 191, 255)),
+                   	 		ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 85, 255)),
+						})
+						gradient.Rotation = 90
+                		gradient.Parent = LabelFunc.Title
+					end
+				end
 			end
+
+			ApplyGradient()
 			
 			local Paragraph = {}
 			function Paragraph:Visible(...) Funcs:ToggleVisible(Frame, ...) end
 			function Paragraph:Destroy() Frame:Destroy() end
 			function Paragraph:SetTitle(Val)
 				LabelFunc:SetTitle(GetStr(Val))
+				ApplyGradient()
 			end
 			function Paragraph:SetDesc(Val)
 				LabelFunc:SetDesc(GetStr(Val))
+				ApplyGradient()
 			end
 			function Paragraph:Set(Val1, Val2)
 				if Val1 and Val2 then
@@ -1959,6 +1966,7 @@ function Celestial:MakeWindow(Configs)
 				elseif Val1 then
 					LabelFunc:SetDesc(GetStr(Val1))
 				end
+				ApplyGradient()
 			end
 			return Paragraph
 		end
