@@ -13,7 +13,7 @@ getgenv().globalcolour = {
     "How to use it?",
     "Information Script",
     "Webhook Celestial",
-    "Notification Celestial!",
+    "CELESTIAL NOTIFICATION",
 }
 
 getgenv().colour = getgenv().colour or {}

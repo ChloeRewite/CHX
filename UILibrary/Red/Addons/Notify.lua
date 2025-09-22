@@ -3,8 +3,11 @@ local CoreGui = game:GetService("CoreGui")
 
 local NotifHolder = CoreGui:FindFirstChild("ChloeNotifs")
 if not NotifHolder then
-    NotifHolder = Instance.new("Folder")
+    NotifHolder = Instance.new("ScreenGui")
     NotifHolder.Name = "ChloeNotifs"
+    NotifHolder.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    NotifHolder.IgnoreGuiInset = true
+    NotifHolder.ResetOnSpawn = false
     NotifHolder.Parent = CoreGui
 end
 
@@ -90,6 +93,7 @@ function Chloe:Notify(Notification)
             {Position = UDim2.new(1, -20, 0, 20 + (index * 80))}
         ):Play()
 
+        -- Auto close
         task.delay(NotifData.Duration, function()
             if Notif and Notif.Parent then
                 TweenService:Create(
