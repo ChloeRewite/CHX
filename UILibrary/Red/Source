@@ -1368,14 +1368,19 @@ function Celestial:GetIcon(index)
 	return firstMatch or index
 end
 
+local Comnection = Instance.new("BindableEvent")
+
 function Celestial:SetTheme(NewTheme)
 	if not VerifyTheme(NewTheme) then return end
-	
+
 	Celestial.Save.Theme = NewTheme
 	SaveJson("Celestial Script.json", Celestial.Save)
 	Theme = Celestial.Themes[NewTheme]
-	
-	Comnection:FireConnection("ThemeChanged", NewTheme)
+
+	if Comnection then
+		Comnection:Fire("ThemeChanged", NewTheme)
+	end
+
 	table.foreach(Celestial.Instances, function(_,Val)
 		if Val.Type == "Gradient" then
 			Val.Instance.Color = Theme["Color Hub 1"]
@@ -1924,53 +1929,23 @@ function Celestial:MakeWindow(Configs)
 			local PDesc = Configs[2] or Configs.Text or ""
 			
 			local Frame, LabelFunc = ButtonFrame(Container, PName, PDesc, UDim2.new(1, -20))
-
-			local function ApplyGradient()
-				if LabelFunc.Title then
-					LabelFunc.Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-					LabelFunc.Title.RichText = false
-					LabelFunc.Title.TextTransparency = 0
-					LabelFunc.Title.TextStrokeTransparency = 1
-
-					if not LabelFunc.Title:FindFirstChild("UIGradient") then
-						local gradient = Instance.new("UIGradient")
-						gradient.Color = ColorSequence.new({
-							ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 85, 255)),
-							ColorSequenceKeypoint.new(0.33, Color3.fromRGB(174, 0, 255)),
-                    		ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0, 191, 255)),
-                   	 		ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 85, 255)),
-						})
-						gradient.Rotation = 90
-                		gradient.Parent = LabelFunc.Title
-					end
-				end
-			end
-
-			ApplyGradient()
 			
 			local Paragraph = {}
 			function Paragraph:Visible(...) Funcs:ToggleVisible(Frame, ...) end
 			function Paragraph:Destroy() Frame:Destroy() end
 			function Paragraph:SetTitle(Val)
-			if LabelFunc.Title then
-				LabelFunc.Title.Text = GetStr(Val)
-				ApplyGradient()
+				LabelFunc:SetTitle(GetStr(Val))
 			end
-		 end
 			function Paragraph:SetDesc(Val)
-		    if LabelFunc.Desc then
-				LabelFunc.Desc.Text = GetStr(Val)
-				ApplyGradient()
+				LabelFunc:SetDesc(GetStr(Val))
 			end
-		 end
 			function Paragraph:Set(Val1, Val2)
 				if Val1 and Val2 then
-					if LabelFunc.Title then LabelFunc.Title.Text = GetStr(Val1) end
-					if LabelFunc.Desc then LabelFunc.Desc.Text = GetStr(Val2) end
-				elseif Val1 and LabelFunc.Desc then
-					LabelFunc.Desc.Text = GetStr(Val1)
+					LabelFunc:SetTitle(GetStr(Val1))
+					LabelFunc:SetDesc(GetStr(Val2))
+				elseif Val1 then
+					LabelFunc:SetDesc(GetStr(Val1))
 				end
-				ApplyGradient()
 			end
 			return Paragraph
 		end
