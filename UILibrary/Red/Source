@@ -1930,6 +1930,7 @@ function Celestial:MakeWindow(Configs)
 				LabelFunc.Title.RichText = false
 				LabelFunc.Title.TextTransparency = 0
 				LabelFunc.Title.TextStrokeTransparency = 1
+				LabelFunc.Title.TextScaled = true
 
 				local gradient = Instance.new("UIGradient")
 				gradient.Color = ColorSequence.new({
