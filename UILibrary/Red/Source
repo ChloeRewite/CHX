@@ -1924,27 +1924,22 @@ function redzlib:MakeWindow(Configs)
 			local PDesc = Configs[2] or Configs.Text or ""
 			
 			local Frame, LabelFunc = ButtonFrame(Container, PName, PDesc, UDim2.new(1, -20))
-			local Container = game:GetService("CoreGui")["redz Library V5"].Hub.Components.Containers["Container 1 [ Information ]"]
 
-			for _, child in ipairs(Container:GetChildren()) do
-				local frame = child:FindFirstChild("Frame")
-				if frame and frame:FindFirstChild("TextLabel") then
+			if LabelFunc.Title and not LabelFunc.Title:FindFirstChild("UIGradient") then
 				LabelFunc.Title.TextColor3 = Color3.fromRGB(255,255,255)
-				LabelFunc.Title.RichText = true
+				LabelFunc.Title.RichText = false
+				LabelFunc.Title.TextTransparency = 0
 
-				local grad = Instance.new("UIGradient")
-				grad.Color = ColorSequence.new{
+				local gradient = Instance.new("UIGradient")
+				gradient.Color = ColorSequence.new({
 					ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 85, 255)),
 					ColorSequenceKeypoint.new(0.33, Color3.fromRGB(174, 0, 255)),
 					ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0, 191, 255)),
 					ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 85, 255)),
-				}
-				grad.Rotation = 90
-				grad.Parent = frame.TextLabel
+				})
+				gradient.Rotation = 90
+				gradient.Parent = LabelFunc.Title
 			end
-
-			return Frame
-		end
 			
 			local Paragraph = {}
 			function Paragraph:Visible(...) Funcs:ToggleVisible(Frame, ...) end
