@@ -2708,9 +2708,10 @@ function Celestial:MakeWindow(Configs)
 end
 
 local hui = gethui and gethui() or game:GetService("CoreGui")
-local root = hui:FindFirstChild("Chloeee uwuuu :3")
-local hub = root and root:FindFirstChild("Hub")
-local components = hub and hub:FindFirstChild("Components")
+
+local root = hui:WaitForChild("Chloeee uwuuu :3", 10)
+local hub = root and root:WaitForChild("Hub", 10)
+local components = hub and hub:WaitForChild("Components", 10)
 
 getgenv().globalcolour = {
     "Celestial v66",
@@ -2755,30 +2756,30 @@ local function getKeywords()
     return merged
 end
 
-for _, obj in ipairs(components:GetDescendants()) do
-    if obj:IsA("TextLabel") and obj.Text ~= "" then
-        local textLower = obj.Text:lower()
-        local shouldColor = false
+if components then
+    for _, obj in ipairs(components:GetDescendants()) do
+        if obj:IsA("TextLabel") and obj.Text ~= "" then
+            local textLower = obj.Text:lower()
+            local shouldColor = false
 
-        -- cek keyword global + custom
-        for _, keyword in ipairs(getKeywords()) do
-            if string.find(textLower, keyword:lower(), 1, true) then
-                shouldColor = true
-                break
+            for _, keyword in ipairs(getKeywords()) do
+                if string.find(textLower, keyword:lower(), 1, true) then
+                    shouldColor = true
+                    break
+                end
             end
-        end
 
-        -- auto detect "feature"
-        if string.find(textLower, "feature") then
-            shouldColor = true
-        end
+            if string.find(textLower, "feature") then
+                shouldColor = true
+            end
 
-        if shouldColor then
-            obj.TextColor3 = Color3.fromRGB(255, 255, 255)
-            obj.TextStrokeTransparency = 1
-            obj.TextScaled = true
-            if not obj:FindFirstChildOfClass("UIGradient") then
-                makeGradient().Parent = obj
+            if shouldColor then
+                obj.TextColor3 = Color3.fromRGB(255, 255, 255)
+                obj.TextStrokeTransparency = 1
+                obj.TextScaled = true
+                if not obj:FindFirstChildOfClass("UIGradient") then
+                    makeGradient().Parent = obj
+                end
             end
         end
     end
