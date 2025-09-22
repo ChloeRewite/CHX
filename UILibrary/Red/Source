@@ -2707,76 +2707,163 @@ function Celestial:MakeWindow(Configs)
 	return Window
 end
 
-function Celestial:Notify(Notification) 
-	task.spawn(function()
-		local NotifData = {
-			Title = Notification.Title or "Celestial Notification";
-			Content = Notification.Content or "";
-			Duration = Notification.Duration or 5;
-		}
+local hui = gethui and gethui() or game:GetService("CoreGui")
+local root = hui:FindFirstChild("Chloeee uwuuu :3")
+local hub = root and root:FindFirstChild("Hub")
+local components = hub and hub:FindFirstChild("Components")
 
-		local Notif = Library.Notification.Default:Clone()
-		Notif.Visible = true
-		Notif.Parent = Library.Notification
-		Notif.Title.Text = NotifData.Title
-		Notif.Content.Text = NotifData.Content
-		Notif.Content.Size = UDim2.new(0, 200, 0, Notif.Content.TextBounds.Y)
-		Notif.Size = UDim2.new(1, 0, 0, Notif.Content.TextBounds.Y + 50)
+getgenv().globalcolour = {
+    "Celestial v66",
+    "Celestial Script",
+    "Celestial Information",
+    "Menu",
+    "Configuration",
+    "Server Info",
+    "Reminder for you :3",
+    "Dangerous Area",
+    "Alert! Not safe",
+    "How to use it?",
+    "Information Script",
+    "Webhook Celestial",
+    "Notification Celestial!",
+}
 
-		table.insert(notifications, Notif)
-		updatePositions()
+getgenv().colour = getgenv().colour or {}
 
-		Notif.UIScale.Scale = 0.9
-		Notif.close.ImageTransparency = 0.95
-		Notif.BackgroundTransparency = 0.75
-		Notif.Title.TextTransparency = 0.5
-		Notif.Content.TextTransparency = 0.78
-		Notif.Position = UDim2.new(0, 600, 0, 637)
-
-		local function CloseNotif()
-			if Notif and Notif.Parent then
-				table.remove(notifications, table.find(notifications, Notif))
-				tweenservice:Create(Notif.UIScale, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {Scale = 0.9}):Play()
-				tweenservice:Create(Notif.close, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {ImageTransparency = 0.95}):Play()
-				tweenservice:Create(Notif, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.75}):Play()
-				tweenservice:Create(Notif.Title, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {TextTransparency = 0.5}):Play()
-				tweenservice:Create(Notif.Content, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {TextTransparency = 0.78}):Play()
-				task.wait(0.15)
-				tweenservice:Create(Notif, TweenInfo.new(0.95, Enum.EasingStyle.Exponential), {Position = UDim2.new(0, Notif.Position.X.Offset + 400, 0, Notif.Position.Y.Offset)}):Play()
-				task.wait(0.4)
-				Notif:Destroy()
-				updatePositions()
-			end
-		end
-
-		task.wait(0.45)
-		tweenservice:Create(Notif.UIScale, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {Scale = 1}):Play()
-		tweenservice:Create(Notif.close, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {ImageTransparency = 0.75}):Play()
-		tweenservice:Create(Notif, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0}):Play()
-		tweenservice:Create(Notif.Title, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {TextTransparency = 0}):Play()
-		tweenservice:Create(Notif.Content, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {TextTransparency = 0}):Play()
-
-		Notif.close.MouseEnter:Connect(function()
-			tweenservice:Create(Notif.close, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {ImageTransparency = 0.25}):Play()
-		end)
-
-		Notif.close.MouseLeave:Connect(function()
-			tweenservice:Create(Notif.close, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {ImageTransparency = 0.75}):Play()
-		end)
-
-		Notif.close.MouseButton1Click:Connect(CloseNotif)
-		task.delay(NotifData.Duration, CloseNotif)
-	end)
+local function makeGradient()
+    local gradient = Instance.new("UIGradient")
+    gradient.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 42, 255)),
+        ColorSequenceKeypoint.new(0.20, Color3.fromRGB(174, 0, 255)),
+        ColorSequenceKeypoint.new(0.40, Color3.fromRGB(0, 191, 255)),
+        ColorSequenceKeypoint.new(0.60, Color3.fromRGB(174, 0, 255)),
+        ColorSequenceKeypoint.new(0.80, Color3.fromRGB(0, 42, 255)),
+        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 42, 255)),
+    })
+    gradient.Rotation = 0
+    return gradient
 end
 
-function Celestial.__call(self, msg)
-	self:Notify({
-		Title = "Celestial Notification",
-		Content = msg,
-		Duration = 5
-	})
+local function getKeywords()
+    local merged = {}
+    for _, v in ipairs(getgenv().globalcolour or {}) do
+        table.insert(merged, v)
+    end
+    for _, v in ipairs(getgenv().colour or {}) do
+        table.insert(merged, v)
+    end
+    return merged
 end
 
-setmetatable(Celestial, Celestial)
+for _, obj in ipairs(components:GetDescendants()) do
+    if obj:IsA("TextLabel") and obj.Text ~= "" then
+        local textLower = obj.Text:lower()
+        local shouldColor = false
+
+        -- cek keyword global + custom
+        for _, keyword in ipairs(getKeywords()) do
+            if string.find(textLower, keyword:lower(), 1, true) then
+                shouldColor = true
+                break
+            end
+        end
+
+        -- auto detect "feature"
+        if string.find(textLower, "feature") then
+            shouldColor = true
+        end
+
+        if shouldColor then
+            obj.TextColor3 = Color3.fromRGB(255, 255, 255)
+            obj.TextStrokeTransparency = 1
+            obj.TextScaled = true
+            if not obj:FindFirstChildOfClass("UIGradient") then
+                makeGradient().Parent = obj
+            end
+        end
+    end
+end
+
+local CoreGui = game:GetService("CoreGui")
+local TweenService = game:GetService("TweenService")
+
+local NotifHolder = CoreGui:FindFirstChild("CelestialNotifs")
+if not NotifHolder then
+    NotifHolder = Instance.new("Folder")
+    NotifHolder.Name = "CelestialNotifs"
+    NotifHolder.Parent = CoreGui
+end
+
+function Celestial:Notify(Notification)
+    task.spawn(function()
+        local NotifData = {
+            Title = Notification.Title or "Celestial Notification";
+            Content = Notification.Content or "";
+            Duration = Notification.Duration or 5;
+        }
+
+        local Notif = Instance.new("Frame")
+        Notif.Name = "Notification"
+        Notif.Size = UDim2.fromOffset(260, 70)
+        Notif.AnchorPoint = Vector2.new(1, 0)
+        Notif.Position = UDim2.new(1, -20, 0, 20)
+        Notif.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+        Notif.BackgroundTransparency = 0.15
+        Notif.Parent = NotifHolder
+
+        Instance.new("UICorner", Notif).CornerRadius = UDim.new(0, 6)
+
+        local Title = Instance.new("TextLabel", Notif)
+        Title.Size = UDim2.new(1, -10, 0, 20)
+        Title.Position = UDim2.new(0, 5, 0, 5)
+        Title.BackgroundTransparency = 1
+        Title.Text = NotifData.Title
+        Title.Font = Enum.Font.GothamBold
+        Title.TextSize = 14
+        Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Title.TextXAlignment = Enum.TextXAlignment.Left
+
+        local Content = Instance.new("TextLabel", Notif)
+        Content.Size = UDim2.new(1, -10, 1, -30)
+        Content.Position = UDim2.new(0, 5, 0, 25)
+        Content.BackgroundTransparency = 1
+        Content.Text = NotifData.Content
+        Content.Font = Enum.Font.Gotham
+        Content.TextSize = 12
+        Content.TextColor3 = Color3.fromRGB(200, 200, 200)
+        Content.TextXAlignment = Enum.TextXAlignment.Left
+        Content.TextWrapped = true
+
+        -- animasi masuk
+        Notif.Position = UDim2.new(1, 300, 0, 20) -- start dari luar layar
+        TweenService:Create(Notif, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {Position = UDim2.new(1, -20, 0, 20)}):Play()
+
+        -- atur posisi stacking
+        local index = #NotifHolder:GetChildren()
+        Notif.Position = UDim2.new(1, -20, 0, 20 + ((index - 1) * 80))
+
+        local function CloseNotif()
+            if Notif and Notif.Parent then
+                TweenService:Create(Notif, TweenInfo.new(0.25), {Position = Notif.Position + UDim2.new(0, 300, 0, 0)}):Play()
+                task.wait(0.3)
+                Notif:Destroy()
+                -- rapihin posisi notif sisa
+                local i = 0
+                for _,n in ipairs(NotifHolder:GetChildren()) do
+                    i += 1
+                    TweenService:Create(n, TweenInfo.new(0.25), {Position = UDim2.new(1, -20, 0, 20 + ((i - 1) * 80))}):Play()
+                end
+            end
+        end
+
+        task.delay(NotifData.Duration, CloseNotif)
+    end)
+end
+
+setmetatable(Celestial, {
+    __call = function(self, msg)
+        self:Notify({Content = msg, Duration = 4})
+    end
+})
 
 return Celestial
