@@ -1952,19 +1952,23 @@ function Celestial:MakeWindow(Configs)
 			function Paragraph:Visible(...) Funcs:ToggleVisible(Frame, ...) end
 			function Paragraph:Destroy() Frame:Destroy() end
 			function Paragraph:SetTitle(Val)
-				LabelFunc:SetTitle(GetStr(Val))
+				LabelFunc.Title.Text = GetStr(Val)
+			if LabelFunc.Title then
 				ApplyGradient()
 			end
+		 end
 			function Paragraph:SetDesc(Val)
-				LabelFunc:SetDesc(GetStr(Val))
+		    if LabelFunc.Desc then
+				LabelFunc.Desc.Text = GetStr(Val)
 				ApplyGradient()
 			end
+		 end
 			function Paragraph:Set(Val1, Val2)
 				if Val1 and Val2 then
-					LabelFunc:SetTitle(GetStr(Val1))
-					LabelFunc:SetDesc(GetStr(Val2))
+					if LabelFunc.Title then LabelFunc.Title.Text = GetStr(Val1) end
+					if LabelFunc.Desc then LabelFunc.Desc.Text = GetStr(Val2) end
 				elseif Val1 then
-					LabelFunc:SetDesc(GetStr(Val1))
+					LabelFunc.Desc.Text = GetStr(Val1)
 				end
 				ApplyGradient()
 			end
