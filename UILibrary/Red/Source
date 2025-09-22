@@ -1936,7 +1936,7 @@ function redzlib:MakeWindow(Configs)
 					ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0, 191, 255)),
 					ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 85, 255)),
 				})
-				gradient.Rotation = 90
+				gradient.Rotation = 0
 				gradient.Parent = LabelFunc.Title
 			end
 			
@@ -2614,8 +2614,8 @@ function redzlib:MakeWindow(Configs)
 			return TextBox
 		end
 		function Tab:AddDiscordInvite(Configs)
-			local Title = Configs[1] or Configs.Name or Configs.Title or "Discord"
-			local Name = Configs.Name or "Discord" 
+			local Title = Configs.Title or Configs[1] or "Discord"
+			local Name  = Configs.Name or "Discord"
 			local Desc = Configs.Desc or Configs.Description or ""
 			local Logo = Configs[2] or Configs.Logo or ""
 			local Invite = Configs[3] or Configs.Invite or ""
