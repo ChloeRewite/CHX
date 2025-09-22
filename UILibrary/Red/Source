@@ -2710,25 +2710,25 @@ end
 local CoreGui = game:GetService("CoreGui")
 local TweenService = game:GetService("TweenService")
 
-local NotifGui = CoreGui:FindFirstChild("CelestialNotifGui")
+local NotifGui = CoreGui:FindFirstChild("ChloeNotifGui")
 if not NotifGui then
     NotifGui = Instance.new("ScreenGui")
-    NotifGui.Name = "CelestialNotifGui"
+    NotifGui.Name = "ChloeNotifGui"
     NotifGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     NotifGui.ResetOnSpawn = false
     NotifGui.Parent = CoreGui
 end
 
-local NotifHolder = NotifGui:FindFirstChild("CelestialNotifs")
+local NotifHolder = NotifGui:FindFirstChild("ChloeNotifs")
 if not NotifHolder then
     NotifHolder = Instance.new("Folder")
-    NotifHolder.Name = "CelestialNotifs"
+    NotifHolder.Name = "ChloeNotifs"
     NotifHolder.Parent = NotifGui
 end
 
-local Celestial = {}
+local Chloe = {} -- << sudah ganti nama
 
-function Celestial:Notify(Notification)
+function Chloe:Notify(Notification)
     task.spawn(function()
         local NotifData = {
             Title = Notification.Title or "CELESTIAL NOTIFICATION",
@@ -2794,29 +2794,26 @@ function Celestial:Notify(Notification)
 
         -- progress bar
         local Progress = Instance.new("Frame", Notif)
-        Progress.Size = UDim2.new(1, -12, 0, 3) -- panjang awal
-        Progress.Position = UDim2.new(1, -6, 1, -6) -- kanan bawah
+        Progress.Size = UDim2.new(1, -12, 0, 3)
+        Progress.Position = UDim2.new(1, -6, 1, -6)
         Progress.AnchorPoint = Vector2.new(1, 0)
-        Progress.BackgroundColor3 = Color3.fromRGB(0, 50, 200) -- biru tua
+        Progress.BackgroundColor3 = Color3.fromRGB(0, 50, 200)
         Progress.BorderSizePixel = 0
         Progress.ZIndex = 12
         Instance.new("UICorner", Progress).CornerRadius = UDim.new(1, 0)
 
-        -- tween progress (lebar menyusut)
         TweenService:Create(
             Progress,
             TweenInfo.new(NotifData.Duration, Enum.EasingStyle.Linear),
             {Size = UDim2.new(0, 0, 0, 3)}
         ):Play()
 
-        -- animasi masuk
         TweenService:Create(
             Notif,
             TweenInfo.new(0.35, Enum.EasingStyle.Quint),
             {Position = UDim2.new(1, -20, 0, 20 + (index * 80))}
         ):Play()
 
-        -- auto close
         task.delay(NotifData.Duration, function()
             if Notif and Notif.Parent then
                 TweenService:Create(
@@ -2831,7 +2828,7 @@ function Celestial:Notify(Notification)
     end)
 end
 
-setmetatable(Celestial, {
+setmetatable(Chloe, {
     __call = function(self, msg)
         self:Notify({Content = msg, Duration = 4})
     end
