@@ -2710,11 +2710,13 @@ end
 local CoreGui = game:GetService("CoreGui")
 local TweenService = game:GetService("TweenService")
 
-local NotifHolder = CoreGui:FindFirstChild("CelestialNotifs")
+local hui = (gethui and gethui()) or CoreGui
+
+local NotifHolder = hui:FindFirstChild("CelestialNotifs")
 if not NotifHolder then
     NotifHolder = Instance.new("Folder")
     NotifHolder.Name = "CelestialNotifs"
-    NotifHolder.Parent = CoreGui
+    NotifHolder.Parent = hui
 end
 
 function Celestial:Notify(Notification)
@@ -2725,11 +2727,13 @@ function Celestial:Notify(Notification)
             Duration = Notification.Duration or 5;
         }
 
+        local index = #NotifHolder:GetChildren()
+
         local Notif = Instance.new("Frame")
         Notif.Name = "Notification"
         Notif.Size = UDim2.fromOffset(260, 70)
         Notif.AnchorPoint = Vector2.new(1, 0)
-        Notif.Position = UDim2.new(1, -20, 0, 20)
+        Notif.Position = UDim2.new(1, 300, 0, 20 + ((index) * 80))
         Notif.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
         Notif.BackgroundTransparency = 0.15
         Notif.Parent = NotifHolder
@@ -2757,24 +2761,28 @@ function Celestial:Notify(Notification)
         Content.TextXAlignment = Enum.TextXAlignment.Left
         Content.TextWrapped = true
 
-        -- animasi masuk
-        Notif.Position = UDim2.new(1, 300, 0, 20) -- start dari luar layar
-        TweenService:Create(Notif, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {Position = UDim2.new(1, -20, 0, 20)}):Play()
-
-        -- atur posisi stacking
-        local index = #NotifHolder:GetChildren()
-        Notif.Position = UDim2.new(1, -20, 0, 20 + ((index - 1) * 80))
+        TweenService:Create(
+            Notif,
+            TweenInfo.new(0.3, Enum.EasingStyle.Quint),
+            {Position = UDim2.new(1, -20, 0, 20 + ((index) * 80))}
+        ):Play()
 
         local function CloseNotif()
             if Notif and Notif.Parent then
-                TweenService:Create(Notif, TweenInfo.new(0.25), {Position = Notif.Position + UDim2.new(0, 300, 0, 0)}):Play()
+                TweenService:Create(
+                    Notif,
+                    TweenInfo.new(0.25),
+                    {Position = Notif.Position + UDim2.new(0, 300, 0, 0)}
+                ):Play()
                 task.wait(0.3)
                 Notif:Destroy()
-                -- rapihin posisi notif sisa
+                -- rapihin posisi sisa
                 local i = 0
                 for _,n in ipairs(NotifHolder:GetChildren()) do
                     i += 1
-                    TweenService:Create(n, TweenInfo.new(0.25), {Position = UDim2.new(1, -20, 0, 20 + ((i - 1) * 80))}):Play()
+                    TweenService:Create(n, TweenInfo.new(0.25), {
+                        Position = UDim2.new(1, -20, 0, 20 + ((i-1) * 80))
+                    }):Play()
                 end
             end
         end

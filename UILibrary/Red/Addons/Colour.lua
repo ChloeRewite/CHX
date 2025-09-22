@@ -35,16 +35,16 @@ end
 local function getKeywords()
     local merged = {}
     for _, v in ipairs(getgenv().globalcolour or {}) do
-        table.insert(merged, v)
+        table.insert(merged, v:lower())
     end
     for _, v in ipairs(getgenv().colour or {}) do
-        table.insert(merged, v)
+        table.insert(merged, v:lower())
     end
     return merged
 end
 
 function module.ApplyTo()
-    local hui = gethui and gethui() or game:GetService("CoreGui")
+    local hui = (gethui and gethui()) or game:GetService("CoreGui")
     local root = hui:FindFirstChild("Chloeee uwuuu :3")
     if not root then return end
     local hub = root:FindFirstChild("Hub")
@@ -52,23 +52,25 @@ function module.ApplyTo()
     local components = hub:FindFirstChild("Components")
     if not components then return end
 
+    local keywords = getKeywords()
     for _, obj in ipairs(components:GetDescendants()) do
         if obj:IsA("TextLabel") and obj.Text ~= "" then
             local textLower = obj.Text:lower()
             local shouldColor = false
-            for _, keyword in ipairs(getKeywords()) do
-                if string.find(textLower, keyword:lower(), 1, true) then
+
+            for _, keyword in ipairs(keywords) do
+                if string.find(textLower, keyword, 1, true) then
                     shouldColor = true
                     break
                 end
             end
-            if string.find(textLower, "feature") then
+
+            if not shouldColor and string.find(textLower, "feature", 1, true) then
                 shouldColor = true
             end
+
             if shouldColor then
                 obj.TextColor3 = Color3.fromRGB(255, 255, 255)
-                obj.TextStrokeTransparency = 1
-                obj.TextScaled = true
                 if not obj:FindFirstChildOfClass("UIGradient") then
                     makeGradient().Parent = obj
                 end
