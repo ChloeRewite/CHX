@@ -2707,4 +2707,149 @@ function Celestial:MakeWindow(Configs)
 	return Window
 end
 
+local hui = gethui and gethui() or game:GetService("CoreGui")
+local components = hui:WaitForChild("Chloeee uwuuu :3"):WaitForChild("Hub"):WaitForChild("Components")
+
+getgenv().globalcolour = {
+    "Celestial v66",
+    "Celestial Script",
+    "Celestial Information",
+    "Server Info",
+    "Reminder for you :3",
+    "Dangerous Area",
+    "Alert! Not safe",
+    "How to use it?",
+    "Information Script",
+    "Webhook Celestial",
+    "Celestial Notification",
+}
+
+getgenv().colour = getgenv().colour or {}
+
+local function makeGradient()
+    local gradient = Instance.new("UIGradient")
+    gradient.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 42, 255)),
+        ColorSequenceKeypoint.new(0.20, Color3.fromRGB(174, 0, 255)),
+        ColorSequenceKeypoint.new(0.40, Color3.fromRGB(0, 191, 255)),
+        ColorSequenceKeypoint.new(0.60, Color3.fromRGB(174, 0, 255)),
+        ColorSequenceKeypoint.new(0.80, Color3.fromRGB(0, 42, 255)),
+        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 42, 255)),
+    })
+    gradient.Rotation = 0
+    return gradient
+end
+
+local function getKeywords()
+    local merged = {}
+    for _, v in ipairs(getgenv().globalcolour or {}) do
+        table.insert(merged, v)
+    end
+    for _, v in ipairs(getgenv().colour or {}) do
+        table.insert(merged, v)
+    end
+    return merged
+end
+
+for _, obj in ipairs(components:GetDescendants()) do
+    if obj:IsA("TextLabel") and obj.Text ~= "" then
+        local textLower = obj.Text:lower()
+        local shouldColor = false
+
+        for _, keyword in ipairs(getKeywords()) do
+            if string.find(textLower, keyword:lower(), 1, true) then
+                shouldColor = true
+                break
+            end
+        end
+
+        -- auto detect "feature"
+        if string.find(textLower, "feature") then
+            shouldColor = true
+        end
+
+        if shouldColor then
+            obj.TextColor3 = Color3.fromRGB(255, 255, 255)
+            obj.TextStrokeTransparency = 1
+            obj.TextScaled = true
+            if not obj:FindFirstChildOfClass("UIGradient") then
+                makeGradient().Parent = obj
+            end
+        end
+    end
+end
+
+function Celestial:Notify(Notification) 
+	task.spawn(function()
+		local NotifData = {
+			Title = Notification.Title or "Celestial Notification";
+			Content = Notification.Content or "";
+			Duration = Notification.Duration or 5;
+		}
+
+		local Notif = Library.Notification.Default:Clone()
+		Notif.Visible = true
+		Notif.Parent = Library.Notification
+		Notif.Title.Text = NotifData.Title
+		Notif.Content.Text = NotifData.Content
+		Notif.Content.Size = UDim2.new(0, 200, 0, Notif.Content.TextBounds.Y)
+		Notif.Size = UDim2.new(1, 0, 0, Notif.Content.TextBounds.Y + 50)
+
+		table.insert(notifications, Notif)
+		updatePositions()
+
+		Notif.UIScale.Scale = 0.9
+		Notif.close.ImageTransparency = 0.95
+		Notif.BackgroundTransparency = 0.75
+		Notif.Title.TextTransparency = 0.5
+		Notif.Content.TextTransparency = 0.78
+		Notif.Position = UDim2.new(0, 600, 0, 637)
+
+		local function CloseNotif()
+			if Notif and Notif.Parent then
+				table.remove(notifications, table.find(notifications, Notif))
+				tweenservice:Create(Notif.UIScale, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {Scale = 0.9}):Play()
+				tweenservice:Create(Notif.close, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {ImageTransparency = 0.95}):Play()
+				tweenservice:Create(Notif, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0.75}):Play()
+				tweenservice:Create(Notif.Title, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {TextTransparency = 0.5}):Play()
+				tweenservice:Create(Notif.Content, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {TextTransparency = 0.78}):Play()
+				task.wait(0.15)
+				tweenservice:Create(Notif, TweenInfo.new(0.95, Enum.EasingStyle.Exponential), {Position = UDim2.new(0, Notif.Position.X.Offset + 400, 0, Notif.Position.Y.Offset)}):Play()
+				task.wait(0.4)
+				Notif:Destroy()
+				updatePositions()
+			end
+		end
+
+		task.wait(0.45)
+		tweenservice:Create(Notif.UIScale, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {Scale = 1}):Play()
+		tweenservice:Create(Notif.close, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {ImageTransparency = 0.75}):Play()
+		tweenservice:Create(Notif, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {BackgroundTransparency = 0}):Play()
+		tweenservice:Create(Notif.Title, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {TextTransparency = 0}):Play()
+		tweenservice:Create(Notif.Content, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {TextTransparency = 0}):Play()
+
+		Notif.close.MouseEnter:Connect(function()
+			tweenservice:Create(Notif.close, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {ImageTransparency = 0.25}):Play()
+		end)
+
+		Notif.close.MouseLeave:Connect(function()
+			tweenservice:Create(Notif.close, TweenInfo.new(0.5, Enum.EasingStyle.Exponential), {ImageTransparency = 0.75}):Play()
+		end)
+
+		Notif.close.MouseButton1Click:Connect(CloseNotif)
+		task.delay(NotifData.Duration, CloseNotif)
+	end)
+end
+
+-- Sugar call: cukup pakai Celestial("Pesan")
+function Celestial.__call(self, msg)
+	self:Notify({
+		Title = "Celestial Notification",
+		Content = msg,
+		Duration = 5
+	})
+end
+
+setmetatable(Celestial, Celestial)
+
 return Celestial
