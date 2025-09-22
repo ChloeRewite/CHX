@@ -1926,6 +1926,9 @@ function redzlib:MakeWindow(Configs)
 			local Frame, LabelFunc = ButtonFrame(Container, PName, PDesc, UDim2.new(1, -20))
 
 			if LabelFunc.Title and not LabelFunc.Title:FindFirstChild("UIGradient") then
+				LabelFunc.Title.TextColor3 = Color3.fromRGB(255,255,255)
+				LabelFunc.Title.RichText = true
+
 				local gradient = Instance.new("UIGradient")
 				gradient.Color = ColorSequence.new({
 					ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 85, 255)),
@@ -1933,6 +1936,7 @@ function redzlib:MakeWindow(Configs)
 					ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0, 191, 255)),
 					ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 85, 255)),
 				})
+				gradient.Rotation = 90
 				gradient.Parent = LabelFunc.Title
 			end
 			
@@ -2611,6 +2615,7 @@ function redzlib:MakeWindow(Configs)
 		end
 		function Tab:AddDiscordInvite(Configs)
 			local Title = Configs[1] or Configs.Name or Configs.Title or "Discord"
+			local Name = Configs.Name or "Discord" 
 			local Desc = Configs.Desc or Configs.Description or ""
 			local Logo = Configs[2] or Configs.Logo or ""
 			local Invite = Configs[3] or Configs.Invite or ""
@@ -2654,7 +2659,7 @@ function redzlib:MakeWindow(Configs)
 				TextXAlignment = "Left",
 				BackgroundTransparency = 1,
 				TextSize = 10,
-				Text = Title
+				Text = Name
 			}), "Text")
 			
 			local LDesc = InsertTheme(Create("TextLabel", FrameHolder, {
