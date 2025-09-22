@@ -59,13 +59,13 @@ function module.ApplyTo()
             local shouldColor = false
 
             for _, keyword in ipairs(keywords) do
-                if string.find(textLower, keyword, 1, true) then
+                if textLower == keyword then
                     shouldColor = true
                     break
                 end
             end
 
-            if not shouldColor and string.find(textLower, "feature", 1, true) then
+            if textLower == "feature" then
                 shouldColor = true
             end
 
