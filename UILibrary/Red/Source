@@ -2707,10 +2707,8 @@ function Celestial:MakeWindow(Configs)
 	return Window
 end
 
-local hui = gethui and gethui() or game:GetService("CoreGui")
-local root = hui:WaitForChild("Chloeee uwuuu :3")
-local hub = root:WaitForChild("Hub")
-local components = hub:WaitForChild("Components")
+local CoreGui = game:GetService("CoreGui")
+local components = CoreGui["Chloeee uwuuu :3"].Hub.Components
 
 getgenv().globalcolour = {
     "Celestial v66",
