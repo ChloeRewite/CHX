@@ -2802,6 +2802,9 @@ function ChloeColour()
     end
 end
 
+local TweenService = game:GetService("TweenService")
+local CoreGui = game:GetService("CoreGui")
+
 local Celestial = {}
 local NotificationHolder
 
@@ -2813,6 +2816,7 @@ local function GetHolder()
     local gui = Instance.new("ScreenGui")
     gui.Name = "CelestialNotifs"
     gui.ResetOnSpawn = false
+    gui.IgnoreGuiInset = true
     gui.Parent = CoreGui
 
     local frame = Instance.new("Frame")
@@ -2844,7 +2848,6 @@ function Celestial:Notify(data)
     Notif.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
     Notif.BackgroundTransparency = 0.1
     Notif.Parent = Holder
-
     Instance.new("UICorner", Notif).CornerRadius = UDim.new(0, 8)
 
     local TitleLabel = Instance.new("TextLabel", Notif)
@@ -2884,16 +2887,12 @@ function Celestial:Notify(data)
     DurationBar.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
 
     local function Close()
-        Notif:TweenPosition(
-            UDim2.new(2, 0, 0, Notif.Position.Y.Offset),
-            Enum.EasingDirection.Out,
-            Enum.EasingStyle.Quad,
-            0.3,
-            true,
-            function()
-                Notif:Destroy()
-            end
-        )
+        TweenService:Create(
+            Notif,
+            TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            { Position = UDim2.new(2, 0, Notif.Position.Y.Scale, Notif.Position.Y.Offset) }
+        ):Play()
+        task.delay(0.35, function() Notif:Destroy() end)
     end
     CloseBtn.MouseButton1Click:Connect(Close)
 
