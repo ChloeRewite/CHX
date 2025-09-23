@@ -2806,15 +2806,10 @@ local TweenService = game:GetService("TweenService")
 local CoreGui = game:GetService("CoreGui")
 local UserInputService = game:GetService("UserInputService")
 
--- fungsi deteksi device
-local function isMobile()
-    if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
-        return true
-    end
-    if workspace.CurrentCamera and workspace.CurrentCamera.ViewportSize.X < 800 then
-        return true
-    end
-    return false
+-- cek PC vs selain PC
+local function isPC()
+    local platform = UserInputService:GetPlatform()
+    return platform == Enum.Platform.Windows or platform == Enum.Platform.OSX
 end
 
 local NotifHolder = CoreGui:FindFirstChild("CelestialNotifs")
@@ -2831,17 +2826,17 @@ local Celestial = Celestial or {}
 local ActiveNotifs = {}
 
 function Celestial:Notify(data)
-    local Title = data.Title or "Celestial Notification4"
+    local Title = data.Title or "Celestial Notification"
     local Content = data.Content or ""
     local Duration = data.Duration or 4
     local Icon = data.Icon or "rbxassetid://105369853641911"
 
-    -- frame utama notif
+    -- frame notif
     local Notif = Instance.new("Frame")
-    if isMobile() then
-        Notif.Size = UDim2.new(0.5, 0, 0, 60) -- 50% layar di HP
+    if isPC() then
+        Notif.Size = UDim2.new(0, 300, 0, 60) -- PC normal
     else
-        Notif.Size = UDim2.new(0.35, 0, 0, 60) -- 35% layar di PC
+        Notif.Size = UDim2.new(0, 220, 0, 60) -- Mobile/console kecil
     end
     Notif.AnchorPoint = Vector2.new(1, 0)
     Notif.Position = UDim2.new(1, -12, 0, 10)
@@ -2852,11 +2847,7 @@ function Celestial:Notify(data)
     Notif.AutomaticSize = Enum.AutomaticSize.Y
     Instance.new("UICorner", Notif).CornerRadius = UDim.new(0, 8)
 
-    local sizeConstraint = Instance.new("UISizeConstraint")
-    sizeConstraint.MinSize = Vector2.new(160, 0)
-    sizeConstraint.MaxSize = Vector2.new(400, math.huge)
-    sizeConstraint.Parent = Notif
-
+    -- progress bar
     local Bar = Instance.new("Frame", Notif)
     Bar.Size = UDim2.new(1, 0, 1, 0)
     Bar.AnchorPoint = Vector2.new(1, 0)
@@ -2865,6 +2856,7 @@ function Celestial:Notify(data)
     Bar.BorderSizePixel = 0
     Bar.ZIndex = 5
 
+    -- header
     local Header = Instance.new("Frame", Notif)
     Header.Size = UDim2.new(1, 0, 0, 24)
     Header.BackgroundTransparency = 1
@@ -2911,7 +2903,7 @@ function Celestial:Notify(data)
     -- isi notif
     local ContentLabel = Instance.new("TextLabel", Notif)
     ContentLabel.Size = UDim2.new(1, -20, 0, 0)
-    ContentLabel.Position = UDim2.new(0, 10, 0, 22)
+    ContentLabel.Position = UDim2.new(0, 10, 0, 26)
     ContentLabel.BackgroundTransparency = 1
     ContentLabel.Font = Enum.Font.GothamMedium
     ContentLabel.TextSize = 12
@@ -2923,23 +2915,22 @@ function Celestial:Notify(data)
     ContentLabel.TextColor3 = Color3.fromRGB(230, 230, 230)
     ContentLabel.ZIndex = 12
 
-    -- batas max width biar ga kepanjangan
+    -- biar teks wrap sesuai lebar notif
     local uiConstraint = Instance.new("UISizeConstraint", ContentLabel)
-    uiConstraint.MaxSize = Vector2.new(360, math.huge)
+    uiConstraint.MaxSize = Vector2.new(isPC() and 280 or 200, math.huge)
 
     -- animasi masuk
     TweenService:Create(Notif, TweenInfo.new(0.35, Enum.EasingStyle.Quint),
         {Position = UDim2.new(1, -12, 0, 10)}):Play()
 
-    -- progress bar
+    -- progress bar animasi
     TweenService:Create(Bar, TweenInfo.new(Duration, Enum.EasingStyle.Linear),
         {Size = UDim2.new(0, 0, 1, 0)}):Play()
 
     table.insert(ActiveNotifs, Notif)
 
     -- stack dinamis
-    local gap = 8
-    local y = 10
+    local gap, y = 8, 10
     for _, n in ipairs(ActiveNotifs) do
         if n and n.Parent then
             TweenService:Create(n, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {
