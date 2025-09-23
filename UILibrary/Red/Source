@@ -2804,13 +2804,12 @@ end
 
 local NotifHolder = CoreGui:FindFirstChild("CelestialNotifs")
 if not NotifHolder then
-    local gui = Instance.new("ScreenGui")
-    gui.Name = "CelestialNotifs"
-    gui.Parent = CoreGui
-    gui.IgnoreGuiInset = true
-    gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    gui.ResetOnSpawn = false
-    NotifHolder = gui
+    NotifHolder = Instance.new("ScreenGui")
+    NotifHolder.Name = "CelestialNotifs"
+    NotifHolder.Parent = CoreGui
+    NotifHolder.IgnoreGuiInset = true
+    NotifHolder.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    NotifHolder.ResetOnSpawn = false
 end
 
 local Celestial = Celestial or {}
@@ -2818,13 +2817,12 @@ local ActiveNotifs = {}
 
 function Celestial:Notify(data)
     local Title = data.Title or "Celestial Notification"
-    local Content = data.Content or ""
+    local Content = data.Content
     local Duration = data.Duration or 4
     local Icon = data.Icon or "rbxassetid://105369853641911"
 
     local Notif = Instance.new("Frame")
-    Notif.Size = UDim2.new(0, 240, 0, 0)
-    Notif.AutomaticSize = Enum.AutomaticSize.Y
+    Notif.Size = UDim2.new(0, 220, 0, 50)
     Notif.AnchorPoint = Vector2.new(1, 0)
     Notif.Position = UDim2.new(1, 260, 0, 10)
     Notif.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
@@ -2833,26 +2831,27 @@ function Celestial:Notify(data)
     Notif.ClipsDescendants = true
     Instance.new("UICorner", Notif).CornerRadius = UDim.new(0, 8)
 
-    local UIList = Instance.new("UIListLayout", Notif)
-    UIList.SortOrder = Enum.SortOrder.LayoutOrder
-    UIList.Padding = UDim.new(0, 4)
+    local Bar = Instance.new("Frame", Notif)
+    Bar.Size = UDim2.new(1, 0, 1, 0)
+    Bar.AnchorPoint = Vector2.new(1, 0)
+    Bar.Position = UDim2.new(1, 0, 0, 0)
+    Bar.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    Bar.BorderSizePixel = 0
+    Bar.ZIndex = 5
 
-    local Header = Instance.new("Frame")
+    local Header = Instance.new("Frame", Notif)
     Header.Size = UDim2.new(1, 0, 0, 24)
     Header.BackgroundTransparency = 1
     Header.ZIndex = 10
-    Header.LayoutOrder = 1
-    Header.Parent = Notif
 
-    local Logo = Instance.new("ImageLabel")
+    local Logo = Instance.new("ImageLabel", Header)
     Logo.Size = UDim2.new(0, 18, 0, 18)
     Logo.Position = UDim2.new(0, 6, 0, 3)
     Logo.BackgroundTransparency = 1
     Logo.Image = Icon
     Logo.ZIndex = 12
-    Logo.Parent = Header
 
-    local TitleLabel = Instance.new("TextLabel")
+    local TitleLabel = Instance.new("TextLabel", Header)
     TitleLabel.Size = UDim2.new(1, -60, 0, 18)
     TitleLabel.Position = UDim2.new(0, 28, 0, 3)
     TitleLabel.BackgroundTransparency = 1
@@ -2862,7 +2861,6 @@ function Celestial:Notify(data)
     TitleLabel.Text = Title
     TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
     TitleLabel.ZIndex = 12
-    TitleLabel.Parent = Header
 
     local Gradient = Instance.new("UIGradient")
     Gradient.Color = ColorSequence.new({
@@ -2874,7 +2872,7 @@ function Celestial:Notify(data)
     })
     Gradient.Parent = TitleLabel
 
-    local CloseBtn = Instance.new("TextButton")
+    local CloseBtn = Instance.new("TextButton", Header)
     CloseBtn.Size = UDim2.new(0, 20, 0, 20)
     CloseBtn.Position = UDim2.new(1, -24, 0, 2)
     CloseBtn.BackgroundTransparency = 1
@@ -2883,32 +2881,36 @@ function Celestial:Notify(data)
     CloseBtn.TextColor3 = Color3.fromRGB(220, 220, 220)
     CloseBtn.TextSize = 14
     CloseBtn.ZIndex = 12
-    CloseBtn.Parent = Header
 
-    local ContentLabel = Instance.new("TextLabel")
-    ContentLabel.Size = UDim2.new(1, -12, 0, 0)
-    ContentLabel.AutomaticSize = Enum.AutomaticSize.Y
-    ContentLabel.Position = UDim2.new(0, 6, 0, 0)
+    local ContentLabel = Instance.new("TextLabel", Notif)
+    ContentLabel.Size = UDim2.new(1, -12, 0, 24)
+    ContentLabel.Position = UDim2.new(0, 10, 0, 19)
     ContentLabel.BackgroundTransparency = 1
     ContentLabel.Font = Enum.Font.GothamMedium
     ContentLabel.TextSize = 13
     ContentLabel.TextXAlignment = Enum.TextXAlignment.Left
-    ContentLabel.TextYAlignment = Enum.TextYAlignment.Top
+    ContentLabel.TextYAlignment = Enum.TextYAlignment.Center
     ContentLabel.TextWrapped = true
     ContentLabel.Text = Content
     ContentLabel.TextColor3 = Color3.fromRGB(230, 230, 230)
     ContentLabel.ZIndex = 12
-    ContentLabel.LayoutOrder = 2
-    ContentLabel.Parent = Notif
 
+    -- animasi masuk
     TweenService:Create(Notif, TweenInfo.new(0.35, Enum.EasingStyle.Quint),
         {Position = UDim2.new(1, -20, 0, 10)}):Play()
 
+    -- progress bar
+    TweenService:Create(Bar, TweenInfo.new(Duration, Enum.EasingStyle.Linear),
+        {Size = UDim2.new(0, 0, 1, 0)}):Play()
+
+    -- masukin ke daftar notif aktif
     table.insert(ActiveNotifs, Notif)
+
+    -- stack auto
     for i, n in ipairs(ActiveNotifs) do
         if n and n.Parent then
             TweenService:Create(n, TweenInfo.new(0.25, Enum.EasingStyle.Quint),
-                {Position = UDim2.new(1, -20, 0, 10 + ((i - 1) * (n.AbsoluteSize.Y + 10)))}):Play()
+                {Position = UDim2.new(1, -20, 0, 10 + ((i - 1) * 65))}):Play()
         end
     end
 
@@ -2925,10 +2927,11 @@ function Celestial:Notify(data)
         task.wait(0.3)
         Notif:Destroy()
 
+        -- realign sisanya
         for i, n in ipairs(ActiveNotifs) do
             if n and n.Parent then
                 TweenService:Create(n, TweenInfo.new(0.25, Enum.EasingStyle.Quint),
-                    {Position = UDim2.new(1, -20, 0, 10 + ((i - 1) * (n.AbsoluteSize.Y + 10)))}):Play()
+                    {Position = UDim2.new(1, -20, 0, 10 + ((i - 1) * 65))}):Play()
             end
         end
     end
