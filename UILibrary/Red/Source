@@ -2826,7 +2826,7 @@ local Celestial = Celestial or {}
 local ActiveNotifs = {}
 
 function Celestial:Notify(data)
-    local Title = data.Title or "Celestial Notification"
+    local Title = data.Title or "Celestial Notificati11on"
     local Content = data.Content or ""
     local Duration = data.Duration or 4
     local Icon = data.Icon or "rbxassetid://105369853641911"
@@ -2834,9 +2834,9 @@ function Celestial:Notify(data)
     -- frame notif
     local Notif = Instance.new("Frame")
     if isPC() then
-        Notif.Size = UDim2.new(0, 300, 0, 60) -- PC normal
+        Notif.Size = UDim2.new(0, 240, 0, 0) -- PC ramping
     else
-        Notif.Size = UDim2.new(0, 220, 0, 60) -- Mobile/console kecil
+        Notif.Size = UDim2.new(0, 200, 0, 0) -- Mobile lebih kecil
     end
     Notif.AnchorPoint = Vector2.new(1, 0)
     Notif.Position = UDim2.new(1, -12, 0, 10)
@@ -2846,6 +2846,11 @@ function Celestial:Notify(data)
     Notif.ClipsDescendants = true
     Notif.AutomaticSize = Enum.AutomaticSize.Y
     Instance.new("UICorner", Notif).CornerRadius = UDim.new(0, 8)
+
+    -- constraint biar ga lonjong
+    local constraint = Instance.new("UISizeConstraint", Notif)
+    constraint.MinSize = Vector2.new(0, 80) -- tinggi minimal
+    constraint.MaxSize = Vector2.new(isPC() and 240 or 200, math.huge) -- batasi lebar
 
     -- progress bar
     local Bar = Instance.new("Frame", Notif)
@@ -2915,21 +2920,17 @@ function Celestial:Notify(data)
     ContentLabel.TextColor3 = Color3.fromRGB(230, 230, 230)
     ContentLabel.ZIndex = 12
 
-    -- biar teks wrap sesuai lebar notif
+    -- wrap sesuai lebar notif
     local uiConstraint = Instance.new("UISizeConstraint", ContentLabel)
-    uiConstraint.MaxSize = Vector2.new(isPC() and 280 or 200, math.huge)
+    uiConstraint.MaxSize = Vector2.new(isPC() and 220 or 180, math.huge)
 
-    -- animasi masuk
-    TweenService:Create(Notif, TweenInfo.new(0.35, Enum.EasingStyle.Quint),
-        {Position = UDim2.new(1, -12, 0, 10)}):Play()
-
-    -- progress bar animasi
+    -- animasi progress bar
     TweenService:Create(Bar, TweenInfo.new(Duration, Enum.EasingStyle.Linear),
         {Size = UDim2.new(0, 0, 1, 0)}):Play()
 
     table.insert(ActiveNotifs, Notif)
 
-    -- stack dinamis
+    -- stack
     local gap, y = 8, 10
     for _, n in ipairs(ActiveNotifs) do
         if n and n.Parent then
