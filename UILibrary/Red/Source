@@ -2887,8 +2887,9 @@ function Celestial:Notify(data)
 
     local ContentLabel = Instance.new("TextLabel")
     ContentLabel.Size = UDim2.new(1, -12, 0, 0)
+	ContentLabel.LineBreakMode = Enum.LineBreakMode.CharacterWra
     ContentLabel.AutomaticSize = Enum.AutomaticSize.Y
-    ContentLabel.Position = UDim2.new(0, 6, 0, 0)
+    ContentLabel.Position = UDim2.new(0, 10, 0, 0)
     ContentLabel.BackgroundTransparency = 1
     ContentLabel.Font = Enum.Font.GothamMedium
     ContentLabel.TextSize = 13
