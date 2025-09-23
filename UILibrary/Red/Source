@@ -2816,8 +2816,8 @@ end
 local Celestial = Celestial or {}
 
 function Celestial:Notify(data)
-    local Title = data.Title or "CELESTIAL NOTIFICATION"
-    local Content = data.Content or "Hello from Notification!"
+    local Title = data.Title or "Celestial Notification"
+    local Content = data.Content
     local Duration = data.Duration or 4
     local Icon = data.Icon or "rbxassetid://105369853641911"
 
@@ -2833,16 +2833,14 @@ function Celestial:Notify(data)
     Notif.ClipsDescendants = true
     Instance.new("UICorner", Notif).CornerRadius = UDim.new(0, 8)
 
-    -- progress bar di belakang
     local Bar = Instance.new("Frame", Notif)
     Bar.Size = UDim2.new(1, 0, 1, 0)
     Bar.AnchorPoint = Vector2.new(1, 0)
     Bar.Position = UDim2.new(1, 0, 0, 0)
-    Bar.BackgroundColor3 = Color3.fromRGB(40, 40, 40) -- abu-abu polos
+    Bar.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     Bar.BorderSizePixel = 0
     Bar.ZIndex = 5
 
-    -- header
     local Header = Instance.new("Frame", Notif)
     Header.Size = UDim2.new(1, 0, 0, 24)
     Header.BackgroundTransparency = 1
