@@ -2819,7 +2819,7 @@ local Celestial = Celestial or {}
 local ActiveNotifs = {}
 
 function Celestial:Notify(data)
-    local Title = data.Title or "Celestial Notification1"
+    local Title = data.Title or "Celestial Notification2"
     local Content = data.Content or ""
     local Duration = data.Duration or 4
     local Icon = data.Icon or "rbxassetid://105369853641911"
@@ -2889,10 +2889,10 @@ function Celestial:Notify(data)
 
     local ContentLabel = Instance.new("TextLabel", Notif)
     ContentLabel.Size = UDim2.new(1, -20, 0, 0)
-    ContentLabel.Position = UDim2.new(0, 10, 0, 20)
+    ContentLabel.Position = UDim2.new(0, 10, 0, 22)
     ContentLabel.BackgroundTransparency = 1
     ContentLabel.Font = Enum.Font.GothamMedium
-    ContentLabel.TextSize = 13
+    ContentLabel.TextSize = 12
     ContentLabel.TextXAlignment = Enum.TextXAlignment.Left
     ContentLabel.TextYAlignment = Enum.TextYAlignment.Top
     ContentLabel.TextWrapped = true
