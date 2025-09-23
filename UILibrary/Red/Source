@@ -2802,6 +2802,9 @@ function ChloeColour()
     end
 end
 
+local TweenService = game:GetService("TweenService")
+local CoreGui = game:GetService("CoreGui")
+
 local NotifHolder = CoreGui:FindFirstChild("CelestialNotifs")
 if not NotifHolder then
     local gui = Instance.new("ScreenGui")
@@ -2823,21 +2826,39 @@ function Celestial:Notify(data)
     local Icon = data.Icon or "rbxassetid://105369853641911"
 
     local Notif = Instance.new("Frame")
-    Notif.Size = UDim2.new(0, 260, 0, 0)
+    Notif.Size = UDim2.new(0, 280, 0, 0)
     Notif.AutomaticSize = Enum.AutomaticSize.Y
     Notif.AnchorPoint = Vector2.new(1, 0)
-    Notif.Position = UDim2.new(1, 260, 0, 10)
+    Notif.Position = UDim2.new(1, 280, 0, 10)
     Notif.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     Notif.BorderSizePixel = 0
     Notif.ClipsDescendants = true
     Notif.Parent = NotifHolder
     Instance.new("UICorner", Notif).CornerRadius = UDim.new(0, 8)
 
-    local UIList = Instance.new("UIListLayout", Notif)
+    local Progress = Instance.new("Frame")
+    Progress.Size = UDim2.new(1, 0, 1, 0)
+    Progress.AnchorPoint = Vector2.new(1, 0)
+    Progress.Position = UDim2.new(1, 0, 0, 0)
+    Progress.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
+    Progress.BackgroundTransparency = 0.5
+    Progress.BorderSizePixel = 0
+    Progress.ZIndex = 1
+    Progress.Parent = Notif
+    Instance.new("UICorner", Progress).CornerRadius = UDim.new(0, 8)
+
+    local ContentHolder = Instance.new("Frame")
+    ContentHolder.BackgroundTransparency = 1
+    ContentHolder.Size = UDim2.new(1, 0, 1, 0)
+    ContentHolder.AutomaticSize = Enum.AutomaticSize.Y
+    ContentHolder.ZIndex = 2
+    ContentHolder.Parent = Notif
+
+    local UIList = Instance.new("UIListLayout", ContentHolder)
     UIList.SortOrder = Enum.SortOrder.LayoutOrder
     UIList.Padding = UDim.new(0, 6)
 
-    local UIPadding = Instance.new("UIPadding", Notif)
+    local UIPadding = Instance.new("UIPadding", ContentHolder)
     UIPadding.PaddingLeft = UDim.new(0, 8)
     UIPadding.PaddingRight = UDim.new(0, 8)
     UIPadding.PaddingTop = UDim.new(0, 4)
@@ -2847,7 +2868,7 @@ function Celestial:Notify(data)
     Header.Size = UDim2.new(1, 0, 0, 24)
     Header.BackgroundTransparency = 1
     Header.LayoutOrder = 1
-    Header.Parent = Notif
+    Header.Parent = ContentHolder
 
     local Logo = Instance.new("ImageLabel")
     Logo.Size = UDim2.new(0, 18, 0, 18)
@@ -2900,23 +2921,7 @@ function Celestial:Notify(data)
     ContentLabel.Text = Content
     ContentLabel.TextColor3 = Color3.fromRGB(230, 230, 230)
     ContentLabel.LayoutOrder = 2
-    ContentLabel.Parent = Notif
-
-    local Progress = Instance.new("Frame")
-    Progress.Size = UDim2.new(1, 0, 0, 5)
-    Progress.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    Progress.BackgroundTransparency = 0.4
-    Progress.BorderSizePixel = 0
-    Progress.LayoutOrder = 3
-    Progress.Parent = Notif
-
-    local Fill = Instance.new("Frame")
-    Fill.Size = UDim2.new(1, 0, 1, 0)
-    Fill.AnchorPoint = Vector2.new(1, 0)
-    Fill.Position = UDim2.new(1, 0, 0, 0)
-    Fill.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
-    Fill.BorderSizePixel = 0
-    Fill.Parent = Progress
+    ContentLabel.Parent = ContentHolder
 
     TweenService:Create(Notif, TweenInfo.new(0.35, Enum.EasingStyle.Quint),
         {Position = UDim2.new(1, -20, 0, 10)}):Play()
@@ -2929,7 +2934,7 @@ function Celestial:Notify(data)
         end
     end
 
-    TweenService:Create(Fill, TweenInfo.new(Duration, Enum.EasingStyle.Linear),
+    TweenService:Create(Progress, TweenInfo.new(Duration, Enum.EasingStyle.Linear),
         {Size = UDim2.new(0, 0, 1, 0)}):Play()
 
     local function closeNotif()
@@ -2940,7 +2945,7 @@ function Celestial:Notify(data)
             end
         end
         TweenService:Create(Notif, TweenInfo.new(0.25),
-            {Position = Notif.Position + UDim2.new(0, 260, 0, 0)}):Play()
+            {Position = Notif.Position + UDim2.new(0, 280, 0, 0)}):Play()
         task.wait(0.3)
         Notif:Destroy()
         for i, n in ipairs(ActiveNotifs) do
