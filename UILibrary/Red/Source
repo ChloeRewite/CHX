@@ -1585,8 +1585,8 @@ function Celestial:MakeWindow(Configs)
 	local Window, FirstTab = {}, false
 	function Window:CloseBtn()
 		local Dialog = Window:Dialog({
-			Title = "Celestial Gate",
-			Text = "You want to exit?? :3",
+			Title = "Celestial Exit",
+			Text = "Do you want close celestial window?\nif you close you must execute again to open window.",
 			Options = {
 				{"Confirm", function()
 					ScreenGui:Destroy()
@@ -2720,7 +2720,6 @@ getgenv().globalcolour = {
     "How to use it?",
     "Information Script",
     "Webhook Celestial",
-    "CELESTIAL NOTIFICATION",
 }
 
 getgenv().colour = getgenv().colour or {}
@@ -2814,6 +2813,7 @@ if not NotifHolder then
 end
 
 local Celestial = Celestial or {}
+local ActiveNotifs = {}
 
 function Celestial:Notify(data)
     local Title = data.Title or "Celestial Notification"
@@ -2821,12 +2821,10 @@ function Celestial:Notify(data)
     local Duration = data.Duration or 4
     local Icon = data.Icon or "rbxassetid://105369853641911"
 
-    local index = #NotifHolder:GetChildren()
-
     local Notif = Instance.new("Frame")
     Notif.Size = UDim2.new(0, 240, 0, 55)
     Notif.AnchorPoint = Vector2.new(1, 0)
-    Notif.Position = UDim2.new(1, 260, 0, 20 + (index * 75))
+    Notif.Position = UDim2.new(1, 260, 0, 10)
     Notif.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     Notif.BorderSizePixel = 0
     Notif.Parent = NotifHolder
@@ -2891,23 +2889,46 @@ function Celestial:Notify(data)
     ContentLabel.Font = Enum.Font.GothamMedium
     ContentLabel.TextSize = 13
     ContentLabel.TextXAlignment = Enum.TextXAlignment.Left
-	ContentLabel.TextYAlignment = Enum.TextYAlignment.Center
+    ContentLabel.TextYAlignment = Enum.TextYAlignment.Center
     ContentLabel.TextWrapped = true
     ContentLabel.Text = Content
     ContentLabel.TextColor3 = Color3.fromRGB(230, 230, 230)
     ContentLabel.ZIndex = 12
 
     TweenService:Create(Notif, TweenInfo.new(0.35, Enum.EasingStyle.Quint),
-        {Position = UDim2.new(1, -20, 0, 20 + (index * 75))}):Play()
+        {Position = UDim2.new(1, -20, 0, 10)}):Play()
 
     TweenService:Create(Bar, TweenInfo.new(Duration, Enum.EasingStyle.Linear),
         {Size = UDim2.new(0, 0, 1, 0)}):Play()
 
+    table.insert(ActiveNotifs, Notif)
+
+    for i, n in ipairs(ActiveNotifs) do
+        if n and n.Parent then
+            TweenService:Create(n, TweenInfo.new(0.25, Enum.EasingStyle.Quint),
+                {Position = UDim2.new(1, -20, 0, 10 + ((i - 1) * 65))}):Play()
+        end
+    end
+
     local function closeNotif()
+        for i, n in ipairs(ActiveNotifs) do
+            if n == Notif then
+                table.remove(ActiveNotifs, i)
+                break
+            end
+        end
+
         TweenService:Create(Notif, TweenInfo.new(0.25),
             {Position = Notif.Position + UDim2.new(0, 260, 0, 0)}):Play()
         task.wait(0.3)
         Notif:Destroy()
+
+        for i, n in ipairs(ActiveNotifs) do
+            if n and n.Parent then
+                TweenService:Create(n, TweenInfo.new(0.25, Enum.EasingStyle.Quint),
+                    {Position = UDim2.new(1, -20, 0, 10 + ((i - 1) * 65))}):Play()
+            end
+        end
     end
 
     CloseBtn.MouseButton1Click:Connect(closeNotif)
