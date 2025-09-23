@@ -2802,89 +2802,63 @@ function ChloeColour()
     end
 end
 
-local NotifHolder = CoreGui:FindFirstChild("CelestialNotifs")
-if not NotifHolder then
-    NotifHolder = Instance.new("ScreenGui")
-    NotifHolder.Name = "CelestialNotifs"
-    NotifHolder.Parent = CoreGui
-    NotifHolder.IgnoreGuiInset = true
-    NotifHolder.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    NotifHolder.ResetOnSpawn = false
-end
+local NotifHolder = CoreGui:FindFirstChild("CelestialNotifs") or Instance.new("ScreenGui")
+NotifHolder.Name = "CelestialNotifs"
+NotifHolder.Parent = CoreGui
+NotifHolder.IgnoreGuiInset = true
+NotifHolder.ZIndexBehavior = Enum.ZIndexBehavior.Global
 
-local Celestial = Celestial or {}
+local Celestial = {}
 local ActiveNotifs = {}
 
+local function updatePositions()
+    for i, notif in ipairs(ActiveNotifs) do
+        if notif and notif.Parent then
+            local targetY = 10 + (i - 1) * 65
+            TweenService:Create(notif, TweenInfo.new(0.25), {
+                Position = UDim2.new(1, -10, 0, targetY)
+            }):Play()
+        end
+    end
+end
+
 function Celestial:Notify(data)
-    local Title = data.Title or "Celestial Notification"
-    local Content = data.Content
+    local Content = data.Content or "Message"
     local Duration = data.Duration or 4
-    local Icon = data.Icon or "rbxassetid://105369853641911"
 
     local Notif = Instance.new("Frame")
-    Notif.Size = UDim2.new(0, 240, 0, 55)
+    Notif.Size = UDim2.new(0, 280, 0, 55)
     Notif.AnchorPoint = Vector2.new(1, 0)
-    Notif.Position = UDim2.new(1, 260, 0, 10)
+    Notif.Position = UDim2.new(1, -300, 0, 10)
     Notif.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-    Notif.BorderSizePixel = 0
     Notif.Parent = NotifHolder
-    Notif.ClipsDescendants = true
     Instance.new("UICorner", Notif).CornerRadius = UDim.new(0, 8)
 
-    local Bar = Instance.new("Frame", Notif)
-    Bar.Size = UDim2.new(1, 0, 1, 0)
-    Bar.AnchorPoint = Vector2.new(1, 0)
-    Bar.Position = UDim2.new(1, 0, 0, 0)
-    Bar.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    Bar.BorderSizePixel = 0
-    Bar.ZIndex = 5
+    table.insert(ActiveNotifs, Notif)
+    updatePositions()
 
-    local Header = Instance.new("Frame", Notif)
-    Header.Size = UDim2.new(1, 0, 0, 24)
-    Header.BackgroundTransparency = 1
-    Header.ZIndex = 10
+    local Title = Instance.new("TextLabel", Notif)
+    Title.Size = UDim2.new(1, -30, 0, 20)
+    Title.Position = UDim2.new(0, 6, 0, 4)
+    Title.BackgroundTransparency = 1
+    Title.Font = Enum.Font.GothamBold
+    Title.TextSize = 13
+    Title.TextXAlignment = Enum.TextXAlignment.Left
+    Title.Text = "Celestial Notification"
+    Title.TextColor3 = Color3.fromRGB(120, 170, 255)
 
-    local Logo = Instance.new("ImageLabel", Header)
-    Logo.Size = UDim2.new(0, 18, 0, 18)
-    Logo.Position = UDim2.new(0, 6, 0, 3)
-    Logo.BackgroundTransparency = 1
-    Logo.Image = Icon
-    Logo.ZIndex = 12
-
-    local TitleLabel = Instance.new("TextLabel", Header)
-    TitleLabel.Size = UDim2.new(1, -60, 0, 18)
-    TitleLabel.Position = UDim2.new(0, 28, 0, 3)
-    TitleLabel.BackgroundTransparency = 1
-    TitleLabel.Font = Enum.Font.GothamBold
-    TitleLabel.TextSize = 14
-    TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
-    TitleLabel.Text = Title
-    TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    TitleLabel.ZIndex = 12
-
-    local Gradient = Instance.new("UIGradient")
-    Gradient.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 42, 255)),
-        ColorSequenceKeypoint.new(0.25, Color3.fromRGB(174, 0, 255)),
-        ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 191, 255)),
-        ColorSequenceKeypoint.new(0.75, Color3.fromRGB(174, 0, 255)),
-        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 42, 255)),
-    })
-    Gradient.Parent = TitleLabel
-
-    local CloseBtn = Instance.new("TextButton", Header)
+    local CloseBtn = Instance.new("TextButton", Notif)
     CloseBtn.Size = UDim2.new(0, 20, 0, 20)
-    CloseBtn.Position = UDim2.new(1, -24, 0, 2)
+    CloseBtn.Position = UDim2.new(1, -24, 0, 4)
     CloseBtn.BackgroundTransparency = 1
-    CloseBtn.Font = Enum.Font.GothamBold
     CloseBtn.Text = "X"
-    CloseBtn.TextColor3 = Color3.fromRGB(220, 220, 220)
+    CloseBtn.Font = Enum.Font.GothamBold
     CloseBtn.TextSize = 14
-    CloseBtn.ZIndex = 12
+    CloseBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
 
     local ContentLabel = Instance.new("TextLabel", Notif)
-    ContentLabel.Size = UDim2.new(1, -12, 0, 24)
-    ContentLabel.Position = UDim2.new(0, 6, 0, 28)
+    ContentLabel.Size = UDim2.new(1, -12, 1, -24)
+    ContentLabel.Position = UDim2.new(0, 6, 0, 24)
     ContentLabel.BackgroundTransparency = 1
     ContentLabel.Font = Enum.Font.GothamMedium
     ContentLabel.TextSize = 13
@@ -2893,41 +2867,23 @@ function Celestial:Notify(data)
     ContentLabel.TextWrapped = true
     ContentLabel.Text = Content
     ContentLabel.TextColor3 = Color3.fromRGB(230, 230, 230)
-    ContentLabel.ZIndex = 12
-
-    TweenService:Create(Notif, TweenInfo.new(0.35, Enum.EasingStyle.Quint),
-        {Position = UDim2.new(1, -20, 0, 10)}):Play()
-
-    TweenService:Create(Bar, TweenInfo.new(Duration, Enum.EasingStyle.Linear),
-        {Size = UDim2.new(0, 0, 1, 0)}):Play()
-
-    table.insert(ActiveNotifs, Notif)
-
-    for i, n in ipairs(ActiveNotifs) do
-        if n and n.Parent then
-            TweenService:Create(n, TweenInfo.new(0.25, Enum.EasingStyle.Quint),
-                {Position = UDim2.new(1, -20, 0, 10 + ((i - 1) * 65))}):Play()
-        end
-    end
 
     local function closeNotif()
-        for i, n in ipairs(ActiveNotifs) do
-            if n == Notif then
-                table.remove(ActiveNotifs, i)
-                break
+        if Notif and Notif.Parent then
+            for i, v in ipairs(ActiveNotifs) do
+                if v == Notif then
+                    table.remove(ActiveNotifs, i)
+                    break
+                end
             end
-        end
-
-        TweenService:Create(Notif, TweenInfo.new(0.25),
-            {Position = Notif.Position + UDim2.new(0, 260, 0, 0)}):Play()
-        task.wait(0.3)
-        Notif:Destroy()
-
-        for i, n in ipairs(ActiveNotifs) do
-            if n and n.Parent then
-                TweenService:Create(n, TweenInfo.new(0.25, Enum.EasingStyle.Quint),
-                    {Position = UDim2.new(1, -20, 0, 10 + ((i - 1) * 65))}):Play()
-            end
+            TweenService:Create(
+                Notif,
+                TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
+                {Position = Notif.Position + UDim2.new(0, 300, 0, 0)}
+            ):Play()
+            task.wait(0.3)
+            Notif:Destroy()
+            updatePositions()
         end
     end
 
