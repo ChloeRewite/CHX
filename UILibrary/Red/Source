@@ -2804,6 +2804,20 @@ end
 
 local TweenService = game:GetService("TweenService")
 local CoreGui = game:GetService("CoreGui")
+local UserInputService = game:GetService("UserInputService")
+
+-- fungsi deteksi device
+local function isMobile()
+    -- kalau ada touch screen & ga ada keyboard → mobile
+    if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
+        return true
+    end
+    -- fallback: cek ukuran layar
+    if workspace.CurrentCamera and workspace.CurrentCamera.ViewportSize.X < 800 then
+        return true
+    end
+    return false
+end
 
 local NotifHolder = CoreGui:FindFirstChild("CelestialNotifs")
 if not NotifHolder then
@@ -2819,22 +2833,32 @@ local Celestial = Celestial or {}
 local ActiveNotifs = {}
 
 function Celestial:Notify(data)
-    local Title = data.Title or "Celestial Notification2"
+    local Title = data.Title or "Celestial Notification3"
     local Content = data.Content or ""
     local Duration = data.Duration or 4
     local Icon = data.Icon or "rbxassetid://105369853641911"
 
-    -- frame utama notif
+    -- frame utama notif (pakai scale biar fleksibel)
     local Notif = Instance.new("Frame")
-    Notif.Size = UDim2.new(0, 240, 0, 60)
+    if isMobile() then
+        Notif.Size = UDim2.new(0.5, 0, 0, 60) -- 50% layar di mobile
+    else
+        Notif.Size = UDim2.new(0.35, 0, 0, 60) -- 35% layar di PC
+    end
     Notif.AnchorPoint = Vector2.new(1, 0)
-    Notif.Position = UDim2.new(1, 260, 0, 10)
+    Notif.Position = UDim2.new(1, -12, 0, 10)
     Notif.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     Notif.BorderSizePixel = 0
     Notif.Parent = NotifHolder
     Notif.ClipsDescendants = true
     Notif.AutomaticSize = Enum.AutomaticSize.Y
     Instance.new("UICorner", Notif).CornerRadius = UDim.new(0, 8)
+
+    -- biar ga kelebaran/kekecilan
+    local sizeConstraint = Instance.new("UISizeConstraint")
+    sizeConstraint.MinSize = Vector2.new(160, 0)
+    sizeConstraint.MaxSize = Vector2.new(400, math.huge)
+    sizeConstraint.Parent = Notif
 
     local Bar = Instance.new("Frame", Notif)
     Bar.Size = UDim2.new(1, 0, 1, 0)
@@ -2903,7 +2927,7 @@ function Celestial:Notify(data)
 
     -- animasi masuk
     TweenService:Create(Notif, TweenInfo.new(0.35, Enum.EasingStyle.Quint),
-        {Position = UDim2.new(1, -20, 0, 10)}):Play()
+        {Position = UDim2.new(1, -12, 0, 10)}):Play()
 
     -- progress bar
     TweenService:Create(Bar, TweenInfo.new(Duration, Enum.EasingStyle.Linear),
@@ -2912,11 +2936,15 @@ function Celestial:Notify(data)
     -- masukin ke daftar notif aktif
     table.insert(ActiveNotifs, Notif)
 
-    -- stack auto
-    for i, n in ipairs(ActiveNotifs) do
+    -- stack dinamis (pakai tinggi real)
+    local gap = 8
+    local y = 10
+    for _, n in ipairs(ActiveNotifs) do
         if n and n.Parent then
-            TweenService:Create(n, TweenInfo.new(0.25, Enum.EasingStyle.Quint),
-                {Position = UDim2.new(1, -20, 0, 10 + ((i - 1) * 75))}):Play()
+            TweenService:Create(n, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {
+                Position = UDim2.new(1, -12, 0, y)
+            }):Play()
+            y = y + n.AbsoluteSize.Y + gap
         end
     end
 
@@ -2934,10 +2962,13 @@ function Celestial:Notify(data)
         Notif:Destroy()
 
         -- realign sisanya
-        for i, n in ipairs(ActiveNotifs) do
+        local newY = 10
+        for _, n in ipairs(ActiveNotifs) do
             if n and n.Parent then
-                TweenService:Create(n, TweenInfo.new(0.25, Enum.EasingStyle.Quint),
-                    {Position = UDim2.new(1, -20, 0, 10 + ((i - 1) * 75))}):Play()
+                TweenService:Create(n, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {
+                    Position = UDim2.new(1, -12, 0, newY)
+                }):Play()
+                newY = newY + n.AbsoluteSize.Y + gap
             end
         end
     end
