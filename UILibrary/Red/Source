@@ -2802,9 +2802,6 @@ function ChloeColour()
     end
 end
 
-local TweenService = game:GetService("TweenService")
-local CoreGui = game:GetService("CoreGui")
-
 local NotifHolder = CoreGui:FindFirstChild("CelestialNotifs")
 if not NotifHolder then
     NotifHolder = Instance.new("ScreenGui")
@@ -2825,9 +2822,9 @@ function Celestial:Notify(data)
     local Icon = data.Icon or "rbxassetid://105369853641911"
 
     local Notif = Instance.new("Frame")
-    Notif.Size = UDim2.new(0, 240, 0, 55)
+    Notif.Size = UDim2.new(0, 220, 0, 50)
     Notif.AnchorPoint = Vector2.new(1, 0)
-    Notif.Position = UDim2.new(1, -10, 0, 10 + ((i - 1) * 65))
+    Notif.Position = UDim2.new(1, 260, 0, 10)
     Notif.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     Notif.BorderSizePixel = 0
     Notif.Parent = NotifHolder
@@ -2886,7 +2883,7 @@ function Celestial:Notify(data)
     CloseBtn.ZIndex = 12
 
     local ContentLabel = Instance.new("TextLabel", Notif)
-    ContentLabel.Size = UDim2.new(1, -12, 1, -24)
+    ContentLabel.Size = UDim2.new(1, -12, 1, 24)
     ContentLabel.Position = UDim2.new(0, 6, 0, 28)
     ContentLabel.BackgroundTransparency = 1
     ContentLabel.Font = Enum.Font.GothamMedium
