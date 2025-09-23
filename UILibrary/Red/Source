@@ -2861,7 +2861,7 @@ function Celestial:Notify(data)
     TitleLabel.Position = UDim2.new(0, 28, 0, 3)
     TitleLabel.BackgroundTransparency = 1
     TitleLabel.Font = Enum.Font.GothamBold
-    TitleLabel.TextSize = 14
+    TitleLabel.TextSize = 15
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     TitleLabel.Text = Title
     TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -2889,7 +2889,7 @@ function Celestial:Notify(data)
 
     local ContentLabel = Instance.new("TextLabel", Notif)
     ContentLabel.Size = UDim2.new(1, -20, 0, 0)
-    ContentLabel.Position = UDim2.new(0, 10, 0, 28)
+    ContentLabel.Position = UDim2.new(0, 10, 0, 22)
     ContentLabel.BackgroundTransparency = 1
     ContentLabel.Font = Enum.Font.GothamMedium
     ContentLabel.TextSize = 13
