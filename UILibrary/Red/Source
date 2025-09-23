@@ -2884,7 +2884,7 @@ function Celestial:Notify(data)
 
     local ContentLabel = Instance.new("TextLabel", Notif)
     ContentLabel.Size = UDim2.new(1, -12, 0, 24)
-    ContentLabel.Position = UDim2.new(0, 6, 0, 28)
+    ContentLabel.Position = UDim2.new(0, 6, 0, 33)
     ContentLabel.BackgroundTransparency = 1
     ContentLabel.Font = Enum.Font.GothamMedium
     ContentLabel.TextSize = 13
