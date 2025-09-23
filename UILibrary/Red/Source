@@ -2802,9 +2802,7 @@ function ChloeColour()
     end
 end
 
-local Celestial = {}
 local NotifHolder = CoreGui:FindFirstChild("CelestialNotifs")
-
 if not NotifHolder then
     NotifHolder = Instance.new("ScreenGui")
     NotifHolder.Name = "CelestialNotifs"
@@ -2827,6 +2825,9 @@ if not NotifHolder then
     layout.Padding = UDim.new(0, 8)
     layout.VerticalAlignment = Enum.VerticalAlignment.Top
 end
+
+local Celestial = Celestial or {}
+local ActiveNotifs = {}
 
 function Celestial:Notify(data)
     local notifFrame = Instance.new("Frame")
