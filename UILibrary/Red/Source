@@ -2824,7 +2824,7 @@ function Celestial:Notify(data)
     local index = #NotifHolder:GetChildren()
 
     local Notif = Instance.new("Frame")
-    Notif.Size = UDim2.new(0, 240, 0, 65)
+    Notif.Size = UDim2.new(0, 240, 0, 55)
     Notif.AnchorPoint = Vector2.new(1, 0)
     Notif.Position = UDim2.new(1, 260, 0, 20 + (index * 75))
     Notif.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
@@ -2887,12 +2887,13 @@ function Celestial:Notify(data)
     CloseBtn.ZIndex = 12
 
     local ContentLabel = Instance.new("TextLabel", Notif)
-    ContentLabel.Size = UDim2.new(1, -12, 0, 32)
+    ContentLabel.Size = UDim2.new(1, -12, 0, 24)
     ContentLabel.Position = UDim2.new(0, 6, 0, 28)
     ContentLabel.BackgroundTransparency = 1
     ContentLabel.Font = Enum.Font.GothamMedium
     ContentLabel.TextSize = 13
     ContentLabel.TextXAlignment = Enum.TextXAlignment.Left
+	ContentLabel.TextYAlignment = Enum.TextYAlignment.Center
     ContentLabel.TextWrapped = true
     ContentLabel.Text = Content
     ContentLabel.TextColor3 = Color3.fromRGB(230, 230, 230)
