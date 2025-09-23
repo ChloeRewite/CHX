@@ -2835,7 +2835,13 @@ function Celestial:Notify(data)
 
     local UIList = Instance.new("UIListLayout", Notif)
     UIList.SortOrder = Enum.SortOrder.LayoutOrder
-    UIList.Padding = UDim.new(0, 4)
+    UIList.Padding = UDim.new(0, 6)
+
+    local UIPadding = Instance.new("UIPadding", Notif)
+    UIPadding.PaddingLeft = UDim.new(0, 8)
+    UIPadding.PaddingRight = UDim.new(0, 8)
+    UIPadding.PaddingTop = UDim.new(0, 4)
+    UIPadding.PaddingBottom = UDim.new(0, 6)
 
     local Header = Instance.new("Frame")
     Header.Size = UDim2.new(1, 0, 0, 24)
@@ -2845,14 +2851,14 @@ function Celestial:Notify(data)
 
     local Logo = Instance.new("ImageLabel")
     Logo.Size = UDim2.new(0, 18, 0, 18)
-    Logo.Position = UDim2.new(0, 6, 0, 3)
+    Logo.Position = UDim2.new(0, 2, 0, 3)
     Logo.BackgroundTransparency = 1
     Logo.Image = Icon
     Logo.Parent = Header
 
     local TitleLabel = Instance.new("TextLabel")
     TitleLabel.Size = UDim2.new(1, -60, 0, 18)
-    TitleLabel.Position = UDim2.new(0, 28, 0, 6)
+    TitleLabel.Position = UDim2.new(0, 26, 0, 3)
     TitleLabel.BackgroundTransparency = 1
     TitleLabel.Font = Enum.Font.GothamBold
     TitleLabel.TextSize = 14
@@ -2873,7 +2879,7 @@ function Celestial:Notify(data)
 
     local CloseBtn = Instance.new("TextButton")
     CloseBtn.Size = UDim2.new(0, 20, 0, 20)
-    CloseBtn.Position = UDim2.new(1, -24, 0, 2)
+    CloseBtn.Position = UDim2.new(1, -22, 0, 2)
     CloseBtn.BackgroundTransparency = 1
     CloseBtn.Font = Enum.Font.GothamBold
     CloseBtn.Text = "X"
@@ -2882,9 +2888,8 @@ function Celestial:Notify(data)
     CloseBtn.Parent = Header
 
     local ContentLabel = Instance.new("TextLabel")
-    ContentLabel.Size = UDim2.new(1, -20, 0, 0)
+    ContentLabel.Size = UDim2.new(1, -10, 0, 0)
     ContentLabel.AutomaticSize = Enum.AutomaticSize.Y
-    ContentLabel.Position = UDim2.new(0, 10, 0, 0)
     ContentLabel.BackgroundTransparency = 1
     ContentLabel.Font = Enum.Font.GothamMedium
     ContentLabel.TextSize = 13
@@ -2898,11 +2903,20 @@ function Celestial:Notify(data)
     ContentLabel.Parent = Notif
 
     local Progress = Instance.new("Frame")
-    Progress.Size = UDim2.new(1, 0, 0, 3)
-    Progress.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+    Progress.Size = UDim2.new(1, 0, 0, 5)
+    Progress.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    Progress.BackgroundTransparency = 0.4
     Progress.BorderSizePixel = 0
     Progress.LayoutOrder = 3
     Progress.Parent = Notif
+
+    local Fill = Instance.new("Frame")
+    Fill.Size = UDim2.new(1, 0, 1, 0)
+    Fill.AnchorPoint = Vector2.new(1, 0)
+    Fill.Position = UDim2.new(1, 0, 0, 0)
+    Fill.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
+    Fill.BorderSizePixel = 0
+    Fill.Parent = Progress
 
     TweenService:Create(Notif, TweenInfo.new(0.35, Enum.EasingStyle.Quint),
         {Position = UDim2.new(1, -20, 0, 10)}):Play()
@@ -2915,8 +2929,8 @@ function Celestial:Notify(data)
         end
     end
 
-    TweenService:Create(Progress, TweenInfo.new(Duration, Enum.EasingStyle.Linear),
-        {Size = UDim2.new(0, 0, 0, 3)}):Play()
+    TweenService:Create(Fill, TweenInfo.new(Duration, Enum.EasingStyle.Linear),
+        {Size = UDim2.new(0, 0, 1, 0)}):Play()
 
     local function closeNotif()
         for i, n in ipairs(ActiveNotifs) do
