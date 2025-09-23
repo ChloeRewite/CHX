@@ -2808,11 +2808,9 @@ local UserInputService = game:GetService("UserInputService")
 
 -- fungsi deteksi device
 local function isMobile()
-    -- kalau ada touch screen & ga ada keyboard → mobile
     if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
         return true
     end
-    -- fallback: cek ukuran layar
     if workspace.CurrentCamera and workspace.CurrentCamera.ViewportSize.X < 800 then
         return true
     end
@@ -2833,15 +2831,15 @@ local Celestial = Celestial or {}
 local ActiveNotifs = {}
 
 function Celestial:Notify(data)
-    local Title = data.Title or "Celestial Notification3"
+    local Title = data.Title or "Celestial Notification4"
     local Content = data.Content or ""
     local Duration = data.Duration or 4
     local Icon = data.Icon or "rbxassetid://105369853641911"
 
-    -- frame utama notif (pakai scale biar fleksibel)
+    -- frame utama notif
     local Notif = Instance.new("Frame")
     if isMobile() then
-        Notif.Size = UDim2.new(0.5, 0, 0, 60) -- 50% layar di mobile
+        Notif.Size = UDim2.new(0.5, 0, 0, 60) -- 50% layar di HP
     else
         Notif.Size = UDim2.new(0.35, 0, 0, 60) -- 35% layar di PC
     end
@@ -2854,7 +2852,6 @@ function Celestial:Notify(data)
     Notif.AutomaticSize = Enum.AutomaticSize.Y
     Instance.new("UICorner", Notif).CornerRadius = UDim.new(0, 8)
 
-    -- biar ga kelebaran/kekecilan
     local sizeConstraint = Instance.new("UISizeConstraint")
     sizeConstraint.MinSize = Vector2.new(160, 0)
     sizeConstraint.MaxSize = Vector2.new(400, math.huge)
@@ -2911,6 +2908,7 @@ function Celestial:Notify(data)
     CloseBtn.TextSize = 14
     CloseBtn.ZIndex = 12
 
+    -- isi notif
     local ContentLabel = Instance.new("TextLabel", Notif)
     ContentLabel.Size = UDim2.new(1, -20, 0, 0)
     ContentLabel.Position = UDim2.new(0, 10, 0, 22)
@@ -2925,6 +2923,10 @@ function Celestial:Notify(data)
     ContentLabel.TextColor3 = Color3.fromRGB(230, 230, 230)
     ContentLabel.ZIndex = 12
 
+    -- batas max width biar ga kepanjangan
+    local uiConstraint = Instance.new("UISizeConstraint", ContentLabel)
+    uiConstraint.MaxSize = Vector2.new(360, math.huge)
+
     -- animasi masuk
     TweenService:Create(Notif, TweenInfo.new(0.35, Enum.EasingStyle.Quint),
         {Position = UDim2.new(1, -12, 0, 10)}):Play()
@@ -2933,10 +2935,9 @@ function Celestial:Notify(data)
     TweenService:Create(Bar, TweenInfo.new(Duration, Enum.EasingStyle.Linear),
         {Size = UDim2.new(0, 0, 1, 0)}):Play()
 
-    -- masukin ke daftar notif aktif
     table.insert(ActiveNotifs, Notif)
 
-    -- stack dinamis (pakai tinggi real)
+    -- stack dinamis
     local gap = 8
     local y = 10
     for _, n in ipairs(ActiveNotifs) do
@@ -2955,13 +2956,11 @@ function Celestial:Notify(data)
                 break
             end
         end
-
         TweenService:Create(Notif, TweenInfo.new(0.25),
             {Position = Notif.Position + UDim2.new(0, 260, 0, 0)}):Play()
         task.wait(0.3)
         Notif:Destroy()
 
-        -- realign sisanya
         local newY = 10
         for _, n in ipairs(ActiveNotifs) do
             if n and n.Parent then
