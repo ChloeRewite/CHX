@@ -2830,22 +2830,22 @@ function Celestial:Notify(data)
     Notif.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     Notif.BorderSizePixel = 0
     Notif.Parent = NotifHolder
+    Notif.ClipsDescendants = true
     Instance.new("UICorner", Notif).CornerRadius = UDim.new(0, 8)
-
-    local Header = Instance.new("Frame", Notif)
-    Header.Size = UDim2.new(1, 0, 0, 28)
-    Header.BackgroundTransparency = 1
-    Header.ZIndex = 10
 
     local Bar = Instance.new("Frame")
     Bar.Size = UDim2.new(1, 0, 1, 0)
     Bar.AnchorPoint = Vector2.new(1, 0)
     Bar.Position = UDim2.new(1, 0, 0, 0)
-    Bar.BackgroundColor3 = Color3.fromRGB(80, 150, 255)
-    Bar.BackgroundTransparency = 0.65
+    Bar.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     Bar.BorderSizePixel = 0
-    Bar.ZIndex = 11
-    Bar.Parent = Header
+    Bar.ZIndex = 5
+    Bar.Parent = Notif
+
+    local Header = Instance.new("Frame", Notif)
+    Header.Size = UDim2.new(1, 0, 0, 28)
+    Header.BackgroundTransparency = 1
+    Header.ZIndex = 10
 
     local Logo = Instance.new("ImageLabel", Header)
     Logo.Size = UDim2.new(0, 20, 0, 20)
