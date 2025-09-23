@@ -2824,45 +2824,46 @@ function Celestial:Notify(data)
     local index = #NotifHolder:GetChildren()
 
     local Notif = Instance.new("Frame")
-    Notif.Size = UDim2.new(0, 260, 0, 70)
     Notif.AnchorPoint = Vector2.new(1, 0)
-    Notif.Position = UDim2.new(1, 280, 0, 20 + (index * 80))
+    Notif.Position = UDim2.new(1, 280, 0, 20 + (index * 90))
     Notif.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     Notif.BorderSizePixel = 0
     Notif.Parent = NotifHolder
+    Notif.AutomaticSize = Enum.AutomaticSize.Y
+    Notif.Size = UDim2.new(0, 280, 0, 0)
     Notif.ClipsDescendants = true
     Instance.new("UICorner", Notif).CornerRadius = UDim.new(0, 8)
 
-    local Bar = Instance.new("Frame")
-    Bar.Size = UDim2.new(1, 0, 1, 0)
-    Bar.AnchorPoint = Vector2.new(1, 0)
-    Bar.Position = UDim2.new(1, 0, 0, 0)
-    Bar.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    Bar.BorderSizePixel = 0
-    Bar.ZIndex = 5
-    Bar.Parent = Notif
+    local UIList = Instance.new("UIListLayout", Notif)
+    UIList.FillDirection = Enum.FillDirection.Vertical
+    UIList.Padding = UDim.new(0, 6)
 
     local Header = Instance.new("Frame", Notif)
-    Header.Size = UDim2.new(1, 0, 0, 28)
+    Header.Size = UDim2.new(1, -10, 0, 24)
+    Header.Position = UDim2.new(0, 5, 0, 5)
     Header.BackgroundTransparency = 1
+    Header.AutomaticSize = Enum.AutomaticSize.X
     Header.ZIndex = 10
 
+    local HLayout = Instance.new("UIListLayout", Header)
+    HLayout.FillDirection = Enum.FillDirection.Horizontal
+    HLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+    HLayout.Padding = UDim.new(0, 5)
+
     local Logo = Instance.new("ImageLabel", Header)
-    Logo.Size = UDim2.new(0, 20, 0, 20)
-    Logo.Position = UDim2.new(0, 8, 0, 4)
+    Logo.Size = UDim2.new(0, 18, 0, 18)
     Logo.BackgroundTransparency = 1
     Logo.Image = Icon
     Logo.ZIndex = 12
 
     local TitleLabel = Instance.new("TextLabel", Header)
-    TitleLabel.Size = UDim2.new(1, -60, 0, 20)
-    TitleLabel.Position = UDim2.new(0, 32, 0, 4)
     TitleLabel.BackgroundTransparency = 1
     TitleLabel.Font = Enum.Font.GothamBold
     TitleLabel.TextSize = 14
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     TitleLabel.Text = Title
     TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TitleLabel.AutomaticSize = Enum.AutomaticSize.XY
     TitleLabel.ZIndex = 12
 
     local Gradient = Instance.new("UIGradient")
@@ -2873,12 +2874,10 @@ function Celestial:Notify(data)
         ColorSequenceKeypoint.new(0.75, Color3.fromRGB(174, 0, 255)),
         ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 42, 255)),
     })
-    Gradient.Rotation = 0
     Gradient.Parent = TitleLabel
 
     local CloseBtn = Instance.new("TextButton", Header)
     CloseBtn.Size = UDim2.new(0, 20, 0, 20)
-    CloseBtn.Position = UDim2.new(1, -25, 0, 4)
     CloseBtn.BackgroundTransparency = 1
     CloseBtn.Font = Enum.Font.GothamBold
     CloseBtn.Text = "X"
@@ -2887,8 +2886,8 @@ function Celestial:Notify(data)
     CloseBtn.ZIndex = 12
 
     local ContentLabel = Instance.new("TextLabel", Notif)
-    ContentLabel.Size = UDim2.new(1, -14, 0, 30)
-    ContentLabel.Position = UDim2.new(0, 7, 0, 32)
+    ContentLabel.Size = UDim2.new(1, -14, 0, 0)
+    ContentLabel.Position = UDim2.new(0, 7, 0, 0)
     ContentLabel.BackgroundTransparency = 1
     ContentLabel.Font = Enum.Font.GothamMedium
     ContentLabel.TextSize = 13
@@ -2897,13 +2896,11 @@ function Celestial:Notify(data)
     ContentLabel.TextWrapped = true
     ContentLabel.Text = Content
     ContentLabel.TextColor3 = Color3.fromRGB(230, 230, 230)
+    ContentLabel.AutomaticSize = Enum.AutomaticSize.Y
     ContentLabel.ZIndex = 12
 
     TweenService:Create(Notif, TweenInfo.new(0.35, Enum.EasingStyle.Quint),
-        {Position = UDim2.new(1, -20, 0, 20 + (index * 80))}):Play()
-
-    TweenService:Create(Bar, TweenInfo.new(Duration, Enum.EasingStyle.Linear),
-        {Size = UDim2.new(0, 0, 1, 0)}):Play()
+        {Position = UDim2.new(1, -20, 0, 20 + (index * 90))}):Play()
 
     local function closeNotif()
         TweenService:Create(Notif, TweenInfo.new(0.25),
