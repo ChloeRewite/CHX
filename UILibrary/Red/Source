@@ -2802,17 +2802,14 @@ function ChloeColour()
     end
 end
 
-local TweenService = game:GetService("TweenService")
-local CoreGui = game:GetService("CoreGui")
-
 local NotifHolder = CoreGui:FindFirstChild("CelestialNotifs")
 if not NotifHolder then
     local gui = Instance.new("ScreenGui")
     gui.Name = "CelestialNotifs"
+    gui.Parent = CoreGui
     gui.IgnoreGuiInset = true
     gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     gui.ResetOnSpawn = false
-    gui.Parent = CoreGui
     NotifHolder = gui
 end
 
@@ -2826,66 +2823,45 @@ function Celestial:Notify(data)
     local Icon = data.Icon or "rbxassetid://105369853641911"
 
     local Notif = Instance.new("Frame")
-    Notif.Size = UDim2.new(0, 280, 0, 0)
+    Notif.Size = UDim2.new(0, 240, 0, 0)
     Notif.AutomaticSize = Enum.AutomaticSize.Y
     Notif.AnchorPoint = Vector2.new(1, 0)
-    Notif.Position = UDim2.new(1, 280, 0, 10)
+    Notif.Position = UDim2.new(1, 260, 0, 10)
     Notif.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
     Notif.BorderSizePixel = 0
-    Notif.ClipsDescendants = true
     Notif.Parent = NotifHolder
+    Notif.ClipsDescendants = true
     Instance.new("UICorner", Notif).CornerRadius = UDim.new(0, 8)
 
-    local Progress = Instance.new("Frame")
-    Progress.Size = UDim2.new(1, 0, 1, 0)
-    Progress.AnchorPoint = Vector2.new(1, 0)
-    Progress.Position = UDim2.new(1, 0, 0, 0)
-    Progress.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
-    Progress.BackgroundTransparency = 0.5
-    Progress.BorderSizePixel = 0
-    Progress.ZIndex = 1
-    Progress.Parent = Notif
-    Instance.new("UICorner", Progress).CornerRadius = UDim.new(0, 8)
-
-    local ContentHolder = Instance.new("Frame")
-    ContentHolder.BackgroundTransparency = 1
-    ContentHolder.Size = UDim2.new(1, 0, 1, 0)
-    ContentHolder.AutomaticSize = Enum.AutomaticSize.Y
-    ContentHolder.ZIndex = 2
-    ContentHolder.Parent = Notif
-
-    local UIList = Instance.new("UIListLayout", ContentHolder)
+    local UIList = Instance.new("UIListLayout", Notif)
     UIList.SortOrder = Enum.SortOrder.LayoutOrder
-    UIList.Padding = UDim.new(0, 6)
-
-    local UIPadding = Instance.new("UIPadding", ContentHolder)
-    UIPadding.PaddingLeft = UDim.new(0, 8)
-    UIPadding.PaddingRight = UDim.new(0, 8)
-    UIPadding.PaddingTop = UDim.new(0, 4)
-    UIPadding.PaddingBottom = UDim.new(0, 6)
+    UIList.Padding = UDim.new(0, 4)
 
     local Header = Instance.new("Frame")
     Header.Size = UDim2.new(1, 0, 0, 24)
     Header.BackgroundTransparency = 1
+    Header.ZIndex = 10
     Header.LayoutOrder = 1
-    Header.Parent = ContentHolder
+    Header.Parent = Notif
 
     local Logo = Instance.new("ImageLabel")
     Logo.Size = UDim2.new(0, 18, 0, 18)
-    Logo.Position = UDim2.new(0, 2, 0, 3)
+    Logo.Position = UDim2.new(0, 6, 0, 3)
     Logo.BackgroundTransparency = 1
     Logo.Image = Icon
+    Logo.ZIndex = 12
     Logo.Parent = Header
 
     local TitleLabel = Instance.new("TextLabel")
     TitleLabel.Size = UDim2.new(1, -60, 0, 18)
-    TitleLabel.Position = UDim2.new(0, 26, 0, 3)
+    TitleLabel.Position = UDim2.new(0, 28, 0, 3)
     TitleLabel.BackgroundTransparency = 1
     TitleLabel.Font = Enum.Font.GothamBold
     TitleLabel.TextSize = 14
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     TitleLabel.Text = Title
     TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TitleLabel.ZIndex = 12
     TitleLabel.Parent = Header
 
     local Gradient = Instance.new("UIGradient")
@@ -2900,28 +2876,30 @@ function Celestial:Notify(data)
 
     local CloseBtn = Instance.new("TextButton")
     CloseBtn.Size = UDim2.new(0, 20, 0, 20)
-    CloseBtn.Position = UDim2.new(1, -22, 0, 2)
+    CloseBtn.Position = UDim2.new(1, -24, 0, 2)
     CloseBtn.BackgroundTransparency = 1
     CloseBtn.Font = Enum.Font.GothamBold
     CloseBtn.Text = "X"
     CloseBtn.TextColor3 = Color3.fromRGB(220, 220, 220)
     CloseBtn.TextSize = 14
+    CloseBtn.ZIndex = 12
     CloseBtn.Parent = Header
 
     local ContentLabel = Instance.new("TextLabel")
-    ContentLabel.Size = UDim2.new(1, -10, 0, 0)
+    ContentLabel.Size = UDim2.new(1, -12, 0, 0)
     ContentLabel.AutomaticSize = Enum.AutomaticSize.Y
+    ContentLabel.Position = UDim2.new(0, 6, 0, 0)
     ContentLabel.BackgroundTransparency = 1
     ContentLabel.Font = Enum.Font.GothamMedium
     ContentLabel.TextSize = 13
     ContentLabel.TextXAlignment = Enum.TextXAlignment.Left
     ContentLabel.TextYAlignment = Enum.TextYAlignment.Top
     ContentLabel.TextWrapped = true
-    ContentLabel.TextTruncate = Enum.TextTruncate.None
     ContentLabel.Text = Content
     ContentLabel.TextColor3 = Color3.fromRGB(230, 230, 230)
+    ContentLabel.ZIndex = 12
     ContentLabel.LayoutOrder = 2
-    ContentLabel.Parent = ContentHolder
+    ContentLabel.Parent = Notif
 
     TweenService:Create(Notif, TweenInfo.new(0.35, Enum.EasingStyle.Quint),
         {Position = UDim2.new(1, -20, 0, 10)}):Play()
@@ -2934,9 +2912,6 @@ function Celestial:Notify(data)
         end
     end
 
-    TweenService:Create(Progress, TweenInfo.new(Duration, Enum.EasingStyle.Linear),
-        {Size = UDim2.new(0, 0, 1, 0)}):Play()
-
     local function closeNotif()
         for i, n in ipairs(ActiveNotifs) do
             if n == Notif then
@@ -2944,10 +2919,12 @@ function Celestial:Notify(data)
                 break
             end
         end
+
         TweenService:Create(Notif, TweenInfo.new(0.25),
-            {Position = Notif.Position + UDim2.new(0, 280, 0, 0)}):Play()
+            {Position = Notif.Position + UDim2.new(0, 260, 0, 0)}):Play()
         task.wait(0.3)
         Notif:Destroy()
+
         for i, n in ipairs(ActiveNotifs) do
             if n and n.Parent then
                 TweenService:Create(n, TweenInfo.new(0.25, Enum.EasingStyle.Quint),
