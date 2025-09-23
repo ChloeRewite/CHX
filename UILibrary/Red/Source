@@ -2806,12 +2806,13 @@ local TweenService = game:GetService("TweenService")
 local CoreGui = game:GetService("CoreGui")
 local UserInputService = game:GetService("UserInputService")
 
--- cek PC vs selain PC
+-- cek PC vs mobile
 local function isPC()
     local platform = UserInputService:GetPlatform()
     return platform == Enum.Platform.Windows or platform == Enum.Platform.OSX
 end
 
+-- holder utama
 local NotifHolder = CoreGui:FindFirstChild("CelestialNotifs")
 if not NotifHolder then
     NotifHolder = Instance.new("ScreenGui")
@@ -2822,22 +2823,23 @@ if not NotifHolder then
     NotifHolder.ResetOnSpawn = false
 end
 
-local Celestial = Celestial or {}
+local Celestial = {}
 local ActiveNotifs = {}
 
 function Celestial:Notify(data)
-    local Title = data.Title or "Celestial Notificati11on"
+    local Title = data.Title or "Celestial Notification"
     local Content = data.Content or ""
     local Duration = data.Duration or 4
     local Icon = data.Icon or "rbxassetid://105369853641911"
 
+    -- ukuran & font
+    local notifWidth = isPC() and 240 or 180
+    local titleSize  = isPC() and 15 or 12
+    local textSize   = isPC() and 12 or 11
+
     -- frame notif
     local Notif = Instance.new("Frame")
-    if isPC() then
-        Notif.Size = UDim2.new(0, 240, 0, 0) -- PC ramping
-    else
-        Notif.Size = UDim2.new(0, 200, 0, 0) -- Mobile lebih kecil
-    end
+    Notif.Size = UDim2.new(0, notifWidth, 0, 0)
     Notif.AnchorPoint = Vector2.new(1, 0)
     Notif.Position = UDim2.new(1, -12, 0, 10)
     Notif.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
@@ -2845,12 +2847,15 @@ function Celestial:Notify(data)
     Notif.Parent = NotifHolder
     Notif.ClipsDescendants = true
     Notif.AutomaticSize = Enum.AutomaticSize.Y
-    Instance.new("UICorner", Notif).CornerRadius = UDim.new(0, 8)
 
-    -- constraint biar ga lonjong
+    -- corner rapih
+    local Corner = Instance.new("UICorner", Notif)
+    Corner.CornerRadius = UDim.new(0, 8)
+
+    -- constraint biar ga kegedean
     local constraint = Instance.new("UISizeConstraint", Notif)
-    constraint.MinSize = Vector2.new(0, 80) -- tinggi minimal
-    constraint.MaxSize = Vector2.new(isPC() and 240 or 200, math.huge) -- batasi lebar
+    constraint.MinSize = Vector2.new(0, 60)
+    constraint.MaxSize = Vector2.new(notifWidth, math.huge)
 
     -- progress bar
     local Bar = Instance.new("Frame", Notif)
@@ -2860,6 +2865,7 @@ function Celestial:Notify(data)
     Bar.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     Bar.BorderSizePixel = 0
     Bar.ZIndex = 5
+    Instance.new("UICorner", Bar).CornerRadius = UDim.new(0, 8)
 
     -- header
     local Header = Instance.new("Frame", Notif)
@@ -2868,8 +2874,8 @@ function Celestial:Notify(data)
     Header.ZIndex = 10
 
     local Logo = Instance.new("ImageLabel", Header)
-    Logo.Size = UDim2.new(0, 18, 0, 18)
-    Logo.Position = UDim2.new(0, 6, 0, 3)
+    Logo.Size = UDim2.new(0, 16, 0, 16)
+    Logo.Position = UDim2.new(0, 6, 0, 4)
     Logo.BackgroundTransparency = 1
     Logo.Image = Icon
     Logo.ZIndex = 12
@@ -2879,7 +2885,7 @@ function Celestial:Notify(data)
     TitleLabel.Position = UDim2.new(0, 28, 0, 3)
     TitleLabel.BackgroundTransparency = 1
     TitleLabel.Font = Enum.Font.GothamBold
-    TitleLabel.TextSize = 15
+    TitleLabel.TextSize = titleSize
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
     TitleLabel.Text = Title
     TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -2907,11 +2913,11 @@ function Celestial:Notify(data)
 
     -- isi notif
     local ContentLabel = Instance.new("TextLabel", Notif)
-    ContentLabel.Size = UDim2.new(1, -20, 0, 0)
-    ContentLabel.Position = UDim2.new(0, 10, 0, 26)
+    ContentLabel.Size = UDim2.new(1, -12, 0, 0)
+    ContentLabel.Position = UDim2.new(0, 6, 0, 26)
     ContentLabel.BackgroundTransparency = 1
     ContentLabel.Font = Enum.Font.GothamMedium
-    ContentLabel.TextSize = 12
+    ContentLabel.TextSize = textSize
     ContentLabel.TextXAlignment = Enum.TextXAlignment.Left
     ContentLabel.TextYAlignment = Enum.TextYAlignment.Top
     ContentLabel.TextWrapped = true
@@ -2922,7 +2928,7 @@ function Celestial:Notify(data)
 
     -- wrap sesuai lebar notif
     local uiConstraint = Instance.new("UISizeConstraint", ContentLabel)
-    uiConstraint.MaxSize = Vector2.new(isPC() and 220 or 180, math.huge)
+    uiConstraint.MaxSize = Vector2.new(notifWidth - 20, math.huge)
 
     -- animasi progress bar
     TweenService:Create(Bar, TweenInfo.new(Duration, Enum.EasingStyle.Linear),
@@ -2930,8 +2936,8 @@ function Celestial:Notify(data)
 
     table.insert(ActiveNotifs, Notif)
 
-    -- stack
-    local gap, y = 8, 10
+    -- stack notif
+    local gap, y = 6, 10
     for _, n in ipairs(ActiveNotifs) do
         if n and n.Parent then
             TweenService:Create(n, TweenInfo.new(0.25, Enum.EasingStyle.Quint), {
@@ -2967,11 +2973,5 @@ function Celestial:Notify(data)
     CloseBtn.MouseButton1Click:Connect(closeNotif)
     task.delay(Duration, closeNotif)
 end
-
-setmetatable(Celestial, {
-    __call = function(_, msg)
-        Celestial:Notify({Content = msg, Duration = 4})
-    end
-})
 
 return Celestial
