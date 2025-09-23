@@ -2805,52 +2805,49 @@ end
 
 local NotifHolder = CoreGui:FindFirstChild("ChloeNotifs")
 if not NotifHolder then
-    local sg = Instance.new("ScreenGui")
-    sg.Name = "ChloeNotifs"
-    sg.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    sg.IgnoreGuiInset = true
-    sg.ResetOnSpawn = false
-    sg.Parent = CoreGui
-    NotifHolder = sg
+    NotifHolder = Instance.new("ScreenGui")
+    NotifHolder.Name = "ChloeNotifs"
+    NotifHolder.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    NotifHolder.IgnoreGuiInset = true
+    NotifHolder.ResetOnSpawn = false
+    NotifHolder.Parent = CoreGui
 end
 
-local Chloe = {}
-
-function Chloe:Notify(data)
+function Celestial:Notify(Notification)
     task.spawn(function()
-        local TitleText = data.Title or "CELESTIAL NOTIFICATION"
-        local ContentText = data.Content or "Hello from Celestial!"
-        local Duration = data.Duration or 4
-        local Icon = data.Icon or "rbxassetid://105369853641911"
+        local NotifData = {
+            Title = "CELESTIAL NOTIFICATION",
+            Content = Notification.Content or "",
+            Duration = Notification.Duration or 5,
+            Icon = Notification.Icon or "rbxassetid://6034684930"
+        }
 
-        local index = #NotifHolder:GetChildren()
+        local index = 0
+        for _, child in ipairs(NotifHolder:GetChildren()) do
+            if child:IsA("Frame") then
+                index += 1
+            end
+        end
 
         local Notif = Instance.new("Frame")
-        Notif.Size = UDim2.fromOffset(240, 55)
+        Notif.Size = UDim2.fromOffset(260, 65)
         Notif.AnchorPoint = Vector2.new(1, 0)
-        Notif.Position = UDim2.new(1, 260, 0, 20 + (index * 60))
+        Notif.Position = UDim2.new(1, 280, 0, 20 + (index * 70))
         Notif.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-        Notif.Parent = NotifHolder
         Notif.ZIndex = 10
-        Instance.new("UICorner", Notif).CornerRadius = UDim.new(0, 6)
+        Notif.Parent = NotifHolder
+        Instance.new("UICorner", Notif).CornerRadius = UDim.new(0, 8)
 
-        local Progress = Instance.new("Frame", Notif)
-        Progress.Size = UDim2.new(0, 0, 1, 0)
-        Progress.BackgroundColor3 = Color3.fromRGB(120, 120, 120)
-        Progress.BackgroundTransparency = 0.4
-        Progress.ZIndex = 9
-        Instance.new("UICorner", Progress).CornerRadius = UDim.new(0, 6)
-
-        local IconImg = Instance.new("ImageLabel", Notif)
-        IconImg.Size = UDim2.fromOffset(18, 18)
-        IconImg.Position = UDim2.new(0, 6, 0, 6)
-        IconImg.BackgroundTransparency = 1
-        IconImg.Image = Icon
-        IconImg.ZIndex = 12
+        local Icon = Instance.new("ImageLabel", Notif)
+        Icon.Size = UDim2.fromOffset(22, 22)
+        Icon.Position = UDim2.new(0, 8, 0, 10)
+        Icon.BackgroundTransparency = 1
+        Icon.Image = NotifData.Icon
+        Icon.ZIndex = 11
 
         local CloseBtn = Instance.new("TextButton", Notif)
         CloseBtn.Size = UDim2.fromOffset(20, 20)
-        CloseBtn.Position = UDim2.new(1, -24, 0, 4)
+        CloseBtn.Position = UDim2.new(1, -25, 0, 5)
         CloseBtn.BackgroundTransparency = 1
         CloseBtn.Text = "✕"
         CloseBtn.Font = Enum.Font.GothamBold
@@ -2859,46 +2856,57 @@ function Chloe:Notify(data)
         CloseBtn.ZIndex = 12
 
         local Title = Instance.new("TextLabel", Notif)
-        Title.Position = UDim2.new(0, 28, 0, 4)
-        Title.Size = UDim2.new(1, -60, 0, 16)
+        Title.Size = UDim2.new(1, -70, 0, 20)
+        Title.Position = UDim2.new(0, 35, 0, 5)
         Title.BackgroundTransparency = 1
-        Title.Text = TitleText
+        Title.Text = NotifData.Title
         Title.Font = Enum.Font.GothamBold
-        Title.TextSize = 12
+        Title.TextSize = 13
+        Title.TextColor3 = Color3.fromRGB(255, 255, 255)
         Title.TextXAlignment = Enum.TextXAlignment.Left
         Title.ZIndex = 12
-        Title.TextColor3 = Color3.fromRGB(255,255,255)
 
         local Gradient = Instance.new("UIGradient")
         Gradient.Color = ColorSequence.new({
             ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 42, 255)),
-            ColorSequenceKeypoint.new(0.50, Color3.fromRGB(174, 0, 255)),
-            ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 191, 255)),
+            ColorSequenceKeypoint.new(0.20, Color3.fromRGB(174, 0, 255)),
+            ColorSequenceKeypoint.new(0.40, Color3.fromRGB(0, 191, 255)),
+            ColorSequenceKeypoint.new(0.60, Color3.fromRGB(174, 0, 255)),
+            ColorSequenceKeypoint.new(0.80, Color3.fromRGB(0, 42, 255)),
+            ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 42, 255)),
         })
         Gradient.Parent = Title
 
         local Content = Instance.new("TextLabel", Notif)
-        Content.Position = UDim2.new(0, 28, 0, 22)
-        Content.Size = UDim2.new(1, -36, 1, -24)
+        Content.Size = UDim2.new(1, -20, 0, 20)
+        Content.Position = UDim2.new(0, 35, 0, 28)
         Content.BackgroundTransparency = 1
-        Content.Text = ContentText
+        Content.Text = NotifData.Content
         Content.Font = Enum.Font.Gotham
         Content.TextSize = 12
-        Content.TextColor3 = Color3.fromRGB(230, 230, 230)
+        Content.TextColor3 = Color3.fromRGB(220, 220, 220)
         Content.TextXAlignment = Enum.TextXAlignment.Left
         Content.TextYAlignment = Enum.TextYAlignment.Top
-        Content.ZIndex = 12
+        Content.ZIndex = 11
+
+        local Progress = Instance.new("Frame", Notif)
+        Progress.Size = UDim2.new(1, -12, 0, 3)
+        Progress.Position = UDim2.new(0, 6, 1, -6)
+        Progress.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+        Progress.BorderSizePixel = 0
+        Progress.ZIndex = 9
+        Instance.new("UICorner", Progress).CornerRadius = UDim.new(1, 0)
 
         TweenService:Create(
             Progress,
-            TweenInfo.new(Duration, Enum.EasingStyle.Linear),
-            {Size = UDim2.new(1, 0, 1, 0)}
+            TweenInfo.new(NotifData.Duration, Enum.EasingStyle.Linear),
+            {Size = UDim2.new(0, 0, 0, 3)}
         ):Play()
 
         TweenService:Create(
             Notif,
-            TweenInfo.new(0.3, Enum.EasingStyle.Quint),
-            {Position = UDim2.new(1, -20, 0, 20 + (index * 60))}
+            TweenInfo.new(0.3, Enum.EasingStyle.Quint, Enum.EasingDirection.Out),
+            {Position = UDim2.new(1, -20, 0, 20 + (index * 70))}
         ):Play()
 
         local function closeNotif()
@@ -2906,21 +2914,21 @@ function Chloe:Notify(data)
                 TweenService:Create(
                     Notif,
                     TweenInfo.new(0.25),
-                    {Position = Notif.Position + UDim2.new(0, 260, 0, 0)}
+                    {Position = Notif.Position + UDim2.new(0, 280, 0, 0)}
                 ):Play()
                 task.wait(0.3)
                 Notif:Destroy()
             end
         end
-        CloseBtn.MouseButton1Click:Connect(closeNotif)
 
-        task.delay(Duration, closeNotif)
+        CloseBtn.MouseButton1Click:Connect(closeNotif)
+        task.delay(NotifData.Duration, closeNotif)
     end)
 end
 
-setmetatable(Chloe, {
-    __call = function(_, msg)
-        Chloe:Notify({Content = msg, Duration = 4})
+setmetatable(Celestial, {
+    __call = function(self, msg)
+        self:Notify({Content = msg, Duration = 4})
     end
 })
 
