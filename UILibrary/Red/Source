@@ -2802,113 +2802,148 @@ function ChloeColour()
     end
 end
 
-local TweenService = game:GetService("TweenService")
-local CoreGui = game:GetService("CoreGui")
-
-local Celestial = {}
-local NotificationHolder
-
-local function GetHolder()
-    if NotificationHolder and NotificationHolder.Parent then
-        return NotificationHolder
-    end
-
-    local gui = Instance.new("ScreenGui")
-    gui.Name = "CelestialNotifs"
-    gui.ResetOnSpawn = false
-    gui.IgnoreGuiInset = true
-    gui.Parent = CoreGui
-
-    local frame = Instance.new("Frame")
-    frame.Size = UDim2.new(0, 300, 1, -56)
-    frame.Position = UDim2.new(1, -20, 0, 20)
-    frame.AnchorPoint = Vector2.new(1, 0)
-    frame.BackgroundTransparency = 1
-    frame.Parent = gui
-
-    local layout = Instance.new("UIListLayout", frame)
-    layout.SortOrder = Enum.SortOrder.LayoutOrder
-    layout.Padding = UDim.new(0, 8)
-    layout.VerticalAlignment = Enum.VerticalAlignment.Top
-
-    NotificationHolder = frame
-    return frame
+local NotifHolder = CoreGui:FindFirstChild("CelestialNotifs")
+if not NotifHolder then
+    NotifHolder = Instance.new("ScreenGui")
+    NotifHolder.Name = "CelestialNotifs"
+    NotifHolder.Parent = CoreGui
+    NotifHolder.IgnoreGuiInset = true
+    NotifHolder.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    NotifHolder.ResetOnSpawn = false
 end
 
-function Celestial:Notify(data)
-    local msg = typeof(data) == "string" and data or data.Content or "Notification"
-    local dur = typeof(data) == "table" and (data.Duration or 4) or 4
-    local title = typeof(data) == "table" and (data.Title or "Celestial Notification") or "Celestial Notification"
+local Celestial = Celestial or {}
+local ActiveNotifs = {}
 
-    local Holder = GetHolder()
+function Celestial:Notify(data)
+    local Title = data.Title or "Celestial Notification"
+    local Content = data.Content
+    local Duration = data.Duration or 4
+    local Icon = data.Icon or "rbxassetid://105369853641911"
 
     local Notif = Instance.new("Frame")
-    Notif.Size = UDim2.new(1, 0, 0, 0)
-    Notif.AutomaticSize = Enum.AutomaticSize.Y
-    Notif.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    Notif.BackgroundTransparency = 0.1
-    Notif.Parent = Holder
+    Notif.Size = UDim2.new(0, 220, 0, 50)
+    Notif.AnchorPoint = Vector2.new(1, 0)
+    Notif.Position = UDim2.new(1, 260, 0, 10)
+    Notif.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+    Notif.BorderSizePixel = 0
+    Notif.Parent = NotifHolder
+    Notif.ClipsDescendants = true
     Instance.new("UICorner", Notif).CornerRadius = UDim.new(0, 8)
 
-    local TitleLabel = Instance.new("TextLabel", Notif)
-    TitleLabel.Size = UDim2.new(1, -30, 0, 20)
-    TitleLabel.Position = UDim2.new(0, 10, 0, 5)
+    local Bar = Instance.new("Frame", Notif)
+    Bar.Size = UDim2.new(1, 0, 1, 0)
+    Bar.AnchorPoint = Vector2.new(1, 0)
+    Bar.Position = UDim2.new(1, 0, 0, 0)
+    Bar.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    Bar.BorderSizePixel = 0
+    Bar.ZIndex = 5
+
+    local Header = Instance.new("Frame", Notif)
+    Header.Size = UDim2.new(1, 0, 0, 24)
+    Header.BackgroundTransparency = 1
+    Header.ZIndex = 10
+
+    local Logo = Instance.new("ImageLabel", Header)
+    Logo.Size = UDim2.new(0, 18, 0, 18)
+    Logo.Position = UDim2.new(0, 6, 0, 3)
+    Logo.BackgroundTransparency = 1
+    Logo.Image = Icon
+    Logo.ZIndex = 12
+
+    local TitleLabel = Instance.new("TextLabel", Header)
+    TitleLabel.Size = UDim2.new(1, -60, 0, 18)
+    TitleLabel.Position = UDim2.new(0, 28, 0, 3)
     TitleLabel.BackgroundTransparency = 1
     TitleLabel.Font = Enum.Font.GothamBold
     TitleLabel.TextSize = 14
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
-    TitleLabel.Text = title
+    TitleLabel.Text = Title
     TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TitleLabel.ZIndex = 12
 
-    local CloseBtn = Instance.new("TextButton", Notif)
+    local Gradient = Instance.new("UIGradient")
+    Gradient.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 42, 255)),
+        ColorSequenceKeypoint.new(0.25, Color3.fromRGB(174, 0, 255)),
+        ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 191, 255)),
+        ColorSequenceKeypoint.new(0.75, Color3.fromRGB(174, 0, 255)),
+        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 42, 255)),
+    })
+    Gradient.Parent = TitleLabel
+
+    local CloseBtn = Instance.new("TextButton", Header)
     CloseBtn.Size = UDim2.new(0, 20, 0, 20)
-    CloseBtn.Position = UDim2.new(1, -24, 0, 4)
+    CloseBtn.Position = UDim2.new(1, -24, 0, 2)
     CloseBtn.BackgroundTransparency = 1
-    CloseBtn.Text = "X"
     CloseBtn.Font = Enum.Font.GothamBold
+    CloseBtn.Text = "X"
+    CloseBtn.TextColor3 = Color3.fromRGB(220, 220, 220)
     CloseBtn.TextSize = 14
-    CloseBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
+    CloseBtn.ZIndex = 12
 
     local ContentLabel = Instance.new("TextLabel", Notif)
-    ContentLabel.Size = UDim2.new(1, -20, 0, 0)
-    ContentLabel.Position = UDim2.new(0, 10, 0, 28)
-    ContentLabel.AutomaticSize = Enum.AutomaticSize.Y
+    ContentLabel.Size = UDim2.new(1, -12, 0, 24)
+    ContentLabel.Position = UDim2.new(0, 10, 0, 19)
     ContentLabel.BackgroundTransparency = 1
-    ContentLabel.Font = Enum.Font.Gotham
+    ContentLabel.Font = Enum.Font.GothamMedium
     ContentLabel.TextSize = 13
     ContentLabel.TextXAlignment = Enum.TextXAlignment.Left
+    ContentLabel.TextYAlignment = Enum.TextYAlignment.Center
     ContentLabel.TextWrapped = true
-    ContentLabel.Text = msg
+    ContentLabel.Text = Content
     ContentLabel.TextColor3 = Color3.fromRGB(230, 230, 230)
+    ContentLabel.ZIndex = 12
 
-    local DurationBar = Instance.new("Frame", Notif)
-    DurationBar.Size = UDim2.new(1, 0, 0, 2)
-    DurationBar.Position = UDim2.new(0, 0, 1, -2)
-    DurationBar.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+    -- animasi masuk
+    TweenService:Create(Notif, TweenInfo.new(0.35, Enum.EasingStyle.Quint),
+        {Position = UDim2.new(1, -20, 0, 10)}):Play()
 
-    local function Close()
-        TweenService:Create(
-            Notif,
-            TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-            { Position = UDim2.new(2, 0, Notif.Position.Y.Scale, Notif.Position.Y.Offset) }
-        ):Play()
-        task.delay(0.35, function() Notif:Destroy() end)
+    -- progress bar
+    TweenService:Create(Bar, TweenInfo.new(Duration, Enum.EasingStyle.Linear),
+        {Size = UDim2.new(0, 0, 1, 0)}):Play()
+
+    -- masukin ke daftar notif aktif
+    table.insert(ActiveNotifs, Notif)
+
+    -- stack auto
+    for i, n in ipairs(ActiveNotifs) do
+        if n and n.Parent then
+            TweenService:Create(n, TweenInfo.new(0.25, Enum.EasingStyle.Quint),
+                {Position = UDim2.new(1, -20, 0, 10 + ((i - 1) * 65))}):Play()
+        end
     end
-    CloseBtn.MouseButton1Click:Connect(Close)
 
-    task.spawn(function()
-        local tween = TweenService:Create(DurationBar, TweenInfo.new(dur, Enum.EasingStyle.Linear), { Size = UDim2.new(0, 0, 0, 2) })
-        tween:Play()
-        tween.Completed:Wait()
-        Close()
-    end)
+    local function closeNotif()
+        for i, n in ipairs(ActiveNotifs) do
+            if n == Notif then
+                table.remove(ActiveNotifs, i)
+                break
+            end
+        end
+
+        TweenService:Create(Notif, TweenInfo.new(0.25),
+            {Position = Notif.Position + UDim2.new(0, 260, 0, 0)}):Play()
+        task.wait(0.3)
+        Notif:Destroy()
+
+        -- realign sisanya
+        for i, n in ipairs(ActiveNotifs) do
+            if n and n.Parent then
+                TweenService:Create(n, TweenInfo.new(0.25, Enum.EasingStyle.Quint),
+                    {Position = UDim2.new(1, -20, 0, 10 + ((i - 1) * 65))}):Play()
+            end
+        end
+    end
+
+    CloseBtn.MouseButton1Click:Connect(closeNotif)
+    task.delay(Duration, closeNotif)
 end
 
 setmetatable(Celestial, {
     __call = function(_, msg)
-        Celestial:Notify(msg)
+        Celestial:Notify({Content = msg, Duration = 4})
     end
 })
 
-getgenv().Celestial = Celestial
 return Celestial
