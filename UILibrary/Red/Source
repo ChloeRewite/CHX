@@ -2755,13 +2755,7 @@ function ChloeColour()
     local components = hub:FindFirstChild("Components")
     if not components then return end
 
-    local keywords = {}
-    for _, v in ipairs(getgenv().globalcolour or {}) do
-        table.insert(keywords, v:lower())
-    end
-    for _, v in ipairs(getgenv().colour or {}) do
-        table.insert(keywords, v:lower())
-    end
+    local keywords = getKeywords()
 
     for _, obj in ipairs(components:GetDescendants()) do
         if obj:IsA("TextLabel") and obj.Text ~= "" then
@@ -2769,7 +2763,7 @@ function ChloeColour()
             local shouldColor = false
 
             for _, keyword in ipairs(keywords) do
-                if textLower == keyword then
+                if string.find(textLower, keyword, 1, true) then
                     shouldColor = true
                     break
                 end
@@ -2782,17 +2776,7 @@ function ChloeColour()
             if shouldColor then
                 obj.TextColor3 = Color3.fromRGB(255, 255, 255)
                 if not obj:FindFirstChildOfClass("UIGradient") then
-                    local gradient = Instance.new("UIGradient")
-                    gradient.Color = ColorSequence.new({
-                        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(0, 42, 255)),
-                        ColorSequenceKeypoint.new(0.20, Color3.fromRGB(174, 0, 255)),
-                        ColorSequenceKeypoint.new(0.40, Color3.fromRGB(0, 191, 255)),
-                        ColorSequenceKeypoint.new(0.60, Color3.fromRGB(174, 0, 255)),
-                        ColorSequenceKeypoint.new(0.80, Color3.fromRGB(0, 42, 255)),
-                        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 42, 255)),
-                    })
-                    gradient.Rotation = 0
-                    gradient.Parent = obj
+                    makeGradient().Parent = obj
                 end
             end
         end
