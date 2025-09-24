@@ -2750,16 +2750,16 @@ function ChloeColour()
     local hui = (gethui and gethui()) or game:GetService("CoreGui")
     local root = hui:FindFirstChild("Chloeee uwuuu :3")
     if not root then return end
-    local hub = root:FindFirstChild("Hub")
-    if not hub then return end
-    local components = hub:FindFirstChild("Components")
+
+    local components = root:FindFirstChild("Hub")
+        and root.Hub:FindFirstChild("Components")
     if not components then return end
 
     local keywords = getKeywords()
 
     for _, obj in ipairs(components:GetDescendants()) do
         if obj:IsA("TextLabel") and obj.Text ~= "" then
-            local textLower = obj.Text:lower()
+            local textLower = obj.Text:lower():gsub("%s+", " ")
             local shouldColor = false
 
             for _, keyword in ipairs(keywords) do
@@ -2769,11 +2769,8 @@ function ChloeColour()
                 end
             end
 
-            if textLower == "feature" then
-                shouldColor = true
-            end
-
-            if shouldColor then
+            if shouldColor or textLower == "feature" then
+                print("[COLOUR] Match:", obj.Text) -- debug
                 obj.TextColor3 = Color3.fromRGB(255, 255, 255)
                 if not obj:FindFirstChildOfClass("UIGradient") then
                     makeGradient().Parent = obj
