@@ -142,7 +142,7 @@ end
 local FlurioreLib = {}
 function FlurioreLib:MakeNotify(NotifyConfig)
 	local NotifyConfig = NotifyConfig or {}
-	NotifyConfig.Title = NotifyConfig.Title or "Celestial Notification"
+	NotifyConfig.Title = NotifyConfig.Title or "Hirimi Hub"
 	NotifyConfig.Description = NotifyConfig.Description or "Notification"
 	NotifyConfig.Content = NotifyConfig.Content or "Content"
 	NotifyConfig.Color = NotifyConfig.Color or Color3.fromRGB(255, 0, 255)
@@ -363,7 +363,7 @@ end
 function FlurioreLib:MakeGui(GuiConfig)
 	local GuiConfig = GuiConfig or {}
 	GuiConfig.NameHub = GuiConfig.NameHub or "Hirimi Hub"
-	GuiConfig.Description = GuiConfig.Description or "Chloe :3"
+	GuiConfig.Description = GuiConfig.Description or "Comeback | developing by Hirimi, Teru"
 	GuiConfig.Color = GuiConfig.Color or Color3.fromRGB(255, 0, 255)	
 	GuiConfig["Tab Width"] = GuiConfig["Tab Width"] or 120
 	local GuiFunc = {}
@@ -702,7 +702,7 @@ function GuiFunc:ToggleUI()
     ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
     Frame.Parent = ScreenGui
-    Frame.AnchorPoint = Vector2.new(0.1, 0.1)
+    Frame.AnchorPoint = Vector2.new(0, 0)
     Frame.BackgroundTransparency = 1
     Frame.BorderSizePixel = 0
     Frame.Position = UDim2.new(0, 20, 0.1, -6)  
@@ -713,7 +713,7 @@ function GuiFunc:ToggleUI()
     ImageLabel.Name = "Banana Test"
     ImageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
     ImageLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
-    ImageLabel.Size = UDim2.new(0, 40, 0, 40)
+    ImageLabel.Size = UDim2.new(1, 0, 1, 0)
     ImageLabel.BackgroundTransparency = 1
     ImageLabel.BorderSizePixel = 0
     ImageLabel.ImageColor3 = Color3.fromRGB(255, 255, 255)
@@ -729,21 +729,7 @@ function GuiFunc:ToggleUI()
     TextButton.BorderSizePixel = 0
     TextButton.Text = ""
 
-    local TweenService = game:GetService("TweenService")
-
-    local zoomedIn = false
-    local originalSize = UDim2.new(0, 40, 0, 40)
-    local zoomedSize = UDim2.new(0, 30, 0, 30)
-    local tweenInfo = TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-
     TextButton.MouseButton1Down:Connect(function()
-        if zoomedIn then
-            TweenService:Create(ImageLabel, tweenInfo, {Size = originalSize}):Play()
-        else
-            TweenService:Create(ImageLabel, tweenInfo, {Size = zoomedSize}):Play()
-        end
-        zoomedIn = not zoomedIn
-
         if DropShadowHolder then
             DropShadowHolder.Visible = not DropShadowHolder.Visible
         end
