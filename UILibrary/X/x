@@ -2,7 +2,7 @@ local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
-local CoreGui = LocalPlayer.PlayerGui 
+local CoreGui = LocalPlayer.PlayerGui
 local function MakeDraggable(topbarobject, object)
 	local function CustomPos(topbarobject, object)
 		local Dragging = nil
@@ -12,8 +12,9 @@ local function MakeDraggable(topbarobject, object)
 
 		local function UpdatePos(input)
 			local Delta = input.Position - DragStart
-			local pos = UDim2.new(StartPosition.X.Scale, StartPosition.X.Offset + Delta.X, StartPosition.Y.Scale, StartPosition.Y.Offset + Delta.Y)
-			local Tween = TweenService:Create(object, TweenInfo.new(0.2), {Position = pos})
+			local pos = UDim2.new(StartPosition.X.Scale, StartPosition.X.Offset + Delta.X, StartPosition.Y.Scale,
+				StartPosition.Y.Offset + Delta.Y)
+			local Tween = TweenService:Create(object, TweenInfo.new(0.2), { Position = pos })
 			Tween:Play()
 		end
 
@@ -72,7 +73,7 @@ local function MakeDraggable(topbarobject, object)
 			local newHeight = StartSize.Y.Offset + Delta.Y
 			newWidth = math.max(newWidth, maxSizeX)
 			newHeight = math.max(newHeight, maxSizeY)
-			local Tween = TweenService:Create(object, TweenInfo.new(0.2), {Size = UDim2.new(0, newWidth, 0, newHeight)})
+			local Tween = TweenService:Create(object, TweenInfo.new(0.2), { Size = UDim2.new(0, newWidth, 0, newHeight) })
 			Tween:Play()
 		end
 
@@ -116,24 +117,25 @@ function CircleClick(Button, X, Y)
 		Circle.ZIndex = 10
 		Circle.Name = "Circle"
 		Circle.Parent = Button
-		
+
 		local NewX = X - Circle.AbsolutePosition.X
 		local NewY = Y - Circle.AbsolutePosition.Y
 		Circle.Position = UDim2.new(0, NewX, 0, NewY)
 		local Size = 0
 		if Button.AbsoluteSize.X > Button.AbsoluteSize.Y then
-			Size = Button.AbsoluteSize.X*1.5
+			Size = Button.AbsoluteSize.X * 1.5
 		elseif Button.AbsoluteSize.X < Button.AbsoluteSize.Y then
-			Size = Button.AbsoluteSize.Y*1.5
+			Size = Button.AbsoluteSize.Y * 1.5
 		elseif Button.AbsoluteSize.X == Button.AbsoluteSize.Y then
-			Size = Button.AbsoluteSize.X*1.5
+			Size = Button.AbsoluteSize.X * 1.5
 		end
 
 		local Time = 0.5
-		Circle:TweenSizeAndPosition(UDim2.new(0, Size, 0, Size), UDim2.new(0.5, -Size/2, 0.5, -Size/2), "Out", "Quad", Time, false, nil)
-		for i=1,10 do
+		Circle:TweenSizeAndPosition(UDim2.new(0, Size, 0, Size), UDim2.new(0.5, -Size / 2, 0.5, -Size / 2), "Out", "Quad",
+			Time, false, nil)
+		for i = 1, 10 do
 			Circle.ImageTransparency = Circle.ImageTransparency + 0.01
-			wait(Time/10)
+			wait(Time / 10)
 		end
 		Circle:Destroy()
 	end)
@@ -174,7 +176,7 @@ function FlurioreLib:MakeNotify(NotifyConfig)
 					TweenService:Create(
 						v,
 						TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
-						{Position = UDim2.new(0, 0, 1, -((v.Size.Y.Offset + 12)*Count))}
+						{ Position = UDim2.new(0, 0, 1, -((v.Size.Y.Offset + 12) * Count)) }
 					):Play()
 					Count = Count + 1
 				end
@@ -342,29 +344,31 @@ function FlurioreLib:MakeNotify(NotifyConfig)
 			TweenService:Create(
 				NotifyFrameReal,
 				TweenInfo.new(tonumber(NotifyConfig.Time), Enum.EasingStyle.Back, Enum.EasingDirection.InOut),
-				{Position = UDim2.new(0, 400, 0, 0)}
+				{ Position = UDim2.new(0, 400, 0, 0) }
 			):Play()
 			task.wait(tonumber(NotifyConfig.Time) / 1.2)
 			NotifyFrame:Destroy()
 		end
+
 		Close.Activated:Connect(function()
 			NotifyFunction:Close()
 		end)
 		TweenService:Create(
 			NotifyFrameReal,
 			TweenInfo.new(tonumber(NotifyConfig.Time), Enum.EasingStyle.Back, Enum.EasingDirection.InOut),
-			{Position = UDim2.new(0, 0, 0, 0)}
+			{ Position = UDim2.new(0, 0, 0, 0) }
 		):Play()
 		task.wait(tonumber(NotifyConfig.Delay))
 		NotifyFunction:Close()
 	end)
 	return NotifyFunction
 end
+
 function FlurioreLib:MakeGui(GuiConfig)
 	local GuiConfig = GuiConfig or {}
 	GuiConfig.NameHub = GuiConfig.NameHub or "Celestial"
 	GuiConfig.Description = GuiConfig.Description or "Chloee :3"
-	GuiConfig.Color = GuiConfig.Color or Color3.fromRGB(255, 0, 255)	
+	GuiConfig.Color = GuiConfig.Color or Color3.fromRGB(255, 0, 255)
 	GuiConfig["Tab Width"] = GuiConfig["Tab Width"] or 120
 	local GuiFunc = {}
 
@@ -397,9 +401,9 @@ function FlurioreLib:MakeGui(GuiConfig)
 	local LayersPageLayout = Instance.new("UIPageLayout");
 
 	HirimiGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    HirimiGui.Name = "HirimiGui"
-    HirimiGui.ResetOnSpawn = false
-    HirimiGui.Parent = CoreGui
+	HirimiGui.Name = "HirimiGui"
+	HirimiGui.ResetOnSpawn = false
+	HirimiGui.Parent = CoreGui
 
 	DropShadowHolder.BackgroundTransparency = 1
 	DropShadowHolder.BorderSizePixel = 0
@@ -407,8 +411,9 @@ function FlurioreLib:MakeGui(GuiConfig)
 	DropShadowHolder.ZIndex = 0
 	DropShadowHolder.Name = "DropShadowHolder"
 	DropShadowHolder.Parent = HirimiGui
-	
-  DropShadowHolder.Position = UDim2.new(0, (HirimiGui.AbsoluteSize.X // 2 - DropShadowHolder.Size.X.Offset // 2), 0, (HirimiGui.AbsoluteSize.Y // 2 - DropShadowHolder.Size.Y.Offset // 2))
+
+	DropShadowHolder.Position = UDim2.new(0, (HirimiGui.AbsoluteSize.X // 2 - DropShadowHolder.Size.X.Offset // 2), 0,
+		(HirimiGui.AbsoluteSize.Y // 2 - DropShadowHolder.Size.Y.Offset // 2))
 	DropShadow.Image = "rbxassetid://6015897843"
 	DropShadow.ImageColor3 = Color3.fromRGB(15, 15, 15)
 	DropShadow.ImageTransparency = 0.5
@@ -424,14 +429,14 @@ function FlurioreLib:MakeGui(GuiConfig)
 	DropShadow.Parent = DropShadowHolder
 
 	if GuiConfig.Theme then
-    	Main:Destroy()
-    	Main = Instance.new("ImageLabel")
-    	Main.Image = "rbxassetid://" .. GuiConfig.Theme
-    	Main.ScaleType = Enum.ScaleType.Crop
-    	Main.BackgroundTransparency = 1
+		Main:Destroy()
+		Main = Instance.new("ImageLabel")
+		Main.Image = "rbxassetid://" .. GuiConfig.Theme
+		Main.ScaleType = Enum.ScaleType.Crop
+		Main.BackgroundTransparency = 1
 	else
-    	Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-    	Main.BackgroundTransparency = 0.1
+		Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+		Main.BackgroundTransparency = 0.1
 	end
 
 	Main.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -660,12 +665,13 @@ function FlurioreLib:MakeGui(GuiConfig)
 	end
 	ScrollTab.ChildAdded:Connect(UpdateSize1)
 	ScrollTab.ChildRemoved:Connect(UpdateSize1)
-		
+
 	function GuiFunc:DestroyGui()
-		if CoreGui:FindFirstChild("HirimiGui") then 
+		if CoreGui:FindFirstChild("HirimiGui") then
 			HirimiGui:Destroy()
 		end
 	end
+
 	local OldPos = DropShadowHolder.Position
 	local OldSize = DropShadowHolder.Size
 	MaxRestore.Activated:Connect(function()
@@ -674,12 +680,12 @@ function FlurioreLib:MakeGui(GuiConfig)
 			ImageLabel.Image = "rbxassetid://9886659001"
 			OldPos = DropShadowHolder.Position
 			OldSize = DropShadowHolder.Size
-			TweenService:Create(DropShadowHolder, TweenInfo.new(0.3), {Position = UDim2.new(0, 0, 0, 0)}):Play()
-			TweenService:Create(DropShadowHolder, TweenInfo.new(0.3), {Size = UDim2.new(1, 0, 1, 0)}):Play()
+			TweenService:Create(DropShadowHolder, TweenInfo.new(0.3), { Position = UDim2.new(0, 0, 0, 0) }):Play()
+			TweenService:Create(DropShadowHolder, TweenInfo.new(0.3), { Size = UDim2.new(1, 0, 1, 0) }):Play()
 		else
 			ImageLabel.Image = "rbxassetid://9886659406"
-			TweenService:Create(DropShadowHolder, TweenInfo.new(0.3), {Position = OldPos}):Play()
-			TweenService:Create(DropShadowHolder, TweenInfo.new(0.3), {Size = OldSize}):Play()
+			TweenService:Create(DropShadowHolder, TweenInfo.new(0.3), { Position = OldPos }):Play()
+			TweenService:Create(DropShadowHolder, TweenInfo.new(0.3), { Size = OldSize }):Play()
 		end
 	end)
 	Min.Activated:Connect(function()
@@ -688,72 +694,74 @@ function FlurioreLib:MakeGui(GuiConfig)
 	end)
 	Close.Activated:Connect(function()
 		CircleClick(Close, Mouse.X, Mouse.Y)
-		DropShadowHolder.Visible = false
+		if HirimiGui then
+			HirimiGui:Destroy()
+		end
 	end)
-function GuiFunc:ToggleUI()
-    local ScreenGui = Instance.new("ScreenGui")
-    ScreenGui.Parent = game:GetService("CoreGui")
-    ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    ScreenGui.Name = "ToggleUIButton"
+	function GuiFunc:ToggleUI()
+		local ScreenGui = Instance.new("ScreenGui")
+		ScreenGui.Parent = game:GetService("CoreGui")
+		ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+		ScreenGui.Name = "ToggleUIButton"
 
-    local MainButton = Instance.new("ImageLabel")
-    MainButton.Parent = ScreenGui
-    MainButton.Size = UDim2.new(0, 40, 0, 40)
-    MainButton.Position = UDim2.new(0, 20, 0, 100)
-    MainButton.BackgroundTransparency = 1
-    MainButton.Image = "rbxassetid://" .. GuiConfig.Image
-    MainButton.ScaleType = Enum.ScaleType.Fit
+		local MainButton = Instance.new("ImageLabel")
+		MainButton.Parent = ScreenGui
+		MainButton.Size = UDim2.new(0, 40, 0, 40)
+		MainButton.Position = UDim2.new(0, 20, 0, 100)
+		MainButton.BackgroundTransparency = 1
+		MainButton.Image = "rbxassetid://" .. GuiConfig.Image
+		MainButton.ScaleType = Enum.ScaleType.Fit
 
-    local UICorner = Instance.new("UICorner")
-    UICorner.CornerRadius = UDim.new(0, 6)
-    UICorner.Parent = MainButton
+		local UICorner = Instance.new("UICorner")
+		UICorner.CornerRadius = UDim.new(0, 6)
+		UICorner.Parent = MainButton
 
-    local Button = Instance.new("TextButton")
-    Button.Parent = MainButton
-    Button.Size = UDim2.new(1, 0, 1, 0)
-    Button.BackgroundTransparency = 1
-    Button.Text = ""
+		local Button = Instance.new("TextButton")
+		Button.Parent = MainButton
+		Button.Size = UDim2.new(1, 0, 1, 0)
+		Button.BackgroundTransparency = 1
+		Button.Text = ""
 
-    Button.MouseButton1Click:Connect(function()
-        if DropShadowHolder then
-            DropShadowHolder.Visible = not DropShadowHolder.Visible
-        end
-    end)
+		Button.MouseButton1Click:Connect(function()
+			if DropShadowHolder then
+				DropShadowHolder.Visible = not DropShadowHolder.Visible
+			end
+		end)
 
-    local dragging = false
-    local dragStart, startPos
+		local dragging = false
+		local dragStart, startPos
 
-    local function update(input)
-        local delta = input.Position - dragStart
-        MainButton.Position = UDim2.new(
-            startPos.X.Scale,
-            startPos.X.Offset + delta.X,
-            startPos.Y.Scale,
-            startPos.Y.Offset + delta.Y
-        )
-    end
+		local function update(input)
+			local delta = input.Position - dragStart
+			MainButton.Position = UDim2.new(
+				startPos.X.Scale,
+				startPos.X.Offset + delta.X,
+				startPos.Y.Scale,
+				startPos.Y.Offset + delta.Y
+			)
+		end
 
-    Button.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            dragging = true
-            dragStart = input.Position
-            startPos = MainButton.Position
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    dragging = false
-                end
-            end)
-        end
-    end)
+		Button.InputBegan:Connect(function(input)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+				dragging = true
+				dragStart = input.Position
+				startPos = MainButton.Position
+				input.Changed:Connect(function()
+					if input.UserInputState == Enum.UserInputState.End then
+						dragging = false
+					end
+				end)
+			end
+		end)
 
-    game:GetService("UserInputService").InputChanged:Connect(function(input)
-        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-            update(input)
-        end
-    end)
-end
+		game:GetService("UserInputService").InputChanged:Connect(function(input)
+			if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+				update(input)
+			end
+		end)
+	end
 
-    GuiFunc:ToggleUI()
+	GuiFunc:ToggleUI()
 
 	DropShadowHolder.Size = UDim2.new(0, 115 + TextLabel.TextBounds.X + 1 + TextLabel1.TextBounds.X, 0, 350)
 	MakeDraggable(Top, DropShadowHolder)
@@ -763,7 +771,7 @@ end
 	local DropShadow1 = Instance.new("ImageLabel");
 	local UICorner28 = Instance.new("UICorner");
 	local ConnectButton = Instance.new("TextButton");
-	
+
 	MoreBlur.AnchorPoint = Vector2.new(1, 1)
 	MoreBlur.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	MoreBlur.BackgroundTransparency = 0.999
@@ -831,8 +839,8 @@ end
 
 	ConnectButton.Activated:Connect(function()
 		if MoreBlur.Visible then
-			TweenService:Create(MoreBlur, TweenInfo.new(0.3), {BackgroundTransparency = 0.999}):Play()
-			TweenService:Create(DropdownSelect, TweenInfo.new(0.3), {Position = UDim2.new(1, 172, 0.5, 0)}):Play()
+			TweenService:Create(MoreBlur, TweenInfo.new(0.3), { BackgroundTransparency = 0.999 }):Play()
+			TweenService:Create(DropdownSelect, TweenInfo.new(0.3), { Position = UDim2.new(1, 172, 0.5, 0) }):Play()
 			task.wait(0.3)
 			MoreBlur.Visible = false
 		end
@@ -989,19 +997,19 @@ end
 						TweenService:Create(
 							TabFrame,
 							TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.InOut),
-							{BackgroundTransparency = 0.9990000128746033}
+							{ BackgroundTransparency = 0.9990000128746033 }
 						):Play()
-					end    
+					end
 				end
 				TweenService:Create(
 					Tab,
 					TweenInfo.new(0.6, Enum.EasingStyle.Back, Enum.EasingDirection.InOut),
-					{BackgroundTransparency = 0.9200000166893005}
+					{ BackgroundTransparency = 0.9200000166893005 }
 				):Play()
 				TweenService:Create(
 					FrameChoose,
 					TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
-					{Position = UDim2.new(0, 2, 0, 9 + (33 * Tab.LayoutOrder))}
+					{ Position = UDim2.new(0, 2, 0, 9 + (33 * Tab.LayoutOrder)) }
 				):Play()
 				LayersPageLayout:JumpToIndex(Tab.LayoutOrder)
 				task.wait(0.05)
@@ -1009,17 +1017,17 @@ end
 				TweenService:Create(
 					FrameChoose,
 					TweenInfo.new(0.35, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
-					{Size = UDim2.new(0, 1, 0, 20)}
+					{ Size = UDim2.new(0, 1, 0, 20) }
 				):Play()
 				task.wait(0.2)
 				TweenService:Create(
 					FrameChoose,
 					TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
-					{Size = UDim2.new(0, 1, 0, 12)}
+					{ Size = UDim2.new(0, 1, 0, 12) }
 				):Play()
 			end
 		end)
-		--// Section 
+		--// Section
 		local Sections = {}
 		local CountSection = 0
 		function Sections:AddSection(Title)
@@ -1123,7 +1131,7 @@ end
 
 			UICorner1.Parent = SectionDecideFrame
 
-			UIGradient.Color = ColorSequence.new{
+			UIGradient.Color = ColorSequence.new {
 				ColorSequenceKeypoint.new(0, Color3.fromRGB(20, 20, 20)),
 				ColorSequenceKeypoint.new(0.5, GuiConfig.Color),
 				ColorSequenceKeypoint.new(1, Color3.fromRGB(20, 20, 20))
@@ -1170,10 +1178,12 @@ end
 							SectionSizeYWitdh = SectionSizeYWitdh + v.Size.Y.Offset + 3
 						end
 					end
-					TweenService:Create(FeatureFrame, TweenInfo.new(0.5), {Rotation = 90}):Play()
-					TweenService:Create(Section, TweenInfo.new(0.5), {Size = UDim2.new(1, 1, 0, SectionSizeYWitdh)}):Play()
-					TweenService:Create(SectionAdd, TweenInfo.new(0.5), {Size = UDim2.new(1, 0, 0, SectionSizeYWitdh - 38)}):Play()
-					TweenService:Create(SectionDecideFrame, TweenInfo.new(0.5), {Size = UDim2.new(1, 0, 0, 2)}):Play()
+					TweenService:Create(FeatureFrame, TweenInfo.new(0.5), { Rotation = 90 }):Play()
+					TweenService:Create(Section, TweenInfo.new(0.5), { Size = UDim2.new(1, 1, 0, SectionSizeYWitdh) })
+						:Play()
+					TweenService:Create(SectionAdd, TweenInfo.new(0.5),
+						{ Size = UDim2.new(1, 0, 0, SectionSizeYWitdh - 38) }):Play()
+					TweenService:Create(SectionDecideFrame, TweenInfo.new(0.5), { Size = UDim2.new(1, 0, 0, 2) }):Play()
 					task.wait(0.5)
 					UpdateSizeScroll()
 				end
@@ -1181,9 +1191,9 @@ end
 			SectionButton.Activated:Connect(function()
 				CircleClick(SectionButton, Mouse.X, Mouse.Y)
 				if OpenSection then
-					TweenService:Create(FeatureFrame, TweenInfo.new(0.5), {Rotation = 0}):Play()
-					TweenService:Create(Section, TweenInfo.new(0.5), {Size = UDim2.new(1, 1, 0, 30)}):Play()
-					TweenService:Create(SectionDecideFrame, TweenInfo.new(0.5), {Size = UDim2.new(0, 0, 0, 2)}):Play()
+					TweenService:Create(FeatureFrame, TweenInfo.new(0.5), { Rotation = 0 }):Play()
+					TweenService:Create(Section, TweenInfo.new(0.5), { Size = UDim2.new(1, 1, 0, 30) }):Play()
+					TweenService:Create(SectionDecideFrame, TweenInfo.new(0.5), { Size = UDim2.new(0, 0, 0, 2) }):Play()
 					OpenSection = false
 					task.wait(0.5)
 					UpdateSizeScroll()
@@ -1195,7 +1205,7 @@ end
 			SectionAdd.ChildAdded:Connect(UpdateSizeSection)
 			SectionAdd.ChildRemoved:Connect(UpdateSizeSection)
 			UpdateSizeScroll()
-			
+
 			local Items = {}
 			local CountItem = 0
 			function Items:AddParagraph(ParagraphConfig)
@@ -1203,7 +1213,7 @@ end
 				ParagraphConfig.Title = ParagraphConfig.Title or "Title"
 				ParagraphConfig.Content = ParagraphConfig.Content or "Content"
 				local ParagraphFunc = {}
-				
+
 				local Paragraph = Instance.new("Frame");
 				local UICorner14 = Instance.new("UICorner");
 				local ParagraphTitle = Instance.new("TextLabel");
@@ -1251,30 +1261,34 @@ end
 				ParagraphContent.Name = "ParagraphContent"
 				ParagraphContent.Parent = Paragraph
 
-				ParagraphContent.Size = UDim2.new(1, -16, 0, 12 + (12 * (ParagraphContent.TextBounds.X // ParagraphContent.AbsoluteSize.X)))
+				ParagraphContent.Size = UDim2.new(1, -16, 0,
+					12 + (12 * (ParagraphContent.TextBounds.X // ParagraphContent.AbsoluteSize.X)))
 				ParagraphContent.TextWrapped = true
 				Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.AbsoluteSize.Y + 33)
 
 				ParagraphContent:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
 					ParagraphContent.TextWrapped = false
-					ParagraphContent.Size = UDim2.new(1, -16, 0, 12 + (12 * (ParagraphContent.TextBounds.X // ParagraphContent.AbsoluteSize.X)))
+					ParagraphContent.Size = UDim2.new(1, -16, 0,
+						12 + (12 * (ParagraphContent.TextBounds.X // ParagraphContent.AbsoluteSize.X)))
 					Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.AbsoluteSize.Y + 33)
 					ParagraphContent.TextWrapped = true
 					UpdateSizeSection()
 				end)
 
 				function ParagraphFunc:SetContent(content)
-                    content = content or "Content"
+					content = content or "Content"
 
-                    ParagraphContent.Text = content
-                    ParagraphContent.TextWrapped = false
-                    ParagraphContent.Size = UDim2.new(1, -16, 0, 12 + (12 // ParagraphContent.AbsoluteSize.X))
-                    ParagraphContent.TextWrapped = true
-                    Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.AbsoluteSize.Y + 33)
-                end
+					ParagraphContent.Text = content
+					ParagraphContent.TextWrapped = false
+					ParagraphContent.Size = UDim2.new(1, -16, 0, 12 + (12 // ParagraphContent.AbsoluteSize.X))
+					ParagraphContent.TextWrapped = true
+					Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.AbsoluteSize.Y + 33)
+				end
+
 				CountItem = CountItem + 1
 				return ParagraphFunc
 			end
+
 			function Items:AddButton(ButtonConfig)
 				local ButtonConfig = ButtonConfig or {}
 				ButtonConfig.Title = ButtonConfig.Title or "Title"
@@ -1334,13 +1348,15 @@ end
 				ButtonContent.Parent = Button
 				ButtonContent.Size = UDim2.new(1, -100, 0, 12)
 
-				ButtonContent.Size = UDim2.new(1, -100, 0, 12 + (12 * (ButtonContent.TextBounds.X // ButtonContent.AbsoluteSize.X)))
+				ButtonContent.Size = UDim2.new(1, -100, 0,
+					12 + (12 * (ButtonContent.TextBounds.X // ButtonContent.AbsoluteSize.X)))
 				ButtonContent.TextWrapped = true
 				Button.Size = UDim2.new(1, 0, 0, ButtonContent.AbsoluteSize.Y + 33)
 
 				ButtonContent:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
 					ButtonContent.TextWrapped = false
-					ButtonContent.Size = UDim2.new(1, -100, 0, 12 + (12 * (ButtonContent.TextBounds.X // ButtonContent.AbsoluteSize.X)))
+					ButtonContent.Size = UDim2.new(1, -100, 0,
+						12 + (12 * (ButtonContent.TextBounds.X // ButtonContent.AbsoluteSize.X)))
 					Button.Size = UDim2.new(1, 0, 0, ButtonContent.AbsoluteSize.Y + 33)
 					ButtonContent.TextWrapped = true
 					UpdateSizeSection()
@@ -1385,7 +1401,8 @@ end
 				end)
 				CountItem = CountItem + 1
 				return ButtonFunc
-			end	
+			end
+
 			function Items:AddToggle(ToggleConfig)
 				local ToggleConfig = ToggleConfig or {}
 				ToggleConfig.Title = ToggleConfig.Title or "Title"
@@ -1393,7 +1410,12 @@ end
 				ToggleConfig.Content = ToggleConfig.Content or "Content"
 				ToggleConfig.Default = ToggleConfig.Default or false
 				ToggleConfig.Callback = ToggleConfig.Callback or function() end
-				local ToggleFunc = {Value = ToggleConfig.Default, Options = ToggleConfig.Options, Selecting = ToggleConfig.Selecting}
+				local ToggleFunc = {
+					Value = ToggleConfig.Default,
+					Options = ToggleConfig.Options,
+					Selecting =
+						ToggleConfig.Selecting
+				}
 
 				local Toggle = Instance.new("Frame");
 				local UICorner20 = Instance.new("UICorner");
@@ -1414,7 +1436,7 @@ end
 				Toggle.BackgroundTransparency = 0.9350000023841858
 				Toggle.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				Toggle.BorderSizePixel = 0
-				Toggle.LayoutOrder = CountItem				
+				Toggle.LayoutOrder = CountItem
 				Toggle.Name = "Toggle"
 				Toggle.Parent = SectionAdd
 
@@ -1435,20 +1457,20 @@ end
 				ToggleTitle.Size = UDim2.new(1, -100, 0, 13)
 				ToggleTitle.Name = "ToggleTitle"
 				ToggleTitle.Parent = Toggle
-				
+
 				local ToggleTitle2 = Instance.new("TextLabel")
-    			ToggleTitle2.Font = Enum.Font.GothamBold
-    			ToggleTitle2.Text = ToggleConfig.Title2
-    			ToggleTitle2.TextSize = 12 -- giống content
-    			ToggleTitle2.TextColor3 = Color3.fromRGB(231,231,231)
-    			ToggleTitle2.TextXAlignment = Enum.TextXAlignment.Left
-    			ToggleTitle2.TextYAlignment = Enum.TextYAlignment.Top
-    			ToggleTitle2.BackgroundTransparency = 1
-    			ToggleTitle2.BorderSizePixel = 0
-    			ToggleTitle2.Position = UDim2.new(0, 10, 0, 23) 
-    			ToggleTitle2.Size = UDim2.new(1, -100, 0, 12)
-    			ToggleTitle2.Name = "ToggleTitle2"
-    			ToggleTitle2.Parent = Toggle
+				ToggleTitle2.Font = Enum.Font.GothamBold
+				ToggleTitle2.Text = ToggleConfig.Title2
+				ToggleTitle2.TextSize = 12 -- giống content
+				ToggleTitle2.TextColor3 = Color3.fromRGB(231, 231, 231)
+				ToggleTitle2.TextXAlignment = Enum.TextXAlignment.Left
+				ToggleTitle2.TextYAlignment = Enum.TextYAlignment.Top
+				ToggleTitle2.BackgroundTransparency = 1
+				ToggleTitle2.BorderSizePixel = 0
+				ToggleTitle2.Position = UDim2.new(0, 10, 0, 23)
+				ToggleTitle2.Size = UDim2.new(1, -100, 0, 12)
+				ToggleTitle2.Name = "ToggleTitle2"
+				ToggleTitle2.Parent = Toggle
 
 				ToggleContent.Font = Enum.Font.GothamBold
 				ToggleContent.Text = ToggleConfig.Content
@@ -1460,36 +1482,38 @@ end
 				ToggleContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 				ToggleContent.BackgroundTransparency = 0.9990000128746033
 				ToggleContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				ToggleContent.BorderSizePixel = 0				
+				ToggleContent.BorderSizePixel = 0
 				ToggleContent.Size = UDim2.new(1, -100, 0, 12)
 				ToggleContent.Name = "ToggleContent"
 				ToggleContent.Parent = Toggle
-				
+
 				if ToggleConfig.Title2 ~= "" then
-				    Toggle.Size = UDim2.new(1, 0, 0, 57)
-                    ToggleContent.Position = UDim2.new(0, 10, 0, 36)
-                    ToggleTitle2.Visible = true
-                else
-                    Toggle.Size = UDim2.new(1, 0, 0, 46)
-                    ToggleContent.Position = UDim2.new(0, 10, 0, 23)
-                    ToggleTitle2.Visible = false
-                end
-				
-				ToggleContent.Size = UDim2.new(1, -100, 0, 12 + (12 * (ToggleContent.TextBounds.X // ToggleContent.AbsoluteSize.X)))
+					Toggle.Size = UDim2.new(1, 0, 0, 57)
+					ToggleContent.Position = UDim2.new(0, 10, 0, 36)
+					ToggleTitle2.Visible = true
+				else
+					Toggle.Size = UDim2.new(1, 0, 0, 46)
+					ToggleContent.Position = UDim2.new(0, 10, 0, 23)
+					ToggleTitle2.Visible = false
+				end
+
+				ToggleContent.Size = UDim2.new(1, -100, 0,
+					12 + (12 * (ToggleContent.TextBounds.X // ToggleContent.AbsoluteSize.X)))
 				ToggleContent.TextWrapped = true
 				if ToggleConfig.Title2 ~= "" then
-				    Toggle.Size = UDim2.new(1, 0, 0, ToggleContent.AbsoluteSize.Y + 47)
+					Toggle.Size = UDim2.new(1, 0, 0, ToggleContent.AbsoluteSize.Y + 47)
 				else
-				    Toggle.Size = UDim2.new(1, 0, 0, ToggleContent.AbsoluteSize.Y + 33)
+					Toggle.Size = UDim2.new(1, 0, 0, ToggleContent.AbsoluteSize.Y + 33)
 				end
 
 				ToggleContent:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
 					ToggleContent.TextWrapped = false
-					ToggleContent.Size = UDim2.new(1, -100, 0, 12 + (12 * (ToggleContent.TextBounds.X // ToggleContent.AbsoluteSize.X)))
+					ToggleContent.Size = UDim2.new(1, -100, 0,
+						12 + (12 * (ToggleContent.TextBounds.X // ToggleContent.AbsoluteSize.X)))
 					if ToggleConfig.Title2 ~= "" then
-					    Toggle.Size = UDim2.new(1, 0, 0, ToggleContent.AbsoluteSize.Y + 47)
+						Toggle.Size = UDim2.new(1, 0, 0, ToggleContent.AbsoluteSize.Y + 47)
 					else
-					    Toggle.Size = UDim2.new(1, 0, 0, ToggleContent.AbsoluteSize.Y + 33)
+						Toggle.Size = UDim2.new(1, 0, 0, ToggleContent.AbsoluteSize.Y + 33)
 					end
 					ToggleContent.TextWrapped = true
 					UpdateSizeSection()
@@ -1534,9 +1558,9 @@ end
 
 				UICorner23.CornerRadius = UDim.new(0, 15)
 				UICorner23.Parent = ToggleCircle
-				
+
 				ToggleButton.Activated:Connect(function()
-					CircleClick(ToggleButton, Mouse.X, Mouse.Y) 
+					CircleClick(ToggleButton, Mouse.X, Mouse.Y)
 					ToggleFunc.Value = not ToggleFunc.Value
 					ToggleFunc:Set(ToggleFunc.Value)
 				end)
@@ -1546,50 +1570,52 @@ end
 						TweenService:Create(
 							ToggleTitle,
 							TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
-							{TextColor3 = GuiConfig.Color}
+							{ TextColor3 = GuiConfig.Color }
 						):Play()
 						TweenService:Create(
 							ToggleCircle,
 							TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
-							{Position = UDim2.new(0, 15, 0, 0)}
+							{ Position = UDim2.new(0, 15, 0, 0) }
 						):Play()
 						TweenService:Create(
 							UIStroke8,
 							TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
-							{Color = GuiConfig.Color, Transparency = 0}
+							{ Color = GuiConfig.Color, Transparency = 0 }
 						):Play()
 						TweenService:Create(
 							FeatureFrame2,
 							TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
-							{BackgroundColor3 = GuiConfig.Color, BackgroundTransparency = 0} 
+							{ BackgroundColor3 = GuiConfig.Color, BackgroundTransparency = 0 }
 						):Play()
 					else
 						TweenService:Create(
 							ToggleTitle,
 							TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
-							{TextColor3 = Color3.fromRGB(230.77499270439148, 230.77499270439148, 230.77499270439148)}
+							{ TextColor3 = Color3.fromRGB(230.77499270439148, 230.77499270439148, 230.77499270439148) }
 						):Play()
 						TweenService:Create(
 							ToggleCircle,
 							TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
-							{Position = UDim2.new(0, 0, 0, 0)}
+							{ Position = UDim2.new(0, 0, 0, 0) }
 						):Play()
 						TweenService:Create(
 							UIStroke8,
 							TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
-							{Color = Color3.fromRGB(255, 255, 255), Transparency = 0.9}
+							{ Color = Color3.fromRGB(255, 255, 255), Transparency = 0.9 }
 						):Play()
 						TweenService:Create(
 							FeatureFrame2,
 							TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut),
-							{BackgroundColor3 = Color3.fromRGB(255, 255, 255), BackgroundTransparency = 0.9200000166893005}
+							{ BackgroundColor3 = Color3.fromRGB(255, 255, 255), BackgroundTransparency = 0.9200000166893005 }
 						):Play()
 					end
 				end
+
 				ToggleFunc:Set(ToggleFunc.Value)
 				CountItem = CountItem + 1
 				return ToggleFunc
 			end
+
 			function Items:AddSlider(SliderConfig)
 				local SliderConfig = SliderConfig or {}
 				SliderConfig.Title = SliderConfig.Title or "Slider"
@@ -1599,8 +1625,8 @@ end
 				SliderConfig.Max = SliderConfig.Max or 100
 				SliderConfig.Default = SliderConfig.Default or 50
 				SliderConfig.Callback = SliderConfig.Callback or function() end
-				local SliderFunc = {Value = SliderConfig.Default}
-	
+				local SliderFunc = { Value = SliderConfig.Default }
+
 				local Slider = Instance.new("Frame");
 				local UICorner15 = Instance.new("UICorner");
 				local SliderTitle = Instance.new("TextLabel");
@@ -1661,13 +1687,15 @@ end
 				SliderContent.Name = "SliderContent"
 				SliderContent.Parent = Slider
 
-				SliderContent.Size = UDim2.new(1, -180, 0, 12 + (12 * (SliderContent.TextBounds.X // SliderContent.AbsoluteSize.X)))
+				SliderContent.Size = UDim2.new(1, -180, 0,
+					12 + (12 * (SliderContent.TextBounds.X // SliderContent.AbsoluteSize.X)))
 				SliderContent.TextWrapped = true
 				Slider.Size = UDim2.new(1, 0, 0, SliderContent.AbsoluteSize.Y + 33)
 
 				SliderContent:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
 					SliderContent.TextWrapped = false
-					SliderContent.Size = UDim2.new(1, -180, 0, 12 + (12 * (SliderContent.TextBounds.X // SliderContent.AbsoluteSize.X)))
+					SliderContent.Size = UDim2.new(1, -180, 0,
+						12 + (12 * (SliderContent.TextBounds.X // SliderContent.AbsoluteSize.X)))
 					Slider.Size = UDim2.new(1, 0, 0, SliderContent.AbsoluteSize.Y + 33)
 					SliderContent.TextWrapped = true
 					UpdateSizeSection()
@@ -1737,61 +1765,64 @@ end
 
 				local Dragging = false
 				local function Round(Number, Factor)
-					local Result = math.floor(Number/Factor + (math.sign(Number) * 0.5)) * Factor
-					if Result < 0 then 
-						Result = Result + Factor 
+					local Result = math.floor(Number / Factor + (math.sign(Number) * 0.5)) * Factor
+					if Result < 0 then
+						Result = Result + Factor
 					end
 					return Result
-				end	
-				function SliderFunc:Set(Value)
-				    Value = math.clamp(Round(Value, SliderConfig.Increment), SliderConfig.Min, SliderConfig.Max)
-				    SliderFunc.Value = Value
-				    TextBox.Text = tostring(Value)
-	                TweenService:Create(
-		            SliderDraggable,
-	         	    TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
-	         	    {Size = UDim2.fromScale((Value - SliderConfig.Min) / (SliderConfig.Max - SliderConfig.Min), 1)}
-            	    ):Play()
-            	    
-            	    SliderConfig.Callback(Value)
-            	end
-			        SliderFrame.InputBegan:Connect(function(Input)
-				    if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then 
-				    Dragging = true 
-	                end 
-                    end)
-                    SliderFrame.InputEnded:Connect(function(Input) 
-				    if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then 
-				    Dragging = false 
-		            SliderConfig.Callback(SliderFunc.Value)
-	                 end 
-                end)
-                    UserInputService.InputChanged:Connect(function(Input)
-				    if Dragging and (Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch) then 
-				    local SizeScale = math.clamp((Input.Position.X - SliderFrame.AbsolutePosition.X) / SliderFrame.AbsoluteSize.X, 0, 1)
-				    SliderFunc:Set(SliderConfig.Min + ((SliderConfig.Max - SliderConfig.Min) * SizeScale)) 
-			        end
-	    	        end)
-				    TextBox:GetPropertyChangedSignal("Text"):Connect(function()
-                    local Valid = TextBox.Text:gsub("[^%d]", "")
-                    if Valid ~= "" then
-                    local ValidNumber = math.clamp(tonumber(Valid), SliderConfig.Min, SliderConfig.Max)
-                    SliderFunc:Set(ValidNumber)
-                    else
-                    SliderFunc:Set(SliderConfig.Min) 
-                    end
-                    end)
-                    SliderFunc:Set(SliderConfig.Default)
-                    CountItem = CountItem + 1
-                    return SliderFunc
 				end
+				function SliderFunc:Set(Value)
+					Value = math.clamp(Round(Value, SliderConfig.Increment), SliderConfig.Min, SliderConfig.Max)
+					SliderFunc.Value = Value
+					TextBox.Text = tostring(Value)
+					TweenService:Create(
+						SliderDraggable,
+						TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+						{ Size = UDim2.fromScale((Value - SliderConfig.Min) / (SliderConfig.Max - SliderConfig.Min), 1) }
+					):Play()
+
+					SliderConfig.Callback(Value)
+				end
+
+				SliderFrame.InputBegan:Connect(function(Input)
+					if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+						Dragging = true
+					end
+				end)
+				SliderFrame.InputEnded:Connect(function(Input)
+					if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+						Dragging = false
+						SliderConfig.Callback(SliderFunc.Value)
+					end
+				end)
+				UserInputService.InputChanged:Connect(function(Input)
+					if Dragging and (Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch) then
+						local SizeScale = math.clamp(
+							(Input.Position.X - SliderFrame.AbsolutePosition.X) / SliderFrame.AbsoluteSize.X, 0, 1)
+						SliderFunc:Set(SliderConfig.Min + ((SliderConfig.Max - SliderConfig.Min) * SizeScale))
+					end
+				end)
+				TextBox:GetPropertyChangedSignal("Text"):Connect(function()
+					local Valid = TextBox.Text:gsub("[^%d]", "")
+					if Valid ~= "" then
+						local ValidNumber = math.clamp(tonumber(Valid), SliderConfig.Min, SliderConfig.Max)
+						SliderFunc:Set(ValidNumber)
+					else
+						SliderFunc:Set(SliderConfig.Min)
+					end
+				end)
+				SliderFunc:Set(SliderConfig.Default)
+				CountItem = CountItem + 1
+				return SliderFunc
+			end
+
 			function Items:AddInput(InputConfig)
 				local InputConfig = InputConfig or {}
 				InputConfig.Title = InputConfig.Title or "Title"
 				InputConfig.Content = InputConfig.Content or "Content"
 				InputConfig.Callback = InputConfig.Callback or function() end
 				InputConfig.Default = InputConfig.Default or ""
-				local InputFunc = {Value = InputConfig.Default}
+				local InputFunc = { Value = InputConfig.Default }
 
 				local Input = Instance.new("Frame");
 				local UICorner12 = Instance.new("UICorner");
@@ -1845,13 +1876,15 @@ end
 				InputContent.Name = "InputContent"
 				InputContent.Parent = Input
 
-				InputContent.Size = UDim2.new(1, -180, 0, 12 + (12 * (InputContent.TextBounds.X // InputContent.AbsoluteSize.X)))
+				InputContent.Size = UDim2.new(1, -180, 0,
+					12 + (12 * (InputContent.TextBounds.X // InputContent.AbsoluteSize.X)))
 				InputContent.TextWrapped = true
 				Input.Size = UDim2.new(1, 0, 0, InputContent.AbsoluteSize.Y + 33)
 
 				InputContent:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
 					InputContent.TextWrapped = false
-					InputContent.Size = UDim2.new(1, -180, 0, 12 + (12 * (InputContent.TextBounds.X // InputContent.AbsoluteSize.X)))
+					InputContent.Size = UDim2.new(1, -180, 0,
+						12 + (12 * (InputContent.TextBounds.X // InputContent.AbsoluteSize.X)))
 					Input.Size = UDim2.new(1, 0, 0, InputContent.AbsoluteSize.Y + 33)
 					InputContent.TextWrapped = true
 					UpdateSizeSection()
@@ -1873,7 +1906,8 @@ end
 
 				InputTextBox.CursorPosition = -1
 				InputTextBox.Font = Enum.Font.GothamBold
-				InputTextBox.PlaceholderColor3 = Color3.fromRGB(120.00000044703484, 120.00000044703484, 120.00000044703484)
+				InputTextBox.PlaceholderColor3 = Color3.fromRGB(120.00000044703484, 120.00000044703484,
+					120.00000044703484)
 				InputTextBox.PlaceholderText = "Write your input there"
 				InputTextBox.Text = InputConfig.Default
 				InputTextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -1893,8 +1927,8 @@ end
 					InputFunc.Value = Value
 					InputConfig.Callback(Value)
 				end
-								
-                InputFunc:Set(InputFunc.Value)
+
+				InputFunc:Set(InputFunc.Value)
 
 				InputTextBox.FocusLost:Connect(function()
 					InputFunc:Set(InputTextBox.Text)
@@ -1902,6 +1936,7 @@ end
 				CountItem = CountItem + 1
 				return InputFunc
 			end
+
 			function Items:AddDropdown(DropdownConfig)
 				local DropdownConfig = DropdownConfig or {}
 				DropdownConfig.Title = DropdownConfig.Title or "Title"
@@ -1911,8 +1946,8 @@ end
 				DropdownConfig.Default = DropdownConfig.Default or {}
 				DropdownConfig.Callback = DropdownConfig.Callback or function() end
 
-				local DropdownFunc = {Value = DropdownConfig.Default, Options = DropdownConfig.Options}
-	
+				local DropdownFunc = { Value = DropdownConfig.Default, Options = DropdownConfig.Options }
+
 				local Dropdown = Instance.new("Frame");
 				local DropdownButton = Instance.new("TextButton");
 				local UICorner10 = Instance.new("UICorner");
@@ -1979,13 +2014,15 @@ end
 				DropdownContent.Name = "DropdownContent"
 				DropdownContent.Parent = Dropdown
 
-				DropdownContent.Size = UDim2.new(1, -180, 0, 12 + (12 * (DropdownContent.TextBounds.X // DropdownContent.AbsoluteSize.X)))
+				DropdownContent.Size = UDim2.new(1, -180, 0,
+					12 + (12 * (DropdownContent.TextBounds.X // DropdownContent.AbsoluteSize.X)))
 				DropdownContent.TextWrapped = true
 				Dropdown.Size = UDim2.new(1, 0, 0, DropdownContent.AbsoluteSize.Y + 33)
 
 				DropdownContent:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
 					DropdownContent.TextWrapped = false
-					DropdownContent.Size = UDim2.new(1, -180, 0, 12 + (12 * (DropdownContent.TextBounds.X // DropdownContent.AbsoluteSize.X)))
+					DropdownContent.Size = UDim2.new(1, -180, 0,
+						12 + (12 * (DropdownContent.TextBounds.X // DropdownContent.AbsoluteSize.X)))
 					Dropdown.Size = UDim2.new(1, 0, 0, DropdownContent.AbsoluteSize.Y + 33)
 					DropdownContent.TextWrapped = true
 					UpdateSizeSection()
@@ -2007,10 +2044,11 @@ end
 
 				DropdownButton.Activated:Connect(function()
 					if not MoreBlur.Visible then
-						MoreBlur.Visible = true 
+						MoreBlur.Visible = true
 						DropPageLayout:JumpToIndex(SelectOptionsFrame.LayoutOrder)
-						TweenService:Create(MoreBlur, TweenInfo.new(0.3), {BackgroundTransparency = 0.7}):Play()
-						TweenService:Create(DropdownSelect, TweenInfo.new(0.3), {Position = UDim2.new(1, -11, 0.5, 0)}):Play()
+						TweenService:Create(MoreBlur, TweenInfo.new(0.3), { BackgroundTransparency = 0.7 }):Play()
+						TweenService:Create(DropdownSelect, TweenInfo.new(0.3), { Position = UDim2.new(1, -11, 0.5, 0) })
+							:Play()
 					end
 				end)
 
@@ -2058,42 +2096,42 @@ end
 				ScrollSelect.Size = UDim2.new(1, 0, 1, 0)
 				ScrollSelect.Name = "ScrollSelect"
 				ScrollSelect.Parent = DropdownFolder
-				
-local SearchBox = Instance.new("TextBox")
-SearchBox.PlaceholderText = "Search"
-SearchBox.Font = Enum.Font.Gotham
-SearchBox.Text = ""
-SearchBox.TextSize = 12
-SearchBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-SearchBox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-SearchBox.BackgroundTransparency = 0.2
-SearchBox.BorderSizePixel = 0
-SearchBox.Size = UDim2.new(1, -10, 0, 25)
-SearchBox.Position = UDim2.new(0, 5, 0, 0)
-SearchBox.ClearTextOnFocus = false
-SearchBox.Name = "SearchBox"
-SearchBox.Parent = ScrollSelect
 
-SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
-    local query = string.lower(SearchBox.Text)
+				local SearchBox = Instance.new("TextBox")
+				SearchBox.PlaceholderText = "Search"
+				SearchBox.Font = Enum.Font.Gotham
+				SearchBox.Text = ""
+				SearchBox.TextSize = 12
+				SearchBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+				SearchBox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+				SearchBox.BackgroundTransparency = 0.2
+				SearchBox.BorderSizePixel = 0
+				SearchBox.Size = UDim2.new(1, -10, 0, 25)
+				SearchBox.Position = UDim2.new(0, 5, 0, 0)
+				SearchBox.ClearTextOnFocus = false
+				SearchBox.Name = "SearchBox"
+				SearchBox.Parent = ScrollSelect
 
-for _, option in pairs(ScrollSelect:GetChildren()) do
-    if option.Name == "Option" and option:FindFirstChild("OptionText") then
-        local text = string.lower(option.OptionText.Text)
-        option.Visible = query == "" or string.sub(text, 1, #query) == query
-    end
-end
+				SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
+					local query = string.lower(SearchBox.Text)
 
-    -- Cập nhật lại CanvasSize khi filter
-    local OffsetY = 25 -- giữ khoảng cho SearchBox
-    for _, child in ScrollSelect:GetChildren() do
-        if child.Name == "Option" and child.Visible then
-            OffsetY = OffsetY + 3 + child.Size.Y.Offset
-        end
-    end
-    ScrollSelect.CanvasSize = UDim2.new(0, 0, 0, OffsetY)
-end)
-			
+					for _, option in pairs(ScrollSelect:GetChildren()) do
+						if option.Name == "Option" and option:FindFirstChild("OptionText") then
+							local text = string.lower(option.OptionText.Text)
+							option.Visible = query == "" or string.sub(text, 1, #query) == query
+						end
+					end
+
+					-- Cập nhật lại CanvasSize khi filter
+					local OffsetY = 25 -- giữ khoảng cho SearchBox
+					for _, child in ScrollSelect:GetChildren() do
+						if child.Name == "Option" and child.Visible then
+							OffsetY = OffsetY + 3 + child.Size.Y.Offset
+						end
+					end
+					ScrollSelect.CanvasSize = UDim2.new(0, 0, 0, OffsetY)
+				end)
+
 				UIListLayout4.Padding = UDim.new(0, 3)
 				UIListLayout4.SortOrder = Enum.SortOrder.LayoutOrder
 				UIListLayout4.Parent = ScrollSelect
@@ -2109,46 +2147,53 @@ end)
 						end
 					end
 				end
-				               
-function DropdownFunc:Set(Value)
-    if DropdownConfig.Multi then
-        DropdownFunc.Value = type(Value) == "table" and Value or {}
-    else
-        DropdownFunc.Value = type(Value) == "string" and Value or (Value[1] or "")
-    end
 
-    for _, Drop in ScrollSelect:GetChildren() do
-        if Drop.Name ~= "UIListLayout" then
-            local isSelected = DropdownConfig.Multi 
-                and table.find(DropdownFunc.Value, Drop.OptionText.Text) 
-                or DropdownFunc.Value == Drop.OptionText.Text
+				function DropdownFunc:Set(Value)
+					if DropdownConfig.Multi then
+						DropdownFunc.Value = type(Value) == "table" and Value or {}
+					else
+						DropdownFunc.Value = type(Value) == "string" and Value or (Value[1] or "")
+					end
 
-            if isSelected then
-                -- hiệu ứng chọn
-                TweenService:Create(Drop.ChooseFrame, TweenInfo.new(0.2), {Size = UDim2.new(0, 1, 0, 12)}):Play()
-                TweenService:Create(Drop.ChooseFrame.UIStroke, TweenInfo.new(0.2), {Transparency = 0}):Play()
-                TweenService:Create(Drop, TweenInfo.new(0.2), {BackgroundTransparency = 0.935}):Play()
-            else
-                -- hiệu ứng bỏ chọn
-                TweenService:Create(Drop.ChooseFrame, TweenInfo.new(0.1), {Size = UDim2.new(0, 0, 0, 0)}):Play()
-                TweenService:Create(Drop.ChooseFrame.UIStroke, TweenInfo.new(0.1), {Transparency = 0.999}):Play()
-                TweenService:Create(Drop, TweenInfo.new(0.1), {BackgroundTransparency = 0.999}):Play()
-            end
-        end
-    end
+					for _, Drop in ScrollSelect:GetChildren() do
+						if Drop.Name ~= "UIListLayout" then
+							local isSelected = DropdownConfig.Multi
+								and table.find(DropdownFunc.Value, Drop.OptionText.Text)
+								or DropdownFunc.Value == Drop.OptionText.Text
 
-    -- Hiển thị text
-    if DropdownConfig.Multi then
-        local DropdownValueTable = table.concat(DropdownFunc.Value, ", ")
-        OptionSelecting.Text = DropdownValueTable == "" and "Select Options" or DropdownValueTable
-    else
-        OptionSelecting.Text = DropdownFunc.Value == "" and "Select Option" or DropdownFunc.Value
-    end
+							if isSelected then
+								-- hiệu ứng chọn
+								TweenService:Create(Drop.ChooseFrame, TweenInfo.new(0.2),
+									{ Size = UDim2.new(0, 1, 0, 12) })
+									:Play()
+								TweenService:Create(Drop.ChooseFrame.UIStroke, TweenInfo.new(0.2), { Transparency = 0 })
+									:Play()
+								TweenService:Create(Drop, TweenInfo.new(0.2), { BackgroundTransparency = 0.935 }):Play()
+							else
+								-- hiệu ứng bỏ chọn
+								TweenService:Create(Drop.ChooseFrame, TweenInfo.new(0.1),
+									{ Size = UDim2.new(0, 0, 0, 0) })
+									:Play()
+								TweenService:Create(Drop.ChooseFrame.UIStroke, TweenInfo.new(0.1),
+									{ Transparency = 0.999 })
+									:Play()
+								TweenService:Create(Drop, TweenInfo.new(0.1), { BackgroundTransparency = 0.999 }):Play()
+							end
+						end
+					end
 
-    if DropdownConfig.Callback and typeof(DropdownConfig.Callback) == "function" then
-        DropdownConfig.Callback(DropdownFunc.Value)
-    end
-end				
+					-- Hiển thị text
+					if DropdownConfig.Multi then
+						local DropdownValueTable = table.concat(DropdownFunc.Value, ", ")
+						OptionSelecting.Text = DropdownValueTable == "" and "Select Options" or DropdownValueTable
+					else
+						OptionSelecting.Text = DropdownFunc.Value == "" and "Select Option" or DropdownFunc.Value
+					end
+
+					if DropdownConfig.Callback and typeof(DropdownConfig.Callback) == "function" then
+						DropdownConfig.Callback(DropdownFunc.Value)
+					end
+				end
 
 				function DropdownFunc:AddOption(OptionName)
 					OptionName = OptionName or "Option"
@@ -2159,7 +2204,7 @@ end
 					local ChooseFrame = Instance.new("Frame");
 					local UIStroke15 = Instance.new("UIStroke");
 					local UICorner38 = Instance.new("UICorner");
-					
+
 					Option.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 					Option.BackgroundTransparency = 0.999
 					Option.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -2168,10 +2213,10 @@ end
 					Option.Size = UDim2.new(1, 0, 0, 30)
 					Option.Name = "Option"
 					Option.Parent = ScrollSelect
-				
+
 					UICorner37.CornerRadius = UDim.new(0, 3)
 					UICorner37.Parent = Option
-				
+
 					OptionButton.Font = Enum.Font.GothamBold
 					OptionButton.Text = ""
 					OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -2199,7 +2244,7 @@ end
 					OptionText.Size = UDim2.new(1, -100, 0, 13)
 					OptionText.Name = "OptionText"
 					OptionText.Parent = Option
-	
+
 					ChooseFrame.AnchorPoint = Vector2.new(0, 0.5)
 					ChooseFrame.BackgroundColor3 = GuiConfig.Color
 					ChooseFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -2208,16 +2253,16 @@ end
 					ChooseFrame.Size = UDim2.new(0, 0, 0, 0)
 					ChooseFrame.Name = "ChooseFrame"
 					ChooseFrame.Parent = Option
-				
+
 					UIStroke15.Color = GuiConfig.Color
 					UIStroke15.Thickness = 1.600000023841858
 					UIStroke15.Transparency = 0.999
 					UIStroke15.Parent = ChooseFrame
-				
+
 					UICorner38.Parent = ChooseFrame
-					
+
 					OptionButton.Activated:Connect(function()
-						CircleClick(OptionButton, Mouse.X, Mouse.Y) 
+						CircleClick(OptionButton, Mouse.X, Mouse.Y)
 						if DropdownConfig.Multi then
 							if not table.find(DropdownFunc.Value, OptionName) then
 								table.insert(DropdownFunc.Value, OptionName)
@@ -2230,11 +2275,11 @@ end
 								end
 							end
 						else
-							DropdownFunc.Value = {OptionName}
+							DropdownFunc.Value = { OptionName }
 						end
 						DropdownFunc:Set(DropdownFunc.Value)
 					end)
-					
+
 					local OffsetY = 0
 					for _, child in ScrollSelect:GetChildren() do
 						if child.Name ~= "UIListLayout" then
@@ -2250,22 +2295,26 @@ end
 					Selecting = Selecting or {}
 					DropdownFunc:Clear()
 					for _, Drop in pairs(RefreshList) do
-						DropdownFunc:AddOption(Drop)						
+						DropdownFunc:AddOption(Drop)
 					end
 					DropdownFunc.Options = RefreshList
 					DropdownFunc:Set(Selecting)
 				end
+
 				DropdownFunc:Refresh(DropdownFunc.Options, DropdownFunc.Value)
 				CountItem = CountItem + 1
 				CountDropdown = CountDropdown + 1
 				return DropdownFunc
 			end
+
 			CountSection = CountSection + 1
 			return Items
 		end
+
 		CountTab = CountTab + 1
 		return Sections
 	end
+
 	return Tabs
 end
 
