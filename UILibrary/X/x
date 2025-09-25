@@ -1334,24 +1334,23 @@ function Chloex:MakeGui(GuiConfig)
 
 			local Items = {}
 			local CountItem = 0
-
 			function Items:AddParagraph(ParagraphConfig)
 				local ParagraphConfig = ParagraphConfig or {}
 				ParagraphConfig.Title = ParagraphConfig.Title or "Title"
 				ParagraphConfig.Content = ParagraphConfig.Content or "Content"
 				local ParagraphFunc = {}
 
-				local Paragraph = Instance.new("Frame")
-				local UICorner14 = Instance.new("UICorner")
-				local ParagraphTitle = Instance.new("TextLabel")
-				local ParagraphContent = Instance.new("TextLabel")
+				local Paragraph = Instance.new("Frame");
+				local UICorner14 = Instance.new("UICorner");
+				local ParagraphTitle = Instance.new("TextLabel");
+				local ParagraphContent = Instance.new("TextLabel");
 
 				Paragraph.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				Paragraph.BackgroundTransparency = 0.935
+				Paragraph.BackgroundTransparency = 0.9350000023841858
+				Paragraph.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				Paragraph.BorderSizePixel = 0
 				Paragraph.LayoutOrder = CountItem
-				Paragraph.AutomaticSize = Enum.AutomaticSize.Y
-				Paragraph.Size = UDim2.new(1, 0, 0, 0)
+				Paragraph.Size = UDim2.new(1, 0, 0, 46)
 				Paragraph.Name = "Paragraph"
 				Paragraph.Parent = SectionAdd
 
@@ -1360,38 +1359,116 @@ function Chloex:MakeGui(GuiConfig)
 
 				ParagraphTitle.Font = Enum.Font.GothamBold
 				ParagraphTitle.Text = ParagraphConfig.Title
-				ParagraphTitle.TextColor3 = Color3.fromRGB(230, 230, 230)
+				ParagraphTitle.TextColor3 = Color3.fromRGB(230.77499270439148, 230.77499270439148, 230.77499270439148)
 				ParagraphTitle.TextSize = 13
 				ParagraphTitle.TextXAlignment = Enum.TextXAlignment.Left
-				ParagraphTitle.BackgroundTransparency = 1
+				ParagraphTitle.TextYAlignment = Enum.TextYAlignment.Top
+				ParagraphTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				ParagraphTitle.BackgroundTransparency = 0.9990000128746033
+				ParagraphTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				ParagraphTitle.BorderSizePixel = 0
 				ParagraphTitle.Position = UDim2.new(0, 10, 0, 10)
 				ParagraphTitle.Size = UDim2.new(1, -16, 0, 13)
 				ParagraphTitle.Name = "ParagraphTitle"
 				ParagraphTitle.Parent = Paragraph
 
-				ParagraphContent.Font = Enum.Font.Gotham
+				ParagraphContent.Font = Enum.Font.GothamBold
 				ParagraphContent.Text = ParagraphConfig.Content
 				ParagraphContent.TextColor3 = Color3.fromRGB(255, 255, 255)
 				ParagraphContent.TextSize = 12
-				ParagraphContent.TextTransparency = 0.6
+				ParagraphContent.TextTransparency = 0.6000000238418579
 				ParagraphContent.TextXAlignment = Enum.TextXAlignment.Left
-				ParagraphContent.TextYAlignment = Enum.TextYAlignment.Top
-				ParagraphContent.BackgroundTransparency = 1
-				ParagraphContent.Position = UDim2.new(0, 10, 0, 25)
+				ParagraphContent.TextYAlignment = Enum.TextYAlignment.Bottom
+				ParagraphContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				ParagraphContent.BackgroundTransparency = 0.9990000128746033
+				ParagraphContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				ParagraphContent.BorderSizePixel = 0
+				ParagraphContent.Position = UDim2.new(0, 10, 0, 23)
 				ParagraphContent.Name = "ParagraphContent"
-				ParagraphContent.RichText = false
-				ParagraphContent.TextWrapped = true
-				ParagraphContent.AutomaticSize = Enum.AutomaticSize.Y
-				ParagraphContent.Size = UDim2.new(1, -16, 0, 0)
 				ParagraphContent.Parent = Paragraph
+
+				ParagraphContent.Size = UDim2.new(1, -16, 0,
+					12 + (12 * (ParagraphContent.TextBounds.X // ParagraphContent.AbsoluteSize.X)))
+				ParagraphContent.TextWrapped = true
+				Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.AbsoluteSize.Y + 33)
+
+				ParagraphContent:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+					ParagraphContent.TextWrapped = false
+					ParagraphContent.Size = UDim2.new(1, -16, 0,
+						12 + (12 * (ParagraphContent.TextBounds.X // ParagraphContent.AbsoluteSize.X)))
+					Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.AbsoluteSize.Y + 33)
+					ParagraphContent.TextWrapped = true
+					UpdateSizeSection()
+				end)
 
 				function ParagraphFunc:SetContent(content)
 					content = content or "Content"
+
 					ParagraphContent.Text = content
+					ParagraphContent.TextWrapped = false
+					ParagraphContent.Size = UDim2.new(1, -16, 0, 12 + (12 // ParagraphContent.AbsoluteSize.X))
+					ParagraphContent.TextWrapped = true
+					Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.AbsoluteSize.Y + 33)
 				end
 
 				CountItem = CountItem + 1
 				return ParagraphFunc
+			end
+
+			function Items:AddTable(TableConfig)
+				local TableConfig = TableConfig or {}
+				TableConfig.Title = TableConfig.Title or "Table Title"
+				TableConfig.Content = TableConfig.Content or "Table Content"
+				local TableFunc = {}
+
+				local TableFrame = Instance.new("Frame")
+				TableFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				TableFrame.BackgroundTransparency = 0.935
+				TableFrame.BorderSizePixel = 0
+				TableFrame.LayoutOrder = CountItem
+				TableFrame.AutomaticSize = Enum.AutomaticSize.Y
+				TableFrame.Size = UDim2.new(1, 0, 0, 0)
+				TableFrame.Name = "Table"
+				TableFrame.Parent = SectionAdd
+
+				local UICorner = Instance.new("UICorner")
+				UICorner.CornerRadius = UDim.new(0, 4)
+				UICorner.Parent = TableFrame
+
+				local TitleLabel = Instance.new("TextLabel")
+				TitleLabel.Font = Enum.Font.GothamBold
+				TitleLabel.Text = TableConfig.Title
+				TitleLabel.TextColor3 = Color3.fromRGB(230, 230, 230)
+				TitleLabel.TextSize = 13
+				TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+				TitleLabel.BackgroundTransparency = 1
+				TitleLabel.Position = UDim2.new(0, 10, 0, 10)
+				TitleLabel.Size = UDim2.new(1, -16, 0, 13)
+				TitleLabel.Name = "TableTitle"
+				TitleLabel.Parent = TableFrame
+
+				local ContentLabel = Instance.new("TextLabel")
+				ContentLabel.Font = Enum.Font.Gotham
+				ContentLabel.Text = TableConfig.Content
+				ContentLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+				ContentLabel.TextSize = 12
+				ContentLabel.TextTransparency = 0.6
+				ContentLabel.TextXAlignment = Enum.TextXAlignment.Left
+				ContentLabel.TextYAlignment = Enum.TextYAlignment.Top
+				ContentLabel.BackgroundTransparency = 1
+				ContentLabel.Position = UDim2.new(0, 10, 0, 28)
+				ContentLabel.Size = UDim2.new(1, -16, 0, 0)
+				ContentLabel.AutomaticSize = Enum.AutomaticSize.Y
+				ContentLabel.TextWrapped = true
+				ContentLabel.Name = "TableContent"
+				ContentLabel.Parent = TableFrame
+
+				function TableFunc:SetContent(newText)
+					ContentLabel.Text = newText or "Table Content"
+				end
+
+				CountItem = CountItem + 1
+				return TableFunc
 			end
 
 			function Items:AddButton(ButtonConfig)
@@ -2363,6 +2440,7 @@ function Chloex:MakeGui(GuiConfig)
 					end)
 				end
 
+				-- 🔹 Fungsi baru pengganti Refresh
 				function DropdownFunc:SetValues(newList, selecting)
 					newList = newList or {}
 					selecting = selecting or {}
@@ -2374,6 +2452,7 @@ function Chloex:MakeGui(GuiConfig)
 					DropdownFunc:Set(selecting)
 				end
 
+				-- inisialisasi
 				DropdownFunc:SetValues(DropdownFunc.Options, DropdownFunc.Value)
 
 				CountItem = CountItem + 1
