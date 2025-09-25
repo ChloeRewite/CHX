@@ -1426,14 +1426,17 @@ function Chloex:MakeGui(GuiConfig)
 				TableFrame.BackgroundTransparency = 0.935
 				TableFrame.BorderSizePixel = 0
 				TableFrame.LayoutOrder = CountItem
-				TableFrame.AutomaticSize = Enum.AutomaticSize.Y
 				TableFrame.Size = UDim2.new(1, 0, 0, 0)
+				TableFrame.AutomaticSize = Enum.AutomaticSize.Y
 				TableFrame.Name = "Table"
 				TableFrame.Parent = SectionAdd
 
-				local UICorner = Instance.new("UICorner")
-				UICorner.CornerRadius = UDim.new(0, 4)
-				UICorner.Parent = TableFrame
+				Instance.new("UICorner", TableFrame).CornerRadius = UDim.new(0, 4)
+
+				local layout = Instance.new("UIListLayout")
+				layout.Parent = TableFrame
+				layout.Padding = UDim.new(0, 2)
+				layout.SortOrder = Enum.SortOrder.LayoutOrder
 
 				local TitleLabel = Instance.new("TextLabel")
 				TitleLabel.Font = Enum.Font.GothamBold
@@ -1442,9 +1445,8 @@ function Chloex:MakeGui(GuiConfig)
 				TitleLabel.TextSize = 13
 				TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
 				TitleLabel.BackgroundTransparency = 1
-				TitleLabel.Position = UDim2.new(0, 10, 0, 10)
-				TitleLabel.Size = UDim2.new(1, -16, 0, 13)
-				TitleLabel.Name = "TableTitle"
+				TitleLabel.Size = UDim2.new(1, -16, 0, 16)
+				TitleLabel.Position = UDim2.new(0, 10, 0, 0)
 				TitleLabel.Parent = TableFrame
 
 				local ContentLabel = Instance.new("TextLabel")
@@ -1456,11 +1458,10 @@ function Chloex:MakeGui(GuiConfig)
 				ContentLabel.TextXAlignment = Enum.TextXAlignment.Left
 				ContentLabel.TextYAlignment = Enum.TextYAlignment.Top
 				ContentLabel.BackgroundTransparency = 1
-				ContentLabel.Position = UDim2.new(0, 10, 0, 28)
 				ContentLabel.Size = UDim2.new(1, -16, 0, 0)
 				ContentLabel.AutomaticSize = Enum.AutomaticSize.Y
 				ContentLabel.TextWrapped = true
-				ContentLabel.Name = "TableContent"
+				ContentLabel.Position = UDim2.new(0, 10, 0, 0)
 				ContentLabel.Parent = TableFrame
 
 				function TableFunc:SetContent(newText)
