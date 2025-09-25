@@ -724,36 +724,6 @@ function Chloex:MakeGui(GuiConfig)
 		Overlay.ZIndex = 50
 		Overlay.Parent = DropShadowHolder
 
-		local function AddGlow(parent, color, corner)
-			local stroke = Instance.new("UIStroke")
-			stroke.Thickness = 3
-			stroke.Transparency = 0.3
-			stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-			stroke.Parent = parent
-
-			local gradient = Instance.new("UIGradient")
-			gradient.Color = ColorSequence.new({
-				ColorSequenceKeypoint.new(0, color),
-				ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 255, 255)),
-				ColorSequenceKeypoint.new(1, color),
-			})
-			gradient.Rotation = 90
-			gradient.Parent = stroke
-
-			local glow = Instance.new("Frame")
-			glow.Size = UDim2.new(1, 16, 1, 16)
-			glow.Position = UDim2.new(0, -8, 0, -8)
-			glow.BackgroundColor3 = color
-			glow.BackgroundTransparency = 0.8
-			glow.BorderSizePixel = 0
-			glow.ZIndex = parent.ZIndex - 1
-			glow.Parent = parent.Parent
-			if corner then
-				local c = Instance.new("UICorner", glow)
-				c.CornerRadius = corner
-			end
-		end
-
 		local Dialog = Instance.new("Frame")
 		Dialog.Size = UDim2.new(0, 300, 0, 150)
 		Dialog.Position = UDim2.new(0.5, -150, 0.5, -75)
@@ -761,9 +731,19 @@ function Chloex:MakeGui(GuiConfig)
 		Dialog.BorderSizePixel = 0
 		Dialog.ZIndex = 51
 		Dialog.Parent = Overlay
-		local DialogCorner = Instance.new("UICorner", Dialog)
-		DialogCorner.CornerRadius = UDim.new(0, 8)
-		AddGlow(Dialog, Color3.fromRGB(0, 191, 255), DialogCorner.CornerRadius)
+		local UICorner = Instance.new("UICorner", Dialog)
+		UICorner.CornerRadius = UDim.new(0, 8)
+
+		local DialogGlow = Instance.new("Frame")
+		DialogGlow.Size = UDim2.new(0, 310, 0, 160)
+		DialogGlow.Position = UDim2.new(0.5, -155, 0.5, -80)
+		DialogGlow.BackgroundColor3 = Color3.fromRGB(0, 191, 255)
+		DialogGlow.BackgroundTransparency = 0.8
+		DialogGlow.BorderSizePixel = 0
+		DialogGlow.ZIndex = 50
+		DialogGlow.Parent = Overlay
+		local GlowCorner = Instance.new("UICorner", DialogGlow)
+		GlowCorner.CornerRadius = UDim.new(0, 10)
 
 		local Title = Instance.new("TextLabel")
 		Title.Size = UDim2.new(1, 0, 0, 40)
@@ -797,9 +777,7 @@ function Chloex:MakeGui(GuiConfig)
 		Yes.TextColor3 = Color3.fromRGB(255, 255, 255)
 		Yes.ZIndex = 52
 		Yes.Parent = Dialog
-		local YesCorner = Instance.new("UICorner", Yes)
-		YesCorner.CornerRadius = UDim.new(0, 6)
-		AddGlow(Yes, Color3.fromRGB(0, 191, 255), YesCorner.CornerRadius)
+		Instance.new("UICorner", Yes).CornerRadius = UDim.new(0, 6)
 
 		local Cancel = Instance.new("TextButton")
 		Cancel.Size = UDim2.new(0.45, -10, 0, 35)
@@ -811,9 +789,7 @@ function Chloex:MakeGui(GuiConfig)
 		Cancel.TextColor3 = Color3.fromRGB(255, 255, 255)
 		Cancel.ZIndex = 52
 		Cancel.Parent = Dialog
-		local CancelCorner = Instance.new("UICorner", Cancel)
-		CancelCorner.CornerRadius = UDim.new(0, 6)
-		AddGlow(Cancel, Color3.fromRGB(0, 191, 255), CancelCorner.CornerRadius)
+		Instance.new("UICorner", Cancel).CornerRadius = UDim.new(0, 6)
 
 		Yes.MouseButton1Click:Connect(function()
 			if Chloeex then Chloeex:Destroy() end
