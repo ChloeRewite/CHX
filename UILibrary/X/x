@@ -696,34 +696,69 @@ function GuiFunc:ToggleUI()
     ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     ScreenGui.Name = "ToggleUIButton"
 
-    -- Tombol utama langsung dari ImageLabel
+    -- Tombol (ImageLabel)
     local ImageButton = Instance.new("ImageLabel")
     ImageButton.Parent = ScreenGui
     ImageButton.Size = UDim2.new(0, 50, 0, 50)
     ImageButton.Position = UDim2.new(0, 20, 0, 100)
-    ImageButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- warna kotak
-    ImageButton.BackgroundTransparency = 0
+    ImageButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     ImageButton.Image = "rbxassetid://" .. GuiConfig.Image
     ImageButton.ImageColor3 = Color3.fromRGB(255, 255, 255)
-    ImageButton.Active = true
-    ImageButton.Draggable = true -- bisa di-drag kemana2
 
-    -- Rounded
     local UICorner = Instance.new("UICorner")
     UICorner.CornerRadius = UDim.new(0, 8)
     UICorner.Parent = ImageButton
 
-    -- Invisible button untuk klik
+    -- Button invisible untuk klik
     local Button = Instance.new("TextButton")
     Button.Parent = ImageButton
     Button.Size = UDim2.new(1, 0, 1, 0)
     Button.BackgroundTransparency = 1
     Button.Text = ""
 
-    -- Klik untuk toggle UI
+    -- Toggle UI pas klik
     Button.MouseButton1Click:Connect(function()
         if DropShadowHolder then
             DropShadowHolder.Visible = not DropShadowHolder.Visible
+        end
+    end)
+
+    -- Custom drag
+    local dragging, dragInput, dragStart, startPos
+
+    local function update(input)
+        local delta = input.Position - dragStart
+        ImageButton.Position = UDim2.new(
+            startPos.X.Scale,
+            startPos.X.Offset + delta.X,
+            startPos.Y.Scale,
+            startPos.Y.Offset + delta.Y
+        )
+    end
+
+    ImageButton.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            dragStart = input.Position
+            startPos = ImageButton.Position
+
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
+                end
+            end)
+        end
+    end)
+
+    ImageButton.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement then
+            dragInput = input
+        end
+    end)
+
+    UserInputService.InputChanged:Connect(function(input)
+        if input == dragInput and dragging then
+            update(input)
         end
     end)
 end
