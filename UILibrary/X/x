@@ -373,13 +373,13 @@ function Chloex:MakeNotify(NotifyConfig)
 end
 
 function chloex(msg, delay, color, title, desc)
-    return Chloex:MakeNotify({
-        Title = title or "Chloe X",
-        Description = desc or "Notification",
-        Content = msg or "Content",
-        Color = color or Color3.fromRGB(255, 0, 255),
-        Delay = delay or 5
-    })
+	return Chloex:MakeNotify({
+		Title = title or "Chloe X",
+		Description = desc or "Notification",
+		Content = msg or "Content",
+		Color = color or Color3.fromRGB(255, 0, 255),
+		Delay = delay or 5
+	})
 end
 
 function Chloex:MakeGui(GuiConfig)
@@ -1075,6 +1075,7 @@ function Chloex:MakeGui(GuiConfig)
 
 			UICorner4.Parent = ChooseFrame
 		end
+
 		TabButton.Activated:Connect(function()
 			CircleClick(TabButton, Mouse.X, Mouse.Y)
 			local FrameChoose
@@ -2378,7 +2379,25 @@ function Chloex:MakeGui(GuiConfig)
 		end
 
 		CountTab = CountTab + 1
+		local safeName = TabConfig.Name:gsub("%s+", "_")
+		_G[safeName] = Sections
 		return Sections
+	end
+
+	function Tabs:Chloe(...)
+		local args = { ... }
+		for i = 1, #args, 2 do
+			local tabName = args[i]
+			local tabIcon = args[i + 1]
+			if tabName then
+				local tab = self:CreateTab({
+					Name = tabName,
+					Icon = tabIcon or ""
+				})
+				local safeName = tabName:gsub("%s+", "_")
+				_G[safeName] = tab
+			end
+		end
 	end
 
 	return Tabs
