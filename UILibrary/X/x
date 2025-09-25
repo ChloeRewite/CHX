@@ -57,14 +57,18 @@ local function MakeDraggable(topbarobject, object)
 	local function CustomSize(object)
 		local Dragging, DragInput, DragStart, StartSize
 
-		local maxSizeX, maxSizeY
+		local minSizeX, minSizeY
+		local defSizeX, defSizeY
+
 		if isMobile then
-			maxSizeX, maxSizeY = 100, 100
+			minSizeX, minSizeY = 100, 100
+			defSizeX, defSizeY = 500, 300
 		else
-			maxSizeX, maxSizeY = 500, 300
+			minSizeX, minSizeY = 500, 300
+			defSizeX, defSizeY = 900, 500
 		end
 
-		object.Size = UDim2.new(0, maxSizeX, 0, maxSizeY)
+		object.Size = UDim2.new(0, defSizeX, 0, defSizeY)
 
 		local changesizeobject = Instance.new("Frame")
 		changesizeobject.AnchorPoint = Vector2.new(1, 1)
@@ -78,8 +82,10 @@ local function MakeDraggable(topbarobject, object)
 			local Delta = input.Position - DragStart
 			local newWidth = StartSize.X.Offset + Delta.X
 			local newHeight = StartSize.Y.Offset + Delta.Y
-			newWidth = math.max(newWidth, maxSizeX)
-			newHeight = math.max(newHeight, maxSizeY)
+
+			newWidth = math.max(newWidth, minSizeX)
+			newHeight = math.max(newHeight, minSizeY)
+
 			local Tween = TweenService:Create(object, TweenInfo.new(0.2), { Size = UDim2.new(0, newWidth, 0, newHeight) })
 			Tween:Play()
 		end
@@ -113,6 +119,7 @@ local function MakeDraggable(topbarobject, object)
 	CustomSize(object)
 	CustomPos(topbarobject, object)
 end
+
 function CircleClick(Button, X, Y)
 	spawn(function()
 		Button.ClipsDescendants = true
