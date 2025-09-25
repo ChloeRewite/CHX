@@ -1334,20 +1334,20 @@ function Chloex:MakeGui(GuiConfig)
 
 			local Items = {}
 			local CountItem = 0
+
 			function Items:AddParagraph(ParagraphConfig)
 				local ParagraphConfig = ParagraphConfig or {}
 				ParagraphConfig.Title = ParagraphConfig.Title or "Title"
 				ParagraphConfig.Content = ParagraphConfig.Content or "Content"
 				local ParagraphFunc = {}
 
-				local Paragraph = Instance.new("Frame");
-				local UICorner14 = Instance.new("UICorner");
-				local ParagraphTitle = Instance.new("TextLabel");
-				local ParagraphContent = Instance.new("TextLabel");
+				local Paragraph = Instance.new("Frame")
+				local UICorner14 = Instance.new("UICorner")
+				local ParagraphTitle = Instance.new("TextLabel")
+				local ParagraphContent = Instance.new("TextLabel")
 
 				Paragraph.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				Paragraph.BackgroundTransparency = 0.9350000023841858
-				Paragraph.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				Paragraph.BackgroundTransparency = 0.935
 				Paragraph.BorderSizePixel = 0
 				Paragraph.LayoutOrder = CountItem
 				Paragraph.Size = UDim2.new(1, 0, 0, 46)
@@ -1359,56 +1359,41 @@ function Chloex:MakeGui(GuiConfig)
 
 				ParagraphTitle.Font = Enum.Font.GothamBold
 				ParagraphTitle.Text = ParagraphConfig.Title
-				ParagraphTitle.TextColor3 = Color3.fromRGB(230.77499270439148, 230.77499270439148, 230.77499270439148)
+				ParagraphTitle.TextColor3 = Color3.fromRGB(230, 230, 230)
 				ParagraphTitle.TextSize = 13
 				ParagraphTitle.TextXAlignment = Enum.TextXAlignment.Left
-				ParagraphTitle.TextYAlignment = Enum.TextYAlignment.Top
-				ParagraphTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				ParagraphTitle.BackgroundTransparency = 0.9990000128746033
-				ParagraphTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				ParagraphTitle.BorderSizePixel = 0
+				ParagraphTitle.BackgroundTransparency = 1
 				ParagraphTitle.Position = UDim2.new(0, 10, 0, 10)
 				ParagraphTitle.Size = UDim2.new(1, -16, 0, 13)
 				ParagraphTitle.Name = "ParagraphTitle"
 				ParagraphTitle.Parent = Paragraph
 
-				ParagraphContent.Font = Enum.Font.GothamBold
+				ParagraphContent.Font = Enum.Font.Gotham
 				ParagraphContent.Text = ParagraphConfig.Content
 				ParagraphContent.TextColor3 = Color3.fromRGB(255, 255, 255)
 				ParagraphContent.TextSize = 12
-				ParagraphContent.TextTransparency = 0.6000000238418579
+				ParagraphContent.TextTransparency = 0.6
 				ParagraphContent.TextXAlignment = Enum.TextXAlignment.Left
-				ParagraphContent.TextYAlignment = Enum.TextYAlignment.Bottom
-				ParagraphContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				ParagraphContent.BackgroundTransparency = 0.9990000128746033
-				ParagraphContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				ParagraphContent.BorderSizePixel = 0
-				ParagraphContent.Position = UDim2.new(0, 10, 0, 23)
+				ParagraphContent.TextYAlignment = Enum.TextYAlignment.Top
+				ParagraphContent.BackgroundTransparency = 1
+				ParagraphContent.Position = UDim2.new(0, 10, 0, 25)
 				ParagraphContent.Name = "ParagraphContent"
+				ParagraphContent.RichText = false
+				ParagraphContent.TextWrapped = true
+				ParagraphContent.AutomaticSize = Enum.AutomaticSize.Y
+				ParagraphContent.Size = UDim2.new(1, -16, 0, 0)
 				ParagraphContent.Parent = Paragraph
 
-				ParagraphContent.Size = UDim2.new(1, -16, 0,
-					12 + (12 * (ParagraphContent.TextBounds.X // ParagraphContent.AbsoluteSize.X)))
-				ParagraphContent.TextWrapped = true
 				Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.AbsoluteSize.Y + 33)
 
-				ParagraphContent:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
-					ParagraphContent.TextWrapped = false
-					ParagraphContent.Size = UDim2.new(1, -16, 0,
-						12 + (12 * (ParagraphContent.TextBounds.X // ParagraphContent.AbsoluteSize.X)))
+				ParagraphContent:GetPropertyChangedSignal("TextBounds"):Connect(function()
 					Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.AbsoluteSize.Y + 33)
-					ParagraphContent.TextWrapped = true
 					UpdateSizeSection()
 				end)
 
 				function ParagraphFunc:SetContent(content)
 					content = content or "Content"
-
 					ParagraphContent.Text = content
-					ParagraphContent.TextWrapped = false
-					ParagraphContent.Size = UDim2.new(1, -16, 0, 12 + (12 // ParagraphContent.AbsoluteSize.X))
-					ParagraphContent.TextWrapped = true
-					Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.AbsoluteSize.Y + 33)
 				end
 
 				CountItem = CountItem + 1
