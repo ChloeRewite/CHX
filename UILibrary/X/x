@@ -697,6 +697,10 @@ function FlurioreLib:MakeGui(GuiConfig)
 		if HirimiGui then
 			HirimiGui:Destroy()
 		end
+		local toggle = CoreGui:FindFirstChild("ToggleUIButton")
+		if toggle then
+			toggle:Destroy()
+		end
 	end)
 	function GuiFunc:ToggleUI()
 		local ScreenGui = Instance.new("ScreenGui")
