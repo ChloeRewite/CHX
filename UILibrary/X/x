@@ -2369,7 +2369,6 @@ function Chloex:MakeGui(GuiConfig)
 					end)
 				end
 
-				-- 🔹 Fungsi baru pengganti Refresh
 				function DropdownFunc:SetValues(newList, selecting)
 					newList = newList or {}
 					selecting = selecting or {}
@@ -2381,7 +2380,6 @@ function Chloex:MakeGui(GuiConfig)
 					DropdownFunc:Set(selecting)
 				end
 
-				-- inisialisasi
 				DropdownFunc:SetValues(DropdownFunc.Options, DropdownFunc.Value)
 
 				CountItem = CountItem + 1
