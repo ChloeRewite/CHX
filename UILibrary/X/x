@@ -5,9 +5,9 @@ local Mouse = LocalPlayer:GetMouse()
 local CoreGui = game:GetService("CoreGui")
 
 local function isMobileDevice()
-    return UserInputService.TouchEnabled 
-        and not UserInputService.KeyboardEnabled 
-        and not UserInputService.MouseEnabled
+	return UserInputService.TouchEnabled
+		and not UserInputService.KeyboardEnabled
+		and not UserInputService.MouseEnabled
 end
 
 local isMobile = isMobileDevice()
@@ -149,10 +149,10 @@ function CircleClick(Button, X, Y)
 	end)
 end
 
-local FlurioreLib = {}
-function FlurioreLib:MakeNotify(NotifyConfig)
+local Chloex = {}
+function Chloex:MakeNotify(NotifyConfig)
 	local NotifyConfig = NotifyConfig or {}
-	NotifyConfig.Title = NotifyConfig.Title or "Hirimi Hub"
+	NotifyConfig.Title = NotifyConfig.Title or "Chloe X"
 	NotifyConfig.Description = NotifyConfig.Description or "Notification"
 	NotifyConfig.Content = NotifyConfig.Content or "Content"
 	NotifyConfig.Color = NotifyConfig.Color or Color3.fromRGB(255, 0, 255)
@@ -372,7 +372,17 @@ function FlurioreLib:MakeNotify(NotifyConfig)
 	return NotifyFunction
 end
 
-function FlurioreLib:MakeGui(GuiConfig)
+function chloex(msg, delay, color, title, desc)
+    return Chloex:MakeNotify({
+        Title = title or "Chloe X",
+        Description = desc or "Notification",
+        Content = msg or "Content",
+        Color = color or Color3.fromRGB(255, 0, 255),
+        Delay = delay or 5
+    })
+end
+
+function Chloex:MakeGui(GuiConfig)
 	local GuiConfig = GuiConfig or {}
 	GuiConfig.NameHub = GuiConfig.NameHub or "Celestial"
 	GuiConfig.Description = GuiConfig.Description or "Chloee :3"
@@ -380,7 +390,7 @@ function FlurioreLib:MakeGui(GuiConfig)
 	GuiConfig["Tab Width"] = GuiConfig["Tab Width"] or 120
 	local GuiFunc = {}
 
-	local HirimiGui = Instance.new("ScreenGui");
+	local Chloeex = Instance.new("ScreenGui");
 	local DropShadowHolder = Instance.new("Frame");
 	local DropShadow = Instance.new("ImageLabel");
 	local Main = Instance.new("Frame");
@@ -408,10 +418,10 @@ function FlurioreLib:MakeGui(GuiConfig)
 	local LayersFolder = Instance.new("Folder");
 	local LayersPageLayout = Instance.new("UIPageLayout");
 
-	HirimiGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	HirimiGui.Name = "HirimiGui"
-	HirimiGui.ResetOnSpawn = false
-	HirimiGui.Parent = game:GetService("CoreGui")
+	Chloeex.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	Chloeex.Name = "Chloeex"
+	Chloeex.ResetOnSpawn = false
+	Chloeex.Parent = game:GetService("CoreGui")
 
 	DropShadowHolder.BackgroundTransparency = 1
 	DropShadowHolder.BorderSizePixel = 0
@@ -422,10 +432,10 @@ function FlurioreLib:MakeGui(GuiConfig)
 	end
 	DropShadowHolder.ZIndex = 0
 	DropShadowHolder.Name = "DropShadowHolder"
-	DropShadowHolder.Parent = HirimiGui
+	DropShadowHolder.Parent = Chloeex
 
-	DropShadowHolder.Position = UDim2.new(0, (HirimiGui.AbsoluteSize.X // 2 - DropShadowHolder.Size.X.Offset // 2), 0,
-		(HirimiGui.AbsoluteSize.Y // 2 - DropShadowHolder.Size.Y.Offset // 2))
+	DropShadowHolder.Position = UDim2.new(0, (Chloeex.AbsoluteSize.X // 2 - DropShadowHolder.Size.X.Offset // 2), 0,
+		(Chloeex.AbsoluteSize.Y // 2 - DropShadowHolder.Size.Y.Offset // 2))
 	DropShadow.Image = "rbxassetid://6015897843"
 	DropShadow.ImageColor3 = Color3.fromRGB(15, 15, 15)
 	DropShadow.ImageTransparency = 0.5
@@ -679,8 +689,8 @@ function FlurioreLib:MakeGui(GuiConfig)
 	ScrollTab.ChildRemoved:Connect(UpdateSize1)
 
 	function GuiFunc:DestroyGui()
-		if CoreGui:FindFirstChild("HirimiGui") then
-			HirimiGui:Destroy()
+		if CoreGui:FindFirstChild("Chloeex") then
+			Chloeex:Destroy()
 		end
 	end
 
@@ -717,7 +727,7 @@ function FlurioreLib:MakeGui(GuiConfig)
 		local Dialog = Instance.new("Frame")
 		Dialog.Size = UDim2.new(0, 300, 0, 150)
 		Dialog.Position = UDim2.new(0.5, -150, 0.5, -75)
-		Dialog.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+		Dialog.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 		Dialog.BorderSizePixel = 0
 		Dialog.ZIndex = 51
 		Dialog.Parent = Overlay
@@ -750,7 +760,7 @@ function FlurioreLib:MakeGui(GuiConfig)
 		local Yes = Instance.new("TextButton")
 		Yes.Size = UDim2.new(0.45, -10, 0, 35)
 		Yes.Position = UDim2.new(0.05, 0, 1, -45)
-		Yes.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+		Yes.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
 		Yes.Text = "Yes"
 		Yes.Font = Enum.Font.GothamBold
 		Yes.TextSize = 16
@@ -772,7 +782,7 @@ function FlurioreLib:MakeGui(GuiConfig)
 		Instance.new("UICorner", Cancel).CornerRadius = UDim.new(0, 6)
 
 		Yes.MouseButton1Click:Connect(function()
-			if HirimiGui then HirimiGui:Destroy() end
+			if Chloeex then Chloeex:Destroy() end
 			if game.CoreGui:FindFirstChild("ToggleUIButton") then
 				game.CoreGui.ToggleUIButton:Destroy()
 			end
@@ -2225,12 +2235,13 @@ function FlurioreLib:MakeGui(GuiConfig)
 				function DropdownFunc:Clear()
 					for _, DropFrame in ScrollSelect:GetChildren() do
 						if DropFrame.Name == "Option" then
-							DropdownFunc.Value = {}
-							DropdownFunc.Options = {}
-							OptionSelecting.Text = "Select Options"
 							DropFrame:Destroy()
 						end
 					end
+					DropdownFunc.Value = {}
+					DropdownFunc.Options = {}
+					OptionSelecting.Text = "Select Options"
+					DropCount = 0
 				end
 
 				function DropdownFunc:Set(Value)
@@ -2241,36 +2252,32 @@ function FlurioreLib:MakeGui(GuiConfig)
 					end
 
 					for _, Drop in ScrollSelect:GetChildren() do
-						if Drop.Name ~= "UIListLayout" then
+						if Drop.Name == "Option" then
 							local isSelected = DropdownConfig.Multi
 								and table.find(DropdownFunc.Value, Drop.OptionText.Text)
 								or DropdownFunc.Value == Drop.OptionText.Text
 
 							if isSelected then
-								-- hiệu ứng chọn
 								TweenService:Create(Drop.ChooseFrame, TweenInfo.new(0.2),
-									{ Size = UDim2.new(0, 1, 0, 12) })
-									:Play()
-								TweenService:Create(Drop.ChooseFrame.UIStroke, TweenInfo.new(0.2), { Transparency = 0 })
-									:Play()
-								TweenService:Create(Drop, TweenInfo.new(0.2), { BackgroundTransparency = 0.935 }):Play()
+									{ Size = UDim2.new(0, 1, 0, 12) }):Play()
+								TweenService:Create(Drop.ChooseFrame.UIStroke, TweenInfo.new(0.2),
+									{ Transparency = 0 }):Play()
+								TweenService:Create(Drop, TweenInfo.new(0.2),
+									{ BackgroundTransparency = 0.935 }):Play()
 							else
-								-- hiệu ứng bỏ chọn
 								TweenService:Create(Drop.ChooseFrame, TweenInfo.new(0.1),
-									{ Size = UDim2.new(0, 0, 0, 0) })
-									:Play()
+									{ Size = UDim2.new(0, 0, 0, 0) }):Play()
 								TweenService:Create(Drop.ChooseFrame.UIStroke, TweenInfo.new(0.1),
-									{ Transparency = 0.999 })
-									:Play()
-								TweenService:Create(Drop, TweenInfo.new(0.1), { BackgroundTransparency = 0.999 }):Play()
+									{ Transparency = 0.999 }):Play()
+								TweenService:Create(Drop, TweenInfo.new(0.1),
+									{ BackgroundTransparency = 0.999 }):Play()
 							end
 						end
 					end
 
-					-- Hiển thị text
 					if DropdownConfig.Multi then
-						local DropdownValueTable = table.concat(DropdownFunc.Value, ", ")
-						OptionSelecting.Text = DropdownValueTable == "" and "Select Options" or DropdownValueTable
+						local text = table.concat(DropdownFunc.Value, ", ")
+						OptionSelecting.Text = text == "" and "Select Options" or text
 					else
 						OptionSelecting.Text = DropdownFunc.Value == "" and "Select Option" or DropdownFunc.Value
 					end
@@ -2282,19 +2289,15 @@ function FlurioreLib:MakeGui(GuiConfig)
 
 				function DropdownFunc:AddOption(OptionName)
 					OptionName = OptionName or "Option"
-					local Option = Instance.new("Frame");
-					local UICorner37 = Instance.new("UICorner");
-					local OptionButton = Instance.new("TextButton");
+					local Option = Instance.new("Frame")
+					local OptionButton = Instance.new("TextButton")
 					local OptionText = Instance.new("TextLabel")
-					local ChooseFrame = Instance.new("Frame");
-					local UIStroke15 = Instance.new("UIStroke");
-					local UICorner38 = Instance.new("UICorner");
+					local ChooseFrame = Instance.new("Frame")
+					local UIStroke15 = Instance.new("UIStroke")
+					local UICorner38 = Instance.new("UICorner")
+					local UICorner37 = Instance.new("UICorner")
 
-					Option.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 					Option.BackgroundTransparency = 0.999
-					Option.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					Option.BorderSizePixel = 0
-					Option.LayoutOrder = DropCount
 					Option.Size = UDim2.new(1, 0, 0, 30)
 					Option.Name = "Option"
 					Option.Parent = ScrollSelect
@@ -2302,29 +2305,16 @@ function FlurioreLib:MakeGui(GuiConfig)
 					UICorner37.CornerRadius = UDim.new(0, 3)
 					UICorner37.Parent = Option
 
-					OptionButton.Font = Enum.Font.GothamBold
-					OptionButton.Text = ""
-					OptionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-					OptionButton.TextSize = 13
-					OptionButton.TextXAlignment = Enum.TextXAlignment.Left
-					OptionButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-					OptionButton.BackgroundTransparency = 0.9990000128746033
-					OptionButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					OptionButton.BorderSizePixel = 0
+					OptionButton.BackgroundTransparency = 1
 					OptionButton.Size = UDim2.new(1, 0, 1, 0)
+					OptionButton.Text = ""
 					OptionButton.Name = "OptionButton"
 					OptionButton.Parent = Option
 
 					OptionText.Font = Enum.Font.GothamBold
 					OptionText.Text = OptionName
 					OptionText.TextSize = 13
-					OptionText.TextColor3 = Color3.fromRGB(230.77499270439148, 230.77499270439148, 230.77499270439148)
-					OptionText.TextXAlignment = Enum.TextXAlignment.Left
-					OptionText.TextYAlignment = Enum.TextYAlignment.Top
-					OptionText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-					OptionText.BackgroundTransparency = 0.9990000128746033
-					OptionText.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					OptionText.BorderSizePixel = 0
+					OptionText.TextColor3 = Color3.fromRGB(230, 230, 230)
 					OptionText.Position = UDim2.new(0, 8, 0, 8)
 					OptionText.Size = UDim2.new(1, -100, 0, 13)
 					OptionText.Name = "OptionText"
@@ -2332,22 +2322,19 @@ function FlurioreLib:MakeGui(GuiConfig)
 
 					ChooseFrame.AnchorPoint = Vector2.new(0, 0.5)
 					ChooseFrame.BackgroundColor3 = GuiConfig.Color
-					ChooseFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					ChooseFrame.BorderSizePixel = 0
 					ChooseFrame.Position = UDim2.new(0, 2, 0.5, 0)
 					ChooseFrame.Size = UDim2.new(0, 0, 0, 0)
 					ChooseFrame.Name = "ChooseFrame"
 					ChooseFrame.Parent = Option
 
 					UIStroke15.Color = GuiConfig.Color
-					UIStroke15.Thickness = 1.600000023841858
+					UIStroke15.Thickness = 1.6
 					UIStroke15.Transparency = 0.999
 					UIStroke15.Parent = ChooseFrame
 
 					UICorner38.Parent = ChooseFrame
 
 					OptionButton.Activated:Connect(function()
-						CircleClick(OptionButton, Mouse.X, Mouse.Y)
 						if DropdownConfig.Multi then
 							if not table.find(DropdownFunc.Value, OptionName) then
 								table.insert(DropdownFunc.Value, OptionName)
@@ -2364,29 +2351,23 @@ function FlurioreLib:MakeGui(GuiConfig)
 						end
 						DropdownFunc:Set(DropdownFunc.Value)
 					end)
-
-					local OffsetY = 0
-					for _, child in ScrollSelect:GetChildren() do
-						if child.Name ~= "UIListLayout" then
-							OffsetY = OffsetY + 3 + child.Size.Y.Offset
-						end
-					end
-					ScrollSelect.CanvasSize = UDim2.new(0, 0, 0, OffsetY)
-					DropCount = DropCount + 1
 				end
 
-				function DropdownFunc:Refresh(RefreshList, Selecting)
-					RefreshList = RefreshList or {}
-					Selecting = Selecting or {}
+				-- 🔹 Fungsi baru pengganti Refresh
+				function DropdownFunc:SetValues(newList, selecting)
+					newList = newList or {}
+					selecting = selecting or {}
 					DropdownFunc:Clear()
-					for _, Drop in pairs(RefreshList) do
-						DropdownFunc:AddOption(Drop)
+					for _, v in ipairs(newList) do
+						DropdownFunc:AddOption(v)
 					end
-					DropdownFunc.Options = RefreshList
-					DropdownFunc:Set(Selecting)
+					DropdownFunc.Options = newList
+					DropdownFunc:Set(selecting)
 				end
 
-				DropdownFunc:Refresh(DropdownFunc.Options, DropdownFunc.Value)
+				-- inisialisasi
+				DropdownFunc:SetValues(DropdownFunc.Options, DropdownFunc.Value)
+
 				CountItem = CountItem + 1
 				CountDropdown = CountDropdown + 1
 				return DropdownFunc
@@ -2403,4 +2384,4 @@ function FlurioreLib:MakeGui(GuiConfig)
 	return Tabs
 end
 
-return FlurioreLib
+return Chloex

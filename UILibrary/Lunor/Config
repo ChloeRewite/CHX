@@ -193,7 +193,7 @@ function FlagsManager:InitSaveSystem(tab)
         Description = "Section for using your saved configs, or those you copied and added to the sections folder.",
     })
 
-    ConfigSection:AddTextbox({
+    ConfigSection:AddInput({
         Title = "Config Name",
         Description = "Before you click on the create config button, enter a name!",
         Callback = function(val)
