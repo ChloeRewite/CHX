@@ -59,9 +59,9 @@ local function MakeDraggable(topbarobject, object)
 
 		local maxSizeX, maxSizeY
 		if isMobile then
-			maxSizeX, maxSizeY = 500, 300
+			maxSizeX, maxSizeY = 100, 100
 		else
-			maxSizeX, maxSizeY = 900, 500
+			maxSizeX, maxSizeY = 500, 300
 		end
 
 		object.Size = UDim2.new(0, maxSizeX, 0, maxSizeY)
@@ -384,7 +384,7 @@ end
 
 function Chloex:MakeGui(GuiConfig)
 	local GuiConfig = GuiConfig or {}
-	GuiConfig.NameHub = GuiConfig.NameHub or "Celestial"
+	GuiConfig.Title = GuiConfig.Title or "Chloe X"
 	GuiConfig.Description = GuiConfig.Description or "Chloee :3"
 	GuiConfig.Color = GuiConfig.Color or Color3.fromRGB(255, 0, 255)
 	GuiConfig["Tab Width"] = GuiConfig["Tab Width"] or 120
@@ -484,7 +484,7 @@ function Chloex:MakeGui(GuiConfig)
 	Top.Parent = Main
 
 	TextLabel.Font = Enum.Font.GothamBold
-	TextLabel.Text = GuiConfig.NameHub
+	TextLabel.Text = GuiConfig.Chloe X
 	TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 	TextLabel.TextSize = 14
 	TextLabel.TextXAlignment = Enum.TextXAlignment.Left
