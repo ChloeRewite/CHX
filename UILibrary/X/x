@@ -696,47 +696,40 @@ function GuiFunc:ToggleUI()
     ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     ScreenGui.Name = "ToggleUIButton"
 
-    -- Tombol (ImageLabel)
-    local ImageButton = Instance.new("ImageLabel")
+    local ImageButton = Instance.new("Frame")
     ImageButton.Parent = ScreenGui
     ImageButton.Size = UDim2.new(0, 50, 0, 50)
     ImageButton.Position = UDim2.new(0, 20, 0, 100)
     ImageButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    ImageButton.Image = "rbxassetid://" .. GuiConfig.Image
-    ImageButton.ImageColor3 = Color3.fromRGB(255, 255, 255)
 
     local UICorner = Instance.new("UICorner")
     UICorner.CornerRadius = UDim.new(0, 8)
     UICorner.Parent = ImageButton
 
-    -- Button invisible untuk klik
+    local Icon = Instance.new("ImageLabel")
+    Icon.Parent = ImageButton
+    Icon.Size = UDim2.new(1, -10, 1, -10)
+    Icon.Position = UDim2.new(0.5, 0, 0.5, 0)
+    Icon.AnchorPoint = Vector2.new(0.5,0.5)
+    Icon.BackgroundTransparency = 1
+    Icon.Image = "rbxassetid://" .. GuiConfig.Image
+    Icon.ImageColor3 = Color3.fromRGB(255,255,255)
+
     local Button = Instance.new("TextButton")
     Button.Parent = ImageButton
     Button.Size = UDim2.new(1, 0, 1, 0)
     Button.BackgroundTransparency = 1
     Button.Text = ""
 
-    -- Toggle UI pas klik
     Button.MouseButton1Click:Connect(function()
         if DropShadowHolder then
             DropShadowHolder.Visible = not DropShadowHolder.Visible
         end
     end)
 
-    -- Custom drag
-    local dragging, dragInput, dragStart, startPos
+    local dragging, dragStart, startPos
 
-    local function update(input)
-        local delta = input.Position - dragStart
-        ImageButton.Position = UDim2.new(
-            startPos.X.Scale,
-            startPos.X.Offset + delta.X,
-            startPos.Y.Scale,
-            startPos.Y.Offset + delta.Y
-        )
-    end
-
-    ImageButton.InputBegan:Connect(function(input)
+    Button.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
             dragging = true
             dragStart = input.Position
@@ -750,15 +743,19 @@ function GuiFunc:ToggleUI()
         end
     end)
 
-    ImageButton.InputChanged:Connect(function(input)
+    Button.InputChanged:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseMovement then
-            dragInput = input
-        end
-    end)
-
-    UserInputService.InputChanged:Connect(function(input)
-        if input == dragInput and dragging then
-            update(input)
+            UserInputService.InputChanged:Connect(function(moveInput)
+                if dragging and moveInput.UserInputType == Enum.UserInputType.MouseMovement then
+                    local delta = moveInput.Position - dragStart
+                    ImageButton.Position = UDim2.new(
+                        startPos.X.Scale,
+                        startPos.X.Offset + delta.X,
+                        startPos.Y.Scale,
+                        startPos.Y.Offset + delta.Y
+                    )
+                end
+            end)
         end
     end)
 end
