@@ -362,8 +362,8 @@ function FlurioreLib:MakeNotify(NotifyConfig)
 end
 function FlurioreLib:MakeGui(GuiConfig)
 	local GuiConfig = GuiConfig or {}
-	GuiConfig.NameHub = GuiConfig.NameHub or "Hirimi Hub"
-	GuiConfig.Description = GuiConfig.Description or "Comeback | developing by Hirimi, Teru"
+	GuiConfig.NameHub = GuiConfig.NameHub or "Celestial"
+	GuiConfig.Description = GuiConfig.Description or "Chloee :3"
 	GuiConfig.Color = GuiConfig.Color or Color3.fromRGB(255, 0, 255)	
 	GuiConfig["Tab Width"] = GuiConfig["Tab Width"] or 120
 	local GuiFunc = {}
@@ -692,80 +692,54 @@ function FlurioreLib:MakeGui(GuiConfig)
 	end)
 function GuiFunc:ToggleUI()
     local ScreenGui = Instance.new("ScreenGui")
-    local Frame = Instance.new("Frame")
-    local ImageLabel = Instance.new("ImageLabel")
-    local UICorner = Instance.new("UICorner")
-    local TextButton = Instance.new("TextButton")
-
     ScreenGui.Parent = game:GetService("CoreGui")  
     ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    ScreenGui.Name = "ToggleUIButton"
 
+    --// Tombol utama
+    local Frame = Instance.new("Frame")
     Frame.Parent = ScreenGui
-    Frame.AnchorPoint = Vector2.new(0.1, 0.1)
-    Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    Frame.BackgroundTransparency = 0
-    Frame.BorderColor3 = Color3.fromRGB(27, 42, 53)
-    Frame.BorderSizePixel = 1
-    Frame.Position = UDim2.new(0, 20, 0.1, -6)  
     Frame.Size = UDim2.new(0, 50, 0, 50)
-    Frame.Name = "dut dit"
+    Frame.Position = UDim2.new(0, 20, 0, 100) -- default pos
+    Frame.BackgroundColor3 = Color3.fromRGB(40, 40, 40) -- warna dasar
+    Frame.BorderSizePixel = 0
+    Frame.Active = true -- biar bisa drag
+    Frame.Draggable = true -- bisa di-drag
+    Frame.Name = "ToggleFrame"
 
+    -- Rounded corner
+    local UICorner = Instance.new("UICorner")
+    UICorner.CornerRadius = UDim.new(0, 8)
+    UICorner.Parent = Frame
+
+    --// Icon dalam tombol
+    local ImageLabel = Instance.new("ImageLabel")
     ImageLabel.Parent = Frame
-    ImageLabel.Name = "Banana Test"
     ImageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
     ImageLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
-    ImageLabel.Size = UDim2.new(0, 40, 0, 40)
-    ImageLabel.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
+    ImageLabel.Size = UDim2.new(0, 30, 0, 30)
     ImageLabel.BackgroundTransparency = 1
-    ImageLabel.BorderSizePixel = 1
-    ImageLabel.BorderColor3 = Color3.fromRGB(27, 42, 53)
     ImageLabel.ImageColor3 = Color3.fromRGB(255, 255, 255)
     ImageLabel.Image = "rbxassetid://" .. GuiConfig.Image
 
-    UICorner.CornerRadius = UDim.new(1, 0)
-    UICorner.Parent = Frame
+    --// Tombol invisible untuk klik
+    local Button = Instance.new("TextButton")
+    Button.Parent = Frame
+    Button.Size = UDim2.new(1, 0, 1, 0)
+    Button.BackgroundTransparency = 1
+    Button.Text = ""
 
-    TextButton.Name = "TextButton"
-    TextButton.Parent = Frame
-    TextButton.AnchorPoint = Vector2.new(0, 0)
-    TextButton.Position = UDim2.new(0, 0, 0, 0)
-    TextButton.Size = UDim2.new(1, 0, 1, 0)
-    TextButton.BackgroundColor3 = Color3.fromRGB(163, 162, 165)
-    TextButton.BackgroundTransparency = 1
-    TextButton.BorderSizePixel = 1
-    TextButton.BorderColor3 = Color3.fromRGB(27, 42, 53)
-    TextButton.TextColor3 = Color3.fromRGB(27, 42, 53)
-    TextButton.Text = ""
-    TextButton.Font = Enum.Font.SourceSans
-    TextButton.TextSize = 8
-    TextButton.TextTransparency = 0
-
+    -- Animasi kecil (zoom icon pas klik)
     local TweenService = game:GetService("TweenService")
+    local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 
-    local zoomedIn = false
-    local originalSize = UDim2.new(0, 40, 0, 40)
-    local zoomedSize = UDim2.new(0, 30, 0, 30)
-    local tweenInfo = TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-
-    local faded = false
-    local fadeInTween = TweenService:Create(Frame, tweenInfo, {BackgroundTransparency = 0.25})
-    local fadeOutTween = TweenService:Create(Frame, tweenInfo, {BackgroundTransparency = 0})
-
-    TextButton.MouseButton1Down:Connect(function()
-
-        if zoomedIn then
-            TweenService:Create(ImageLabel, tweenInfo, {Size = originalSize}):Play()
-        else
-            TweenService:Create(ImageLabel, tweenInfo, {Size = zoomedSize}):Play()
-        end
-        zoomedIn = not zoomedIn
-
-        if faded then
-            fadeOutTween:Play()
-        else
-            fadeInTween:Play()
-        end
-        faded = not faded
+    Button.MouseButton1Click:Connect(function()
+        local zoomOut = TweenService:Create(ImageLabel, tweenInfo, {Size = UDim2.new(0, 24, 0, 24)})
+        local zoomIn = TweenService:Create(ImageLabel, tweenInfo, {Size = UDim2.new(0, 30, 0, 30)})
+        zoomOut:Play()
+        zoomOut.Completed:Connect(function()
+            zoomIn:Play()
+        end)
 
         if DropShadowHolder then
             DropShadowHolder.Visible = not DropShadowHolder.Visible
