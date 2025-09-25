@@ -690,7 +690,7 @@ function FlurioreLib:MakeGui(GuiConfig)
 		CircleClick(Close, Mouse.X, Mouse.Y)
 		DropShadowHolder.Visible = false
 	end)
-
+	
 function GuiFunc:ToggleUI()
     local ScreenGui = Instance.new("ScreenGui")
     local Frame = Instance.new("Frame")
