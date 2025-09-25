@@ -4,17 +4,26 @@ local LocalPlayer = game:GetService("Players").LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
 local CoreGui = game:GetService("CoreGui")
 
+local function isMobileDevice()
+    return UserInputService.TouchEnabled 
+        and not UserInputService.KeyboardEnabled 
+        and not UserInputService.MouseEnabled
+end
+
+local isMobile = isMobileDevice()
+
 local function MakeDraggable(topbarobject, object)
 	local function CustomPos(topbarobject, object)
-		local Dragging = nil
-		local DragInput = nil
-		local DragStart = nil
-		local StartPosition = nil
+		local Dragging, DragInput, DragStart, StartPosition
 
 		local function UpdatePos(input)
 			local Delta = input.Position - DragStart
-			local pos = UDim2.new(StartPosition.X.Scale, StartPosition.X.Offset + Delta.X, StartPosition.Y.Scale,
-				StartPosition.Y.Offset + Delta.Y)
+			local pos = UDim2.new(
+				StartPosition.X.Scale,
+				StartPosition.X.Offset + Delta.X,
+				StartPosition.Y.Scale,
+				StartPosition.Y.Offset + Delta.Y
+			)
 			local Tween = TweenService:Create(object, TweenInfo.new(0.2), { Position = pos })
 			Tween:Play()
 		end
@@ -24,7 +33,6 @@ local function MakeDraggable(topbarobject, object)
 				Dragging = true
 				DragStart = input.Position
 				StartPosition = object.Position
-
 				input.Changed:Connect(function()
 					if input.UserInputState == Enum.UserInputState.End then
 						Dragging = false
@@ -45,26 +53,24 @@ local function MakeDraggable(topbarobject, object)
 			end
 		end)
 	end
-	local function CustomSize(object)
-		local Dragging = false
-		local DragInput = nil
-		local DragStart = nil
-		local StartSize = nil
-		local maxSizeX = object.Size.X.Offset
-		if maxSizeX < 400 then
-			maxSizeX = 400
-		end
-		local maxSizeY = maxSizeX - 100
-		object.Size = UDim2.new(0, maxSizeX, 0, maxSizeY)
-		local changesizeobject = Instance.new("Frame");
 
+	local function CustomSize(object)
+		local Dragging, DragInput, DragStart, StartSize
+
+		local maxSizeX, maxSizeY
+		if isMobile then
+			maxSizeX, maxSizeY = 500, 300
+		else
+			maxSizeX, maxSizeY = 900, 500
+		end
+
+		object.Size = UDim2.new(0, maxSizeX, 0, maxSizeY)
+
+		local changesizeobject = Instance.new("Frame")
 		changesizeobject.AnchorPoint = Vector2.new(1, 1)
-		changesizeobject.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-		changesizeobject.BackgroundTransparency = 0.9990000128746033
-		changesizeobject.BorderColor3 = Color3.fromRGB(0, 0, 0)
-		changesizeobject.BorderSizePixel = 0
-		changesizeobject.Position = UDim2.new(1, 20, 1, 20)
+		changesizeobject.BackgroundTransparency = 1
 		changesizeobject.Size = UDim2.new(0, 40, 0, 40)
+		changesizeobject.Position = UDim2.new(1, 20, 1, 20)
 		changesizeobject.Name = "changesizeobject"
 		changesizeobject.Parent = object
 
@@ -103,6 +109,7 @@ local function MakeDraggable(topbarobject, object)
 			end
 		end)
 	end
+
 	CustomSize(object)
 	CustomPos(topbarobject, object)
 end
@@ -408,7 +415,11 @@ function FlurioreLib:MakeGui(GuiConfig)
 
 	DropShadowHolder.BackgroundTransparency = 1
 	DropShadowHolder.BorderSizePixel = 0
-	DropShadowHolder.Size = UDim2.new(0, 455, 0, 350)
+	if isMobile then
+		DropShadowHolder.Size = UDim2.new(0, 500, 0, 300)
+	else
+		DropShadowHolder.Size = UDim2.new(0, 900, 0, 500)
+	end
 	DropShadowHolder.ZIndex = 0
 	DropShadowHolder.Name = "DropShadowHolder"
 	DropShadowHolder.Parent = HirimiGui
