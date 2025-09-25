@@ -696,44 +696,59 @@ function GuiFunc:ToggleUI()
     ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     ScreenGui.Name = "ToggleUIButton"
 
-    local ImageButton = Instance.new("Frame")
-    ImageButton.Parent = ScreenGui
-    ImageButton.Size = UDim2.new(0, 50, 0, 50)
-    ImageButton.Position = UDim2.new(0, 20, 0, 100)
-    ImageButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    -- Kotak tombol
+    local MainButton = Instance.new("Frame")
+    MainButton.Parent = ScreenGui
+    MainButton.Size = UDim2.new(0, 50, 0, 50)
+    MainButton.Position = UDim2.new(0, 20, 0, 100)
+    MainButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 
     local UICorner = Instance.new("UICorner")
     UICorner.CornerRadius = UDim.new(0, 8)
-    UICorner.Parent = ImageButton
+    UICorner.Parent = MainButton
 
+    -- Icon
     local Icon = Instance.new("ImageLabel")
-    Icon.Parent = ImageButton
-    Icon.Size = UDim2.new(1, -10, 1, -10)
+    Icon.Parent = MainButton
+    Icon.Size = UDim2.new(0.8, 0, 0.8, 0)
     Icon.Position = UDim2.new(0.5, 0, 0.5, 0)
     Icon.AnchorPoint = Vector2.new(0.5,0.5)
     Icon.BackgroundTransparency = 1
     Icon.Image = "rbxassetid://" .. GuiConfig.Image
-    Icon.ImageColor3 = Color3.fromRGB(255,255,255)
 
+    -- Invisible button untuk klik
     local Button = Instance.new("TextButton")
-    Button.Parent = ImageButton
+    Button.Parent = MainButton
     Button.Size = UDim2.new(1, 0, 1, 0)
     Button.BackgroundTransparency = 1
     Button.Text = ""
 
+    -- Klik toggle UI
     Button.MouseButton1Click:Connect(function()
         if DropShadowHolder then
             DropShadowHolder.Visible = not DropShadowHolder.Visible
         end
     end)
 
-    local dragging, dragStart, startPos
+    -- ===== DRAG SYSTEM =====
+    local dragging = false
+    local dragStart, startPos
+
+    local function update(input)
+        local delta = input.Position - dragStart
+        MainButton.Position = UDim2.new(
+            startPos.X.Scale,
+            startPos.X.Offset + delta.X,
+            startPos.Y.Scale,
+            startPos.Y.Offset + delta.Y
+        )
+    end
 
     Button.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             dragging = true
             dragStart = input.Position
-            startPos = ImageButton.Position
+            startPos = MainButton.Position
 
             input.Changed:Connect(function()
                 if input.UserInputState == Enum.UserInputState.End then
@@ -743,19 +758,9 @@ function GuiFunc:ToggleUI()
         end
     end)
 
-    Button.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement then
-            UserInputService.InputChanged:Connect(function(moveInput)
-                if dragging and moveInput.UserInputType == Enum.UserInputType.MouseMovement then
-                    local delta = moveInput.Position - dragStart
-                    ImageButton.Position = UDim2.new(
-                        startPos.X.Scale,
-                        startPos.X.Offset + delta.X,
-                        startPos.Y.Scale,
-                        startPos.Y.Offset + delta.Y
-                    )
-                end
-            end)
+    UserInputService.InputChanged:Connect(function(input)
+        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+            update(input)
         end
     end)
 end
