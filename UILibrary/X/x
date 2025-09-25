@@ -500,7 +500,7 @@ function Chloex:MakeGui(GuiConfig)
 
 	TextLabel1.Font = Enum.Font.GothamBold
 	TextLabel1.Text = GuiConfig.Description
-	TextLabel1.TextColor3 = Color3.fromRGB(255, 255, 255)
+	TextLabel1.TextColor3 = GuiConfig.Color
 	TextLabel1.TextSize = 14
 	TextLabel1.TextXAlignment = Enum.TextXAlignment.Left
 	TextLabel1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -511,7 +511,7 @@ function Chloex:MakeGui(GuiConfig)
 	TextLabel1.Position = UDim2.new(0, TextLabel.TextBounds.X + 15, 0, 0)
 	TextLabel1.Parent = Top
 
-	UIStroke1.Color = Color3.fromRGB(255, 255, 255)
+	UIStroke1.Color = GuiConfig.Color
 	UIStroke1.Thickness = 0.4000000059604645
 	UIStroke1.Parent = TextLabel1
 
@@ -739,7 +739,7 @@ function Chloex:MakeGui(GuiConfig)
 		Title.Size = UDim2.new(1, 0, 0, 40)
 		Title.BackgroundTransparency = 1
 		Title.Font = Enum.Font.GothamBold
-		Title.Text = "Celestial Window"
+		Title.Text = "Chloe X Window"
 		Title.TextSize = 18
 		Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 		Title.ZIndex = 52
@@ -780,6 +780,19 @@ function Chloex:MakeGui(GuiConfig)
 		Cancel.ZIndex = 52
 		Cancel.Parent = Dialog
 		Instance.new("UICorner", Cancel).CornerRadius = UDim.new(0, 6)
+
+		local function AddGlowStroke(parent, color)
+			local stroke = Instance.new("UIStroke")
+			stroke.Color = color
+			stroke.Thickness = 4
+			stroke.Transparency = 0.4
+			stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+			stroke.Parent = parent
+		end
+
+		AddGlowStroke(Dialog, GuiConfig.Color)
+		AddGlowStroke(Yes, GuiConfig.Color)
+		AddGlowStroke(Cancel, GuiConfig.Color)
 
 		Yes.MouseButton1Click:Connect(function()
 			if Chloeex then Chloeex:Destroy() end
