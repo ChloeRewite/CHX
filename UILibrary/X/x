@@ -696,23 +696,16 @@ function GuiFunc:ToggleUI()
     ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     ScreenGui.Name = "ToggleUIButton"
 
-    local MainButton = Instance.new("Frame")
+    local MainButton = Instance.new("ImageLabel")
     MainButton.Parent = ScreenGui
     MainButton.Size = UDim2.new(0, 50, 0, 50)
     MainButton.Position = UDim2.new(0, 20, 0, 100)
-    MainButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    MainButton.BackgroundTransparency = 1
+    MainButton.Image = "rbxassetid://" .. GuiConfig.Image
 
     local UICorner = Instance.new("UICorner")
     UICorner.CornerRadius = UDim.new(0, 8)
     UICorner.Parent = MainButton
-
-    local Icon = Instance.new("ImageLabel")
-    Icon.Parent = MainButton
-    Icon.Size = UDim2.new(0.8, 0, 0.8, 0)
-    Icon.Position = UDim2.new(0.5, 0, 0.5, 0)
-    Icon.AnchorPoint = Vector2.new(0.5,0.5)
-    Icon.BackgroundTransparency = 1
-    Icon.Image = "rbxassetid://" .. GuiConfig.Image
 
     local Button = Instance.new("TextButton")
     Button.Parent = MainButton
