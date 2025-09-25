@@ -696,7 +696,6 @@ function GuiFunc:ToggleUI()
     ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     ScreenGui.Name = "ToggleUIButton"
 
-    -- Kotak tombol
     local MainButton = Instance.new("Frame")
     MainButton.Parent = ScreenGui
     MainButton.Size = UDim2.new(0, 50, 0, 50)
@@ -707,7 +706,6 @@ function GuiFunc:ToggleUI()
     UICorner.CornerRadius = UDim.new(0, 8)
     UICorner.Parent = MainButton
 
-    -- Icon
     local Icon = Instance.new("ImageLabel")
     Icon.Parent = MainButton
     Icon.Size = UDim2.new(0.8, 0, 0.8, 0)
@@ -716,21 +714,18 @@ function GuiFunc:ToggleUI()
     Icon.BackgroundTransparency = 1
     Icon.Image = "rbxassetid://" .. GuiConfig.Image
 
-    -- Invisible button untuk klik
     local Button = Instance.new("TextButton")
     Button.Parent = MainButton
     Button.Size = UDim2.new(1, 0, 1, 0)
     Button.BackgroundTransparency = 1
     Button.Text = ""
 
-    -- Klik toggle UI
     Button.MouseButton1Click:Connect(function()
         if DropShadowHolder then
             DropShadowHolder.Visible = not DropShadowHolder.Visible
         end
     end)
 
-    -- ===== DRAG SYSTEM =====
     local dragging = false
     local dragStart, startPos
 
@@ -749,7 +744,6 @@ function GuiFunc:ToggleUI()
             dragging = true
             dragStart = input.Position
             startPos = MainButton.Position
-
             input.Changed:Connect(function()
                 if input.UserInputState == Enum.UserInputState.End then
                     dragging = false
@@ -758,7 +752,7 @@ function GuiFunc:ToggleUI()
         end
     end)
 
-    UserInputService.InputChanged:Connect(function(input)
+    game:GetService("UserInputService").InputChanged:Connect(function(input)
         if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
             update(input)
         end
