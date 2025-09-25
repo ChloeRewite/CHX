@@ -1415,63 +1415,6 @@ function Chloex:MakeGui(GuiConfig)
 				return ParagraphFunc
 			end
 
-			function Items:AddTable(TableConfig)
-				local TableConfig = TableConfig or {}
-				TableConfig.Title = TableConfig.Title or "Table Title"
-				TableConfig.Content = TableConfig.Content or "Table Content"
-				local TableFunc = {}
-
-				local TableFrame = Instance.new("Frame")
-				TableFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				TableFrame.BackgroundTransparency = 0.935
-				TableFrame.BorderSizePixel = 0
-				TableFrame.LayoutOrder = CountItem
-				TableFrame.Size = UDim2.new(1, 0, 0, 0)
-				TableFrame.AutomaticSize = Enum.AutomaticSize.Y
-				TableFrame.Name = "Table"
-				TableFrame.Parent = SectionAdd
-
-				Instance.new("UICorner", TableFrame).CornerRadius = UDim.new(0, 4)
-
-				local layout = Instance.new("UIListLayout")
-				layout.Parent = TableFrame
-				layout.Padding = UDim.new(0, 2)
-				layout.SortOrder = Enum.SortOrder.LayoutOrder
-
-				local TitleLabel = Instance.new("TextLabel")
-				TitleLabel.Font = Enum.Font.GothamBold
-				TitleLabel.Text = TableConfig.Title
-				TitleLabel.TextColor3 = Color3.fromRGB(230, 230, 230)
-				TitleLabel.TextSize = 13
-				TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
-				TitleLabel.BackgroundTransparency = 1
-				TitleLabel.Size = UDim2.new(1, -16, 0, 16)
-				TitleLabel.Position = UDim2.new(0, 10, 0, 0)
-				TitleLabel.Parent = TableFrame
-
-				local ContentLabel = Instance.new("TextLabel")
-				ContentLabel.Font = Enum.Font.Gotham
-				ContentLabel.Text = TableConfig.Content
-				ContentLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-				ContentLabel.TextSize = 12
-				ContentLabel.TextTransparency = 0.6
-				ContentLabel.TextXAlignment = Enum.TextXAlignment.Left
-				ContentLabel.TextYAlignment = Enum.TextYAlignment.Top
-				ContentLabel.BackgroundTransparency = 1
-				ContentLabel.Size = UDim2.new(1, -16, 0, 0)
-				ContentLabel.AutomaticSize = Enum.AutomaticSize.Y
-				ContentLabel.TextWrapped = true
-				ContentLabel.Position = UDim2.new(0, 10, 0, 0)
-				ContentLabel.Parent = TableFrame
-
-				function TableFunc:SetContent(newText)
-					ContentLabel.Text = newText or "Table Content"
-				end
-
-				CountItem = CountItem + 1
-				return TableFunc
-			end
-
 			function Items:AddButton(ButtonConfig)
 				local ButtonConfig = ButtonConfig or {}
 				ButtonConfig.Title = ButtonConfig.Title or "Title"
