@@ -737,27 +737,40 @@ function Chloex:MakeGui(GuiConfig)
 		local DialogGlow = Instance.new("Frame")
 		DialogGlow.Size = UDim2.new(0, 310, 0, 160)
 		DialogGlow.Position = UDim2.new(0.5, -155, 0.5, -80)
-		DialogGlow.BackgroundColor3 = Color3.fromRGB(0, 191, 255)
+		DialogGlow.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 		DialogGlow.BackgroundTransparency = 0.8
 		DialogGlow.BorderSizePixel = 0
 		DialogGlow.ZIndex = 50
 		DialogGlow.Parent = Overlay
+
 		local GlowCorner = Instance.new("UICorner", DialogGlow)
 		GlowCorner.CornerRadius = UDim.new(0, 10)
 
+		local Gradient = Instance.new("UIGradient")
+		Gradient.Color = ColorSequence.new({
+			ColorSequenceKeypoint.new(0.0, Color3.fromRGB(0, 191, 255)),
+			ColorSequenceKeypoint.new(0.25, Color3.fromRGB(255, 255, 255)),
+			ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 140, 255)),
+			ColorSequenceKeypoint.new(0.75, Color3.fromRGB(255, 255, 255)),
+			ColorSequenceKeypoint.new(1.0, Color3.fromRGB(0, 191, 255))
+		})
+		Gradient.Rotation = 90
+		Gradient.Parent = DialogGlow
+
 		local Title = Instance.new("TextLabel")
 		Title.Size = UDim2.new(1, 0, 0, 40)
+		Title.Position = UDim2.new(0, 0, 0, 4)
 		Title.BackgroundTransparency = 1
 		Title.Font = Enum.Font.GothamBold
 		Title.Text = "Chloe X Window"
-		Title.TextSize = 18
+		Title.TextSize = 22
 		Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 		Title.ZIndex = 52
 		Title.Parent = Dialog
 
 		local Message = Instance.new("TextLabel")
 		Message.Size = UDim2.new(1, -20, 0, 60)
-		Message.Position = UDim2.new(0, 10, 0, 40)
+		Message.Position = UDim2.new(0, 10, 0, 30)
 		Message.BackgroundTransparency = 1
 		Message.Font = Enum.Font.Gotham
 		Message.Text = "Do you want to close this window?\nYou will not be able to open it again"
@@ -769,7 +782,7 @@ function Chloex:MakeGui(GuiConfig)
 
 		local Yes = Instance.new("TextButton")
 		Yes.Size = UDim2.new(0.45, -10, 0, 35)
-		Yes.Position = UDim2.new(0.05, 0, 1, -45)
+		Yes.Position = UDim2.new(0.05, 0, 1, -55)
 		Yes.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
 		Yes.Text = "Yes"
 		Yes.Font = Enum.Font.GothamBold
@@ -781,7 +794,7 @@ function Chloex:MakeGui(GuiConfig)
 
 		local Cancel = Instance.new("TextButton")
 		Cancel.Size = UDim2.new(0.45, -10, 0, 35)
-		Cancel.Position = UDim2.new(0.5, 10, 1, -45)
+		Cancel.Position = UDim2.new(0.5, 10, 1, -55)
 		Cancel.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
 		Cancel.Text = "Cancel"
 		Cancel.Font = Enum.Font.GothamBold
