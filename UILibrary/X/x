@@ -698,13 +698,14 @@ function GuiFunc:ToggleUI()
 
     local MainButton = Instance.new("ImageLabel")
     MainButton.Parent = ScreenGui
-    MainButton.Size = UDim2.new(0, 32, 0, 32)
+    MainButton.Size = UDim2.new(0, 20, 0, 20)
     MainButton.Position = UDim2.new(0, 20, 0, 100)
     MainButton.BackgroundTransparency = 1
     MainButton.Image = "rbxassetid://" .. GuiConfig.Image
+    MainButton.ScaleType = Enum.ScaleType.Fit
 
     local UICorner = Instance.new("UICorner")
-    UICorner.CornerRadius = UDim.new(0, 8)
+    UICorner.CornerRadius = UDim.new(0, 6)
     UICorner.Parent = MainButton
 
     local Button = Instance.new("TextButton")
