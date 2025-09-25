@@ -2,7 +2,8 @@ local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
-local CoreGui = LocalPlayer.PlayerGui
+local CoreGui = game:GetService("CoreGui")
+
 local function MakeDraggable(topbarobject, object)
 	local function CustomPos(topbarobject, object)
 		local Dragging = nil
@@ -403,7 +404,7 @@ function FlurioreLib:MakeGui(GuiConfig)
 	HirimiGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 	HirimiGui.Name = "HirimiGui"
 	HirimiGui.ResetOnSpawn = false
-	HirimiGui.Parent = CoreGui
+	HirimiGui.Parent = game:GetService("CoreGui")
 
 	DropShadowHolder.BackgroundTransparency = 1
 	DropShadowHolder.BorderSizePixel = 0
@@ -696,98 +697,81 @@ function FlurioreLib:MakeGui(GuiConfig)
 		CircleClick(Close, Mouse.X, Mouse.Y)
 
 		local Overlay = Instance.new("Frame")
-		Overlay.Name = "Overlay"
 		Overlay.Size = UDim2.new(1, 0, 1, 0)
-		Overlay.Position = UDim2.new(0, 0, 0, 0)
 		Overlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-		Overlay.BackgroundTransparency = 0.4
-		Overlay.BorderSizePixel = 0
+		Overlay.BackgroundTransparency = 0.3
 		Overlay.ZIndex = 50
-		Overlay.Parent = HirimiGui
-
-		local Blur = Instance.new("BlurEffect")
-		Blur.Size = 12
-		Blur.Parent = game:GetService("Lighting")
+		Overlay.Parent = DropShadowHolder
 
 		local Dialog = Instance.new("Frame")
-		Dialog.Size = UDim2.new(0, 280, 0, 140)
-		Dialog.Position = UDim2.new(0.5, -140, 0.5, -70)
-		Dialog.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+		Dialog.Size = UDim2.new(0, 300, 0, 150)
+		Dialog.Position = UDim2.new(0.5, -150, 0.5, -75)
+		Dialog.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
 		Dialog.BorderSizePixel = 0
-		Dialog.ZIndex = 100
+		Dialog.ZIndex = 51
 		Dialog.Parent = Overlay
 
-		local Corner = Instance.new("UICorner")
-		Corner.CornerRadius = UDim.new(0, 8)
-		Corner.Parent = Dialog
+		local UICorner = Instance.new("UICorner", Dialog)
+		UICorner.CornerRadius = UDim.new(0, 8)
 
 		local Title = Instance.new("TextLabel")
-		Title.Size = UDim2.new(1, -20, 0, 30)
-		Title.Position = UDim2.new(0, 10, 0, 10)
+		Title.Size = UDim2.new(1, 0, 0, 40)
 		Title.BackgroundTransparency = 1
-		Title.Text = "Celestial Window"
-		Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 		Title.Font = Enum.Font.GothamBold
-		Title.TextSize = 16
-		Title.TextXAlignment = Enum.TextXAlignment.Left
-		Title.ZIndex = 101
+		Title.Text = "Celestial Window"
+		Title.TextSize = 18
+		Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+		Title.ZIndex = 52
 		Title.Parent = Dialog
 
-		local Desc = Instance.new("TextLabel")
-		Desc.Size = UDim2.new(1, -20, 0, 50)
-		Desc.Position = UDim2.new(0, 10, 0, 40)
-		Desc.BackgroundTransparency = 1
-		Desc.Text = "Do you want close this window?\nYou will not be able to open it again"
-		Desc.TextColor3 = Color3.fromRGB(200, 200, 200)
-		Desc.Font = Enum.Font.Gotham
-		Desc.TextSize = 14
-		Desc.TextWrapped = true
-		Desc.TextYAlignment = Enum.TextYAlignment.Top
-		Desc.ZIndex = 101
-		Desc.Parent = Dialog
+		local Message = Instance.new("TextLabel")
+		Message.Size = UDim2.new(1, -20, 0, 60)
+		Message.Position = UDim2.new(0, 10, 0, 40)
+		Message.BackgroundTransparency = 1
+		Message.Font = Enum.Font.Gotham
+		Message.Text = "Do you want to close this window?\nYou will not be able to open it again"
+		Message.TextSize = 14
+		Message.TextColor3 = Color3.fromRGB(200, 200, 200)
+		Message.TextWrapped = true
+		Message.ZIndex = 52
+		Message.Parent = Dialog
 
-		local YesBtn = Instance.new("TextButton")
-		YesBtn.Size = UDim2.new(0.5, -15, 0, 30)
-		YesBtn.Position = UDim2.new(0, 10, 1, -40)
-		YesBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
-		YesBtn.Text = "Yes"
-		YesBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-		YesBtn.Font = Enum.Font.GothamBold
-		YesBtn.TextSize = 14
-		YesBtn.ZIndex = 101
-		YesBtn.Parent = Dialog
+		local Yes = Instance.new("TextButton")
+		Yes.Size = UDim2.new(0.45, -10, 0, 35)
+		Yes.Position = UDim2.new(0.05, 0, 1, -45)
+		Yes.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+		Yes.Text = "Yes"
+		Yes.Font = Enum.Font.GothamBold
+		Yes.TextSize = 16
+		Yes.TextColor3 = Color3.fromRGB(255, 255, 255)
+		Yes.ZIndex = 52
+		Yes.Parent = Dialog
+		Instance.new("UICorner", Yes).CornerRadius = UDim.new(0, 6)
 
-		local YesCorner = Instance.new("UICorner")
-		YesCorner.CornerRadius = UDim.new(0, 6)
-		YesCorner.Parent = YesBtn
+		local Cancel = Instance.new("TextButton")
+		Cancel.Size = UDim2.new(0.45, -10, 0, 35)
+		Cancel.Position = UDim2.new(0.5, 10, 1, -45)
+		Cancel.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+		Cancel.Text = "Cancel"
+		Cancel.Font = Enum.Font.GothamBold
+		Cancel.TextSize = 16
+		Cancel.TextColor3 = Color3.fromRGB(255, 255, 255)
+		Cancel.ZIndex = 52
+		Cancel.Parent = Dialog
+		Instance.new("UICorner", Cancel).CornerRadius = UDim.new(0, 6)
 
-		local CancelBtn = Instance.new("TextButton")
-		CancelBtn.Size = UDim2.new(0.5, -15, 0, 30)
-		CancelBtn.Position = UDim2.new(0.5, 5, 1, -40)
-		CancelBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-		CancelBtn.Text = "Cancel"
-		CancelBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-		CancelBtn.Font = Enum.Font.GothamBold
-		CancelBtn.TextSize = 14
-		CancelBtn.ZIndex = 101
-		CancelBtn.Parent = Dialog
-
-		local CancelCorner = Instance.new("UICorner")
-		CancelCorner.CornerRadius = UDim.new(0, 6)
-		CancelCorner.Parent = CancelBtn
-
-		YesBtn.MouseButton1Click:Connect(function()
+		Yes.MouseButton1Click:Connect(function()
 			if HirimiGui then HirimiGui:Destroy() end
-			local toggle = CoreGui:FindFirstChild("ToggleUI")
-			if toggle then toggle:Destroy() end
-			Blur:Destroy()
+			if game.CoreGui:FindFirstChild("ToggleUIButton") then
+				game.CoreGui.ToggleUIButton:Destroy()
+			end
 		end)
 
-		CancelBtn.MouseButton1Click:Connect(function()
+		Cancel.MouseButton1Click:Connect(function()
 			Overlay:Destroy()
-			Blur:Destroy()
 		end)
 	end)
+
 	function GuiFunc:ToggleUI()
 		local ScreenGui = Instance.new("ScreenGui")
 		ScreenGui.Parent = game:GetService("CoreGui")
