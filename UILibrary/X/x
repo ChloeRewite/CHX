@@ -692,55 +692,36 @@ function FlurioreLib:MakeGui(GuiConfig)
 	end)
 function GuiFunc:ToggleUI()
     local ScreenGui = Instance.new("ScreenGui")
-    ScreenGui.Parent = game:GetService("CoreGui")  
+    ScreenGui.Parent = game:GetService("CoreGui")
     ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     ScreenGui.Name = "ToggleUIButton"
 
-    --// Tombol utama
-    local Frame = Instance.new("Frame")
-    Frame.Parent = ScreenGui
-    Frame.Size = UDim2.new(0, 50, 0, 50)
-    Frame.Position = UDim2.new(0, 20, 0, 100) -- default pos
-    Frame.BackgroundColor3 = Color3.fromRGB(40, 40, 40) -- warna dasar
-    Frame.BorderSizePixel = 0
-    Frame.Active = true -- biar bisa drag
-    Frame.Draggable = true -- bisa di-drag
-    Frame.Name = "ToggleFrame"
+    -- Tombol utama langsung dari ImageLabel
+    local ImageButton = Instance.new("ImageLabel")
+    ImageButton.Parent = ScreenGui
+    ImageButton.Size = UDim2.new(0, 50, 0, 50)
+    ImageButton.Position = UDim2.new(0, 20, 0, 100)
+    ImageButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- warna kotak
+    ImageButton.BackgroundTransparency = 0
+    ImageButton.Image = "rbxassetid://" .. GuiConfig.Image
+    ImageButton.ImageColor3 = Color3.fromRGB(255, 255, 255)
+    ImageButton.Active = true
+    ImageButton.Draggable = true -- bisa di-drag kemana2
 
-    -- Rounded corner
+    -- Rounded
     local UICorner = Instance.new("UICorner")
     UICorner.CornerRadius = UDim.new(0, 8)
-    UICorner.Parent = Frame
+    UICorner.Parent = ImageButton
 
-    --// Icon dalam tombol
-    local ImageLabel = Instance.new("ImageLabel")
-    ImageLabel.Parent = Frame
-    ImageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
-    ImageLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
-    ImageLabel.Size = UDim2.new(0, 30, 0, 30)
-    ImageLabel.BackgroundTransparency = 1
-    ImageLabel.ImageColor3 = Color3.fromRGB(255, 255, 255)
-    ImageLabel.Image = "rbxassetid://" .. GuiConfig.Image
-
-    --// Tombol invisible untuk klik
+    -- Invisible button untuk klik
     local Button = Instance.new("TextButton")
-    Button.Parent = Frame
+    Button.Parent = ImageButton
     Button.Size = UDim2.new(1, 0, 1, 0)
     Button.BackgroundTransparency = 1
     Button.Text = ""
 
-    -- Animasi kecil (zoom icon pas klik)
-    local TweenService = game:GetService("TweenService")
-    local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-
+    -- Klik untuk toggle UI
     Button.MouseButton1Click:Connect(function()
-        local zoomOut = TweenService:Create(ImageLabel, tweenInfo, {Size = UDim2.new(0, 24, 0, 24)})
-        local zoomIn = TweenService:Create(ImageLabel, tweenInfo, {Size = UDim2.new(0, 30, 0, 30)})
-        zoomOut:Play()
-        zoomOut.Completed:Connect(function()
-            zoomIn:Play()
-        end)
-
         if DropShadowHolder then
             DropShadowHolder.Visible = not DropShadowHolder.Visible
         end
