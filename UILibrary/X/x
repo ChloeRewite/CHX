@@ -1350,7 +1350,8 @@ function Chloex:MakeGui(GuiConfig)
 				Paragraph.BackgroundTransparency = 0.935
 				Paragraph.BorderSizePixel = 0
 				Paragraph.LayoutOrder = CountItem
-				Paragraph.Size = UDim2.new(1, 0, 0, 46)
+				Paragraph.AutomaticSize = Enum.AutomaticSize.Y
+				Paragraph.Size = UDim2.new(1, 0, 0, 0)
 				Paragraph.Name = "Paragraph"
 				Paragraph.Parent = SectionAdd
 
@@ -1383,13 +1384,6 @@ function Chloex:MakeGui(GuiConfig)
 				ParagraphContent.AutomaticSize = Enum.AutomaticSize.Y
 				ParagraphContent.Size = UDim2.new(1, -16, 0, 0)
 				ParagraphContent.Parent = Paragraph
-
-				Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.AbsoluteSize.Y + 33)
-
-				ParagraphContent:GetPropertyChangedSignal("TextBounds"):Connect(function()
-					Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.AbsoluteSize.Y + 33)
-					UpdateSizeSection()
-				end)
 
 				function ParagraphFunc:SetContent(content)
 					content = content or "Content"
