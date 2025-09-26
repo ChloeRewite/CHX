@@ -1,6 +1,5 @@
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
-local HttpService = game:GetService("HttpService")
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
 local CoreGui = game:GetService("CoreGui")
@@ -823,37 +822,6 @@ function Chloex:MakeGui(GuiConfig)
 			Overlay:Destroy()
 		end)
 	end)
-	
-	local folder = "ChloeX/Config"
-local path = folder.."/default.json"
-
-if not isfolder("ChloeX") then makefolder("ChloeX") end
-if not isfolder(folder) then makefolder(folder) end
-
-GuiFunc.Elements = GuiFunc.Elements or {}
-
-function GuiFunc:Save()
-    local data = {}
-    for _, element in pairs(GuiFunc.Elements) do
-        if element.Title and element.Get then
-            data[element.Title] = element:Get()
-        end
-    end
-    writefile(path, HttpService:JSONEncode(data))
-end
-
-function GuiFunc:Load()
-    if not isfile(path) then return end
-    local decoded = HttpService:JSONDecode(readfile(path))
-    for _, element in pairs(GuiFunc.Elements) do
-        if element.Title and decoded[element.Title] and element.Set then
-            element:Set(decoded[element.Title])
-        end
-    end
-end
-
-return GuiFunc
-end
 
 	function GuiFunc:ToggleUI()
 		local ScreenGui = Instance.new("ScreenGui")
@@ -917,7 +885,7 @@ end
 			end
 		end)
 	end
-
+	
 	GuiFunc:ToggleUI()
 
 	DropShadowHolder.Size = UDim2.new(0, 115 + TextLabel.TextBounds.X + 1 + TextLabel1.TextBounds.X, 0, 350)
