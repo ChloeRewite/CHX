@@ -925,7 +925,7 @@ function Chloex:MakeGui(GuiConfig)
 		end)
 	end
 
-	GuiFunc:ToggleUI() << error disini 
+	GuiFunc:ToggleUI()
 
 	DropShadowHolder.Size = UDim2.new(0, 115 + TextLabel.TextBounds.X + 1 + TextLabel1.TextBounds.X, 0, 350)
 	MakeDraggable(Top, DropShadowHolder)
