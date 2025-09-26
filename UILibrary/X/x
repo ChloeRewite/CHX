@@ -1414,7 +1414,7 @@ function Chloex:MakeGui(GuiConfig)
 				local ButtonConfig = ButtonConfig or {}
 				ButtonConfig.Title = ButtonConfig.Title or "Title"
 				ButtonConfig.Content = ButtonConfig.Content or "Content"
-				ButtonConfig.Icon = ButtonConfig.Icon or "rbxassetid://13306021272"
+				ButtonConfig.Icon = ButtonConfig.Icon or "rbxassetid://119123840407172"
 				ButtonConfig.Callback = ButtonConfig.Callback or function() end
 				local ButtonFunc = {}
 
