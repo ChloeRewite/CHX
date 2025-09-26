@@ -1,37 +1,37 @@
 local HttpService = game:GetService("HttpService")
-local ConfigFile = "Celestial_Config.json"
+local ConfigFile = "Celestial_Config_" .. game.PlaceId .. ".json"
 
 ConfigData = {}
 Elements = {}
 
 function SaveConfig()
-	if writefile then
-		writefile(ConfigFile, HttpService:JSONEncode(ConfigData))
-	end
+    if writefile then
+        writefile(ConfigFile, HttpService:JSONEncode(ConfigData))
+    end
 end
 
 function LoadConfigFromFile()
-	if isfile and isfile(ConfigFile) then
-		local success, result = pcall(function()
-			return HttpService:JSONDecode(readfile(ConfigFile))
-		end)
-		if success and type(result) == "table" then
-			ConfigData = result
-		else
-			warn("Fail Report To CHX.")
-			ConfigData = {}
-		end
-	else
-		ConfigData = {}
-	end
+    if isfile and isfile(ConfigFile) then
+        local success, result = pcall(function()
+            return HttpService:JSONDecode(readfile(ConfigFile))
+        end)
+        if success and type(result) == "table" then
+            ConfigData = result
+        else
+            warn("Fail Report To CHX.")
+            ConfigData = {}
+        end
+    else
+        ConfigData = {}
+    end
 end
 
 function LoadConfigElements()
-	for key, element in pairs(Elements) do
-		if ConfigData[key] ~= nil and element.Set then
-			element:Set(ConfigData[key], true)
-		end
-	end
+    for key, element in pairs(Elements) do
+        if ConfigData[key] ~= nil and element.Set then
+            element:Set(ConfigData[key], true)
+        end
+    end
 end
 
 LoadConfigFromFile()
