@@ -702,7 +702,7 @@ function Chloex:MakeGui(GuiConfig)
 	LayersPageLayout.TweenTime = 0.5
 	LayersPageLayout.EasingDirection = Enum.EasingDirection.InOut
 	LayersPageLayout.EasingStyle = Enum.EasingStyle.Quad
-	--// Layer Tabs
+	--// Layer Tab
 	local ScrollTab = Instance.new("ScrollingFrame");
 	local UIListLayout = Instance.new("UIListLayout");
 
