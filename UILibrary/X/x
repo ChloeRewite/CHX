@@ -1334,6 +1334,7 @@ function Chloex:MakeGui(GuiConfig)
 
 			local Items = {}
 			local CountItem = 0
+
 			function Items:AddParagraph(ParagraphConfig)
 				local ParagraphConfig = ParagraphConfig or {}
 				ParagraphConfig.Title = ParagraphConfig.Title or "Title"
@@ -1368,7 +1369,7 @@ function Chloex:MakeGui(GuiConfig)
 				ParagraphTitle.Name = "ParagraphTitle"
 				ParagraphTitle.Parent = Paragraph
 
-				ParagraphContent.Font = Enum.Font.GothamBold
+				ParagraphContent.Font = Enum.Font.Gotham
 				ParagraphContent.Text = ParagraphConfig.Content
 				ParagraphContent.TextColor3 = Color3.fromRGB(255, 255, 255)
 				ParagraphContent.TextSize = 12
@@ -1378,8 +1379,8 @@ function Chloex:MakeGui(GuiConfig)
 				ParagraphContent.BackgroundTransparency = 1
 				ParagraphContent.Position = UDim2.new(0, 10, 0, 23)
 				ParagraphContent.Name = "ParagraphContent"
-				ParagraphContent.TextWrapped = true
-				ParagraphContent.RichText = false -- penting, biar pure \n
+				ParagraphContent.TextWrapped = false -- biar \n diproses manual
+				ParagraphContent.RichText = false -- pure text, support \n
 				ParagraphContent.Parent = Paragraph
 
 				-- Set ukuran awal sesuai tinggi teks (TextBounds.Y)
@@ -1390,12 +1391,14 @@ function Chloex:MakeGui(GuiConfig)
 				ParagraphContent:GetPropertyChangedSignal("TextBounds"):Connect(function()
 					ParagraphContent.Size = UDim2.new(1, -16, 0, ParagraphContent.TextBounds.Y)
 					Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.TextBounds.Y + 33)
-					UpdateSizeSection()
+					if typeof(UpdateSizeSection) == "function" then
+						UpdateSizeSection()
+					end
 				end)
 
 				function ParagraphFunc:SetContent(content)
 					content = content or "Content"
-					ParagraphContent.Text = content -- langsung pake \n
+					ParagraphContent.Text = content -- langsung pakai \n
 					ParagraphContent.Size = UDim2.new(1, -16, 0, ParagraphContent.TextBounds.Y)
 					Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.TextBounds.Y + 33)
 				end
