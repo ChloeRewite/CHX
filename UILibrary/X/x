@@ -1359,14 +1359,11 @@ function Chloex:MakeGui(GuiConfig)
 
 				ParagraphTitle.Font = Enum.Font.GothamBold
 				ParagraphTitle.Text = ParagraphConfig.Title
-				ParagraphTitle.TextColor3 = Color3.fromRGB(230.77499270439148, 230.77499270439148, 230.77499270439148)
+				ParagraphTitle.TextColor3 = Color3.fromRGB(231, 231, 231)
 				ParagraphTitle.TextSize = 13
 				ParagraphTitle.TextXAlignment = Enum.TextXAlignment.Left
 				ParagraphTitle.TextYAlignment = Enum.TextYAlignment.Top
-				ParagraphTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				ParagraphTitle.BackgroundTransparency = 0.9990000128746033
-				ParagraphTitle.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				ParagraphTitle.BorderSizePixel = 0
+				ParagraphTitle.BackgroundTransparency = 1
 				ParagraphTitle.Position = UDim2.new(0, 10, 0, 10)
 				ParagraphTitle.Size = UDim2.new(1, -16, 0, 13)
 				ParagraphTitle.Name = "ParagraphTitle"
@@ -1376,39 +1373,31 @@ function Chloex:MakeGui(GuiConfig)
 				ParagraphContent.Text = ParagraphConfig.Content
 				ParagraphContent.TextColor3 = Color3.fromRGB(255, 255, 255)
 				ParagraphContent.TextSize = 12
-				ParagraphContent.TextTransparency = 0.6000000238418579
+				ParagraphContent.TextTransparency = 0.6
 				ParagraphContent.TextXAlignment = Enum.TextXAlignment.Left
-				ParagraphContent.TextYAlignment = Enum.TextYAlignment.Bottom
-				ParagraphContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				ParagraphContent.BackgroundTransparency = 0.9990000128746033
-				ParagraphContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				ParagraphContent.BorderSizePixel = 0
+				ParagraphContent.TextYAlignment = Enum.TextYAlignment.Top
+				ParagraphContent.BackgroundTransparency = 1
 				ParagraphContent.Position = UDim2.new(0, 10, 0, 23)
 				ParagraphContent.Name = "ParagraphContent"
+				ParagraphContent.TextWrapped = true
 				ParagraphContent.Parent = Paragraph
 
-				ParagraphContent.Size = UDim2.new(1, -16, 0,
-					12 + (12 * (ParagraphContent.TextBounds.X // ParagraphContent.AbsoluteSize.X)))
-				ParagraphContent.TextWrapped = true
-				Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.AbsoluteSize.Y + 33)
+				-- ukuran awal
+				ParagraphContent.Size = UDim2.new(1, -16, 0, ParagraphContent.TextBounds.Y)
+				Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.TextBounds.Y + 33)
 
-				ParagraphContent:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
-					ParagraphContent.TextWrapped = false
-					ParagraphContent.Size = UDim2.new(1, -16, 0,
-						12 + (12 * (ParagraphContent.TextBounds.X // ParagraphContent.AbsoluteSize.X)))
-					Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.AbsoluteSize.Y + 33)
-					ParagraphContent.TextWrapped = true
+				-- auto resize kalau teks berubah
+				ParagraphContent:GetPropertyChangedSignal("TextBounds"):Connect(function()
+					ParagraphContent.Size = UDim2.new(1, -16, 0, ParagraphContent.TextBounds.Y)
+					Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.TextBounds.Y + 33)
 					UpdateSizeSection()
 				end)
 
 				function ParagraphFunc:SetContent(content)
 					content = content or "Content"
-
 					ParagraphContent.Text = content
-					ParagraphContent.TextWrapped = false
-					ParagraphContent.Size = UDim2.new(1, -16, 0, 12 + (12 // ParagraphContent.AbsoluteSize.X))
-					ParagraphContent.TextWrapped = true
-					Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.AbsoluteSize.Y + 33)
+					ParagraphContent.Size = UDim2.new(1, -16, 0, ParagraphContent.TextBounds.Y)
+					Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.TextBounds.Y + 33)
 				end
 
 				CountItem = CountItem + 1
