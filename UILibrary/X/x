@@ -1379,15 +1379,13 @@ function Chloex:MakeGui(GuiConfig)
 				ParagraphContent.BackgroundTransparency = 1
 				ParagraphContent.Position = UDim2.new(0, 10, 0, 23)
 				ParagraphContent.Name = "ParagraphContent"
-				ParagraphContent.TextWrapped = false -- biar \n diproses manual
-				ParagraphContent.RichText = false -- pure text, support \n
+				ParagraphContent.TextWrapped = false
+				ParagraphContent.RichText = true
 				ParagraphContent.Parent = Paragraph
 
-				-- Set ukuran awal sesuai tinggi teks (TextBounds.Y)
 				ParagraphContent.Size = UDim2.new(1, -16, 0, ParagraphContent.TextBounds.Y)
 				Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.TextBounds.Y + 33)
 
-				-- Auto resize kalau teks berubah
 				ParagraphContent:GetPropertyChangedSignal("TextBounds"):Connect(function()
 					ParagraphContent.Size = UDim2.new(1, -16, 0, ParagraphContent.TextBounds.Y)
 					Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.TextBounds.Y + 33)
@@ -1398,7 +1396,12 @@ function Chloex:MakeGui(GuiConfig)
 
 				function ParagraphFunc:SetContent(content)
 					content = content or "Content"
-					ParagraphContent.Text = content -- langsung pakai \n
+
+					if ParagraphContent.RichText then
+						content = string.gsub(content, "\n", "<br/>")
+					end
+
+					ParagraphContent.Text = content
 					ParagraphContent.Size = UDim2.new(1, -16, 0, ParagraphContent.TextBounds.Y)
 					Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.TextBounds.Y + 33)
 				end
