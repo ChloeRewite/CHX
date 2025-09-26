@@ -2475,25 +2475,7 @@ function Chloex:MakeGui(GuiConfig)
 		end
 
 		CountTab = CountTab + 1
-		local safeName = TabConfig.Name:gsub("%s+", "_")
-		_G[safeName] = Sections
 		return Sections
-	end
-
-	function Tabs:Chloe(...)
-		local args = { ... }
-		for i = 1, #args, 2 do
-			local tabName = args[i]
-			local tabIcon = args[i + 1]
-			if tabName then
-				local tab = self:CreateTab({
-					Name = tabName,
-					Icon = tabIcon or ""
-				})
-				local safeName = tabName:gsub("%s+", "_")
-				_G[safeName] = tab
-			end
-		end
 	end
 
 	return Tabs
