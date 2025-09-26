@@ -862,11 +862,6 @@ function Chloex:MakeGui(GuiConfig)
 		end)
 	end)
 
-	self.CurrentWindow = GuiFunc  
-	return GuiFunc
-
-	end 
-
 	function GuiFunc:ToggleUI()
 		local ScreenGui = Instance.new("ScreenGui")
 		ScreenGui.Parent = game:GetService("CoreGui")
@@ -2485,32 +2480,20 @@ function Chloex:MakeGui(GuiConfig)
 		_G[safeName] = Sections
 		return Sections
 	end
-	
+	return Tabs
+end
+
 Tabs = setmetatable({}, {
     __newindex = function(t, key, value)
-        -- pastikan ada window aktif dulu
-        if not Chloex.CurrentWindow then
-            warn("⚠️ Belum ada window aktif! Panggil Chloex:MakeGui() dulu sebelum bikin tab.")
-            return
-        end
-
-        -- kalau value berbentuk { "Nama Tab", "Icon" }
         if typeof(value) == "table" and typeof(value[1]) == "string" then
             local name, icon = value[1], value[2]
-            local newTab = Chloex.CurrentWindow:CreateTab({
+            rawset(t, key, Window:CreateTab({
                 Name = name,
                 Icon = icon or ""
-            })
-            rawset(t, key, newTab)
-
-        -- kalau bukan table shortcut, simpan biasa
+            }))
         else
             rawset(t, key, value)
         end
-    end,
-
-    __index = function(t, key)
-        return rawget(t, key)
     end
 })
 
