@@ -1,3 +1,29 @@
+local HttpService = game:GetService("HttpService")
+local ConfigFile = "ChloeX_Config.json"
+local ConfigData = {}
+
+if isfile and isfile(ConfigFile) then
+	local ok, decoded = pcall(function()
+		return HttpService:JSONDecode(readfile(ConfigFile))
+	end)
+	if ok and type(decoded) == "table" then
+		ConfigData = decoded
+	else
+		warn("[ChloeX Config] gagal decode, bikin baru")
+	end
+end
+
+local function SaveConfig()
+	if writefile then
+		local ok, err = pcall(function()
+			writefile(ConfigFile, HttpService:JSONEncode(ConfigData))
+		end)
+		if not ok then
+			warn("[ChloeX Config] gagal save:", err)
+		end
+	end
+end
+
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local LocalPlayer = game:GetService("Players").LocalPlayer
@@ -885,7 +911,7 @@ function Chloex:MakeGui(GuiConfig)
 			end
 		end)
 	end
-	
+
 	GuiFunc:ToggleUI()
 
 	DropShadowHolder.Size = UDim2.new(0, 115 + TextLabel.TextBounds.X + 1 + TextLabel1.TextBounds.X, 0, 350)
@@ -1531,6 +1557,12 @@ function Chloex:MakeGui(GuiConfig)
 				ToggleConfig.Content = ToggleConfig.Content or "Content"
 				ToggleConfig.Default = ToggleConfig.Default or false
 				ToggleConfig.Callback = ToggleConfig.Callback or function() end
+
+				local configKey = "Toggle_" .. ToggleConfig.Title
+				if ConfigData[configKey] ~= nil then
+					ToggleConfig.Default = ConfigData[configKey]
+				end
+
 				local ToggleFunc = {
 					Value = ToggleConfig.Default,
 					Options = ToggleConfig.Options,
@@ -1687,6 +1719,10 @@ function Chloex:MakeGui(GuiConfig)
 				end)
 				function ToggleFunc:Set(Value)
 					ToggleConfig.Callback(Value)
+
+					ConfigData[configKey] = Value
+					SaveConfig()
+
 					if Value then
 						TweenService:Create(
 							ToggleTitle,
@@ -1746,6 +1782,12 @@ function Chloex:MakeGui(GuiConfig)
 				SliderConfig.Max = SliderConfig.Max or 100
 				SliderConfig.Default = SliderConfig.Default or 50
 				SliderConfig.Callback = SliderConfig.Callback or function() end
+
+				local configKey = "Slider_" .. SliderConfig.Title
+				if ConfigData[configKey] ~= nil then
+					SliderConfig.Default = ConfigData[configKey]
+				end
+
 				local SliderFunc = { Value = SliderConfig.Default }
 
 				local Slider = Instance.new("Frame");
@@ -1903,6 +1945,8 @@ function Chloex:MakeGui(GuiConfig)
 					):Play()
 
 					SliderConfig.Callback(Value)
+					ConfigData[configKey] = Value
+					SaveConfig()
 				end
 
 				SliderFrame.InputBegan:Connect(function(Input)
@@ -1943,6 +1987,12 @@ function Chloex:MakeGui(GuiConfig)
 				InputConfig.Content = InputConfig.Content or "Content"
 				InputConfig.Callback = InputConfig.Callback or function() end
 				InputConfig.Default = InputConfig.Default or ""
+
+				local configKey = "Input_" .. InputConfig.Title
+				if ConfigData[configKey] ~= nil then
+					InputConfig.Default = ConfigData[configKey]
+				end
+
 				local InputFunc = { Value = InputConfig.Default }
 
 				local Input = Instance.new("Frame");
@@ -2047,6 +2097,8 @@ function Chloex:MakeGui(GuiConfig)
 					InputTextBox.Text = Value
 					InputFunc.Value = Value
 					InputConfig.Callback(Value)
+					ConfigData[configKey] = Value
+					SaveConfig()
 				end
 
 				InputFunc:Set(InputFunc.Value)
@@ -2066,6 +2118,11 @@ function Chloex:MakeGui(GuiConfig)
 				DropdownConfig.Options = DropdownConfig.Options or {}
 				DropdownConfig.Default = DropdownConfig.Default or {}
 				DropdownConfig.Callback = DropdownConfig.Callback or function() end
+
+				local configKey = "Dropdown_" .. DropdownConfig.Title
+				if ConfigData[configKey] ~= nil then
+					DropdownConfig.Default = ConfigData[configKey]
+				end
 
 				local DropdownFunc = { Value = DropdownConfig.Default, Options = DropdownConfig.Options }
 
@@ -2243,8 +2300,7 @@ function Chloex:MakeGui(GuiConfig)
 						end
 					end
 
-					-- Cập nhật lại CanvasSize khi filter
-					local OffsetY = 25 -- giữ khoảng cho SearchBox
+					local OffsetY = 25
 					for _, child in ScrollSelect:GetChildren() do
 						if child.Name == "Option" and child.Visible then
 							OffsetY = OffsetY + 3 + child.Size.Y.Offset
@@ -2276,6 +2332,9 @@ function Chloex:MakeGui(GuiConfig)
 					else
 						DropdownFunc.Value = type(Value) == "string" and Value or (Value[1] or "")
 					end
+
+					ConfigData[configKey] = DropdownFunc.Value
+					SaveConfig()
 
 					for _, Drop in ScrollSelect:GetChildren() do
 						if Drop.Name == "Option" then
@@ -2380,7 +2439,6 @@ function Chloex:MakeGui(GuiConfig)
 					end)
 				end
 
-				-- 🔹 Fungsi baru pengganti Refresh
 				function DropdownFunc:SetValues(newList, selecting)
 					newList = newList or {}
 					selecting = selecting or {}
@@ -2392,7 +2450,6 @@ function Chloex:MakeGui(GuiConfig)
 					DropdownFunc:Set(selecting)
 				end
 
-				-- inisialisasi
 				DropdownFunc:SetValues(DropdownFunc.Options, DropdownFunc.Value)
 
 				CountItem = CountItem + 1
