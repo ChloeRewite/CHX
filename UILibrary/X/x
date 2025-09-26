@@ -2343,6 +2343,7 @@ function Chloex:MakeGui(GuiConfig)
 					OptionText.TextColor3 = Color3.fromRGB(230, 230, 230)
 					OptionText.Position = UDim2.new(0, 8, 0, 8)
 					OptionText.Size = UDim2.new(1, -100, 0, 13)
+					OptionText.BackgroundTransparency = 1
 					OptionText.Name = "OptionText"
 					OptionText.Parent = Option
 
