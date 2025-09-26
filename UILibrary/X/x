@@ -1,5 +1,6 @@
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
+local HttpService = game:GetService("HttpService")
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
 local CoreGui = game:GetService("CoreGui")
@@ -822,6 +823,37 @@ function Chloex:MakeGui(GuiConfig)
 			Overlay:Destroy()
 		end)
 	end)
+	
+	local folder = "ChloeX/Config"
+	local path = folder.."/default.json"
+
+	if not isfolder("ChloeX") then makefolder("ChloeX") end
+	if not isfolder(folder) then makefolder(folder) end
+
+	function Save()
+    	local data = {}
+    	for flag, element in pairs(GuiFunc.Flags or {}) do
+        	if element.Get then
+            	data[flag] = element:Get()
+			end
+        end
+    	writefile(path, HttpService:JSONEncode(data))
+	end
+
+	function Load()
+    	if not isfile(path) then return end
+    	local decoded = HttpService:JSONDecode(readfile(path))
+    	for flag, value in pairs(decoded) do
+        	if GuiFunc.Flags and GuiFunc.Flags[flag] and GuiFunc.Flags[flag].Set then
+            	GuiFunc.Flags[flag]:Set(value)
+        	end
+         end
+	  end
+
+	  Load()
+
+	  return GuiFunc
+	  end
 
 	function GuiFunc:ToggleUI()
 		local ScreenGui = Instance.new("ScreenGui")
