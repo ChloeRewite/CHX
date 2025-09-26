@@ -501,6 +501,7 @@ function Chloex:MakeGui(GuiConfig)
 		Main.Image = "rbxassetid://" .. GuiConfig.Theme
 		Main.ScaleType = Enum.ScaleType.Crop
 		Main.BackgroundTransparency = 1
+		Main.ImageTransparency = GuiConfig.ThemeTransparency or 0.3 
 	else
 		Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
 		Main.BackgroundTransparency = 0.1
@@ -924,7 +925,7 @@ function Chloex:MakeGui(GuiConfig)
 		end)
 	end
 
-	GuiFunc:ToggleUI()
+	GuiFunc:ToggleUI() << error disini 
 
 	DropShadowHolder.Size = UDim2.new(0, 115 + TextLabel.TextBounds.X + 1 + TextLabel1.TextBounds.X, 0, 350)
 	MakeDraggable(Top, DropShadowHolder)
