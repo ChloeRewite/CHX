@@ -379,12 +379,12 @@ function Chloex:MakeNotify(NotifyConfig)
 	return NotifyFunction
 end
 
-function chloex(msg, delay,title, desc)
+function chloex(msg, delay, color, title, desc)
 	return Chloex:MakeNotify({
 		Title = title or "Chloe X",
 		Description = desc or "Notification",
 		Content = msg or "Content",
-		Color = GuiConfig.Color,
+		Color = color or Color3.fromRGB(0, 208, 255),
 		Delay = delay or 4
 	})
 end
