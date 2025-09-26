@@ -385,7 +385,7 @@ function chloex(msg, delay, color, title, desc)
 		Description = desc or "Notification",
 		Content = msg or "Content",
 		Color = color or Color3.fromRGB(255, 0, 255),
-		Delay = delay or 5
+		Delay = delay or 4
 	})
 end
 
@@ -1414,7 +1414,7 @@ function Chloex:MakeGui(GuiConfig)
 				local ButtonConfig = ButtonConfig or {}
 				ButtonConfig.Title = ButtonConfig.Title or "Title"
 				ButtonConfig.Content = ButtonConfig.Content or "Content"
-				ButtonConfig.Icon = ButtonConfig.Icon or "rbxassetid://16932740082"
+				ButtonConfig.Icon = ButtonConfig.Icon or "rbxassetid://119123840407172"
 				ButtonConfig.Callback = ButtonConfig.Callback or function() end
 				local ButtonFunc = {}
 
