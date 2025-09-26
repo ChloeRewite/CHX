@@ -1,28 +1,40 @@
 local HttpService = game:GetService("HttpService")
-local ConfigFile = "ChloeX_Config.json"
-local ConfigData = {}
+local ConfigFile = "Celestial_Config.json"
 
-if isfile and isfile(ConfigFile) then
-	local ok, decoded = pcall(function()
-		return HttpService:JSONDecode(readfile(ConfigFile))
-	end)
-	if ok and type(decoded) == "table" then
-		ConfigData = decoded
-	else
-		warn("[ChloeX Config] gagal decode, bikin baru")
-	end
+ConfigData = {}
+Elements = {}
+
+function SaveConfig()
+    if writefile then
+        writefile(ConfigFile, HttpService:JSONEncode(ConfigData))
+    end
 end
 
-local function SaveConfig()
-	if writefile then
-		local ok, err = pcall(function()
-			writefile(ConfigFile, HttpService:JSONEncode(ConfigData))
-		end)
-		if not ok then
-			warn("[ChloeX Config] gagal save:", err)
-		end
-	end
+function LoadConfigFromFile()
+    if isfile and isfile(ConfigFile) then
+        local success, result = pcall(function()
+            return HttpService:JSONDecode(readfile(ConfigFile))
+        end)
+        if success and type(result) == "table" then
+            ConfigData = result
+        else
+            warn("Fail Report To CHX.")
+            ConfigData = {}
+        end
+    else
+        ConfigData = {}
+    end
 end
+
+function LoadConfigElements()
+    for key, element in pairs(Elements) do
+        if ConfigData[key] ~= nil and element.Set then
+            element:Set(ConfigData[key], true)
+        end
+    end
+end
+
+LoadConfigFromFile()
 
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
@@ -1770,6 +1782,7 @@ function Chloex:MakeGui(GuiConfig)
 
 				ToggleFunc:Set(ToggleFunc.Value)
 				CountItem = CountItem + 1
+				Elements[configKey] = ToggleFunc 
 				return ToggleFunc
 			end
 
@@ -1978,6 +1991,7 @@ function Chloex:MakeGui(GuiConfig)
 				end)
 				SliderFunc:Set(SliderConfig.Default)
 				CountItem = CountItem + 1
+				Elements[configKey] = SliderFunc
 				return SliderFunc
 			end
 
@@ -2107,6 +2121,7 @@ function Chloex:MakeGui(GuiConfig)
 					InputFunc:Set(InputTextBox.Text)
 				end)
 				CountItem = CountItem + 1
+				Elements[configKey] = InputFunc
 				return InputFunc
 			end
 
@@ -2454,6 +2469,7 @@ function Chloex:MakeGui(GuiConfig)
 
 				CountItem = CountItem + 1
 				CountDropdown = CountDropdown + 1
+				Elements[configKey] = DropdownFunc
 				return DropdownFunc
 			end
 
