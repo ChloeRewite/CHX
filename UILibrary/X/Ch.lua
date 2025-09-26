@@ -1,3 +1,7 @@
+local Players = game:GetService("Players")
+local TeleportService = game:GetService("TeleportService")
+local LocalPlayer = Players.LocalPlayer
+
 InfoSection = Tabs.Info:AddSection("Information")
 
 InfoSection:AddParagraph({
