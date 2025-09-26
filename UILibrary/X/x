@@ -850,10 +850,6 @@ function Chloex:MakeGui(GuiConfig)
         end
     end
 
-    Load()
-
-    return GuiFunc
-end
 	function GuiFunc:ToggleUI()
 		local ScreenGui = Instance.new("ScreenGui")
 		ScreenGui.Parent = game:GetService("CoreGui")
@@ -2458,6 +2454,11 @@ end
 	end
 
 	return Tabs
+end
+
+Load()
+
+    return GuiFunc
 end
 
 return Chloex
