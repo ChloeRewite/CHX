@@ -514,10 +514,10 @@ function Chloex:MakeGui(GuiConfig)
 		Main.Image = "rbxassetid://" .. GuiConfig.Theme
 		Main.ScaleType = Enum.ScaleType.Crop
 		Main.BackgroundTransparency = 1
-		Main.ImageTransparency = GuiConfig.ThemeTransparency or 0.3
+		Main.ImageTransparency = GuiConfig.ThemeTransparency or 0
 	else
-		Main.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-		Main.BackgroundTransparency = 0.1
+		Main.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+		Main.BackgroundTransparency = 0
 	end
 
 	Main.AnchorPoint = Vector2.new(0.5, 0.5)
