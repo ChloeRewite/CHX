@@ -1,5 +1,17 @@
 local HttpService = game:GetService("HttpService")
-local ConfigFile = "Celestial_Config_" .. game.PlaceId .. ".json"
+
+if not isfolder("Chloe X") then
+    makefolder("Chloe X")
+end
+if not isfolder("Chloe X/Config") then
+    makefolder("Chloe X/Config")
+end
+
+local gameName = tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name)
+gameName = gameName:gsub("[^%w_ ]", "")
+gameName = gameName:gsub("%s+", "_")
+
+local ConfigFile = "Chloe X/Config/Chloe_" .. gameName .. ".json"
 
 ConfigData = {}
 Elements = {}
@@ -35,6 +47,7 @@ function LoadConfigElements()
 end
 
 LoadConfigFromFile()
+
 
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
@@ -1564,7 +1577,7 @@ function Chloex:MakeGui(GuiConfig)
 				local ToggleConfig = ToggleConfig or {}
 				ToggleConfig.Title = ToggleConfig.Title or "Title"
 				ToggleConfig.Title2 = ToggleConfig.Title2 or ""
-				ToggleConfig.Content = ToggleConfig.Content or "Content"
+				ToggleConfig.Content = ToggleConfig.Content or ""
 				ToggleConfig.Default = ToggleConfig.Default or false
 				ToggleConfig.Callback = ToggleConfig.Callback or function() end
 
@@ -1787,7 +1800,7 @@ function Chloex:MakeGui(GuiConfig)
 			function Items:AddSlider(SliderConfig)
 				local SliderConfig = SliderConfig or {}
 				SliderConfig.Title = SliderConfig.Title or "Slider"
-				SliderConfig.Content = SliderConfig.Content or "Content"
+				SliderConfig.Content = SliderConfig.Content or ""
 				SliderConfig.Increment = SliderConfig.Increment or 1
 				SliderConfig.Min = SliderConfig.Min or 0
 				SliderConfig.Max = SliderConfig.Max or 100
@@ -1996,7 +2009,7 @@ function Chloex:MakeGui(GuiConfig)
 			function Items:AddInput(InputConfig)
 				local InputConfig = InputConfig or {}
 				InputConfig.Title = InputConfig.Title or "Title"
-				InputConfig.Content = InputConfig.Content or "Content"
+				InputConfig.Content = InputConfig.Content or ""
 				InputConfig.Callback = InputConfig.Callback or function() end
 				InputConfig.Default = InputConfig.Default or ""
 
@@ -2091,7 +2104,7 @@ function Chloex:MakeGui(GuiConfig)
 				InputTextBox.Font = Enum.Font.GothamBold
 				InputTextBox.PlaceholderColor3 = Color3.fromRGB(120.00000044703484, 120.00000044703484,
 					120.00000044703484)
-				InputTextBox.PlaceholderText = "Write your input there"
+				InputTextBox.PlaceholderText = "Input Here"
 				InputTextBox.Text = InputConfig.Default
 				InputTextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 				InputTextBox.TextSize = 12
@@ -2126,7 +2139,7 @@ function Chloex:MakeGui(GuiConfig)
 			function Items:AddDropdown(DropdownConfig)
 				local DropdownConfig = DropdownConfig or {}
 				DropdownConfig.Title = DropdownConfig.Title or "Title"
-				DropdownConfig.Content = DropdownConfig.Content or "Content"
+				DropdownConfig.Content = DropdownConfig.Content or ""
 				DropdownConfig.Multi = DropdownConfig.Multi or false
 				DropdownConfig.Options = DropdownConfig.Options or {}
 				DropdownConfig.Default = DropdownConfig.Default or {}
