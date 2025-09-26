@@ -5,33 +5,33 @@ ConfigData = {}
 Elements = {}
 
 function SaveConfig()
-    if writefile then
-        writefile(ConfigFile, HttpService:JSONEncode(ConfigData))
-    end
+	if writefile then
+		writefile(ConfigFile, HttpService:JSONEncode(ConfigData))
+	end
 end
 
 function LoadConfigFromFile()
-    if isfile and isfile(ConfigFile) then
-        local success, result = pcall(function()
-            return HttpService:JSONDecode(readfile(ConfigFile))
-        end)
-        if success and type(result) == "table" then
-            ConfigData = result
-        else
-            warn("Fail Report To CHX.")
-            ConfigData = {}
-        end
-    else
-        ConfigData = {}
-    end
+	if isfile and isfile(ConfigFile) then
+		local success, result = pcall(function()
+			return HttpService:JSONDecode(readfile(ConfigFile))
+		end)
+		if success and type(result) == "table" then
+			ConfigData = result
+		else
+			warn("Fail Report To CHX.")
+			ConfigData = {}
+		end
+	else
+		ConfigData = {}
+	end
 end
 
 function LoadConfigElements()
-    for key, element in pairs(Elements) do
-        if ConfigData[key] ~= nil and element.Set then
-            element:Set(ConfigData[key], true)
-        end
-    end
+	for key, element in pairs(Elements) do
+		if ConfigData[key] ~= nil and element.Set then
+			element:Set(ConfigData[key], true)
+		end
+	end
 end
 
 LoadConfigFromFile()
@@ -1435,11 +1435,8 @@ function Chloex:MakeGui(GuiConfig)
 				function ParagraphFunc:SetContent(content)
 					content = content or "Content"
 
-					if ParagraphContent.RichText then
-						content = string.gsub(content, "\n", "<br/>")
-					end
-
 					ParagraphContent.Text = content
+
 					ParagraphContent.Size = UDim2.new(1, -16, 0, ParagraphContent.TextBounds.Y)
 					Paragraph.Size = UDim2.new(1, 0, 0, ParagraphContent.TextBounds.Y + 33)
 				end
@@ -1782,7 +1779,7 @@ function Chloex:MakeGui(GuiConfig)
 
 				ToggleFunc:Set(ToggleFunc.Value)
 				CountItem = CountItem + 1
-				Elements[configKey] = ToggleFunc 
+				Elements[configKey] = ToggleFunc
 				return ToggleFunc
 			end
 
