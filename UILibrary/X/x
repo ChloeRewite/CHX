@@ -832,7 +832,7 @@ if not isfolder(folder) then makefolder(folder) end
 
 GuiFunc.Elements = GuiFunc.Elements or {}
 
-function Save()
+function GuiFunc:Save()
     local data = {}
     for _, element in pairs(GuiFunc.Elements) do
         if element.Title and element.Get then
@@ -842,7 +842,7 @@ function Save()
     writefile(path, HttpService:JSONEncode(data))
 end
 
-function Load()
+function GuiFunc:Load()
     if not isfile(path) then return end
     local decoded = HttpService:JSONDecode(readfile(path))
     for _, element in pairs(GuiFunc.Elements) do
