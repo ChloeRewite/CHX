@@ -1055,7 +1055,7 @@ function Chloex:Window(GuiConfig)
 	local Tabs = {}
 	local CountTab = 0
 	local CountDropdown = 0
-	function Tabs:CreateTab(TabConfig)
+	function Tabs:window(TabConfig)
 		local TabConfig = TabConfig or {}
 		TabConfig.Name = TabConfig.Name or "Tab"
 		TabConfig.Icon = TabConfig.Icon or ""
