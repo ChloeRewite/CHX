@@ -2246,7 +2246,6 @@ function Chloex:Window(GuiConfig)
 				OptionImg.Name = "OptionImg"
 				OptionImg.Parent = SelectOptionsFrame
 
-				-- Container
 				local DropdownContainer = Instance.new("Frame")
 				DropdownContainer.Size = UDim2.new(1, 0, 1, 0)
 				DropdownContainer.BackgroundTransparency = 1
@@ -2270,8 +2269,10 @@ function Chloex:Window(GuiConfig)
 				local ScrollSelect = Instance.new("ScrollingFrame")
 				ScrollSelect.Size = UDim2.new(1, 0, 1, -30)
 				ScrollSelect.Position = UDim2.new(0, 0, 0, 30)
+				ScrollSelect.ScrollBarImageTransparency = 1
+				ScrollSelect.BorderSizePixel = 0  
 				ScrollSelect.BackgroundTransparency = 1
-				ScrollSelect.ScrollBarThickness = 4
+				ScrollSelect.ScrollBarThickness = 0
 				ScrollSelect.CanvasSize = UDim2.new(0, 0, 0, 0)
 				ScrollSelect.Name = "ScrollSelect"
 				ScrollSelect.Parent = DropdownContainer
@@ -2384,6 +2385,8 @@ function Chloex:Window(GuiConfig)
 					OptionText.Position = UDim2.new(0, 8, 0, 8)
 					OptionText.Size = UDim2.new(1, -100, 0, 13)
 					OptionText.BackgroundTransparency = 1
+					OptionText.AutomaticSize = Enum.AutomaticSize.X
+					OptionText.TextXAlignment = Enum.TextXAlignment.Left
 					OptionText.Name = "OptionText"
 					OptionText.Parent = Option
 
