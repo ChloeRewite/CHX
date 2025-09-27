@@ -1,0 +1,18 @@
+
+   ▄████▄   ██░ ██  ██▓     ▒█████  ▓█████ 
+  ▒██▀ ▀█  ▓██░ ██▒▓██▒    ▒██▒  ██▒▓█   ▀ 
+  ▒▓█    ▄ ▒██▀▀██░▒██░    ▒██░  ██▒▒███   
+  ▒▓▓▄ ▄██▒░▓█ ░██ ▒██░    ▒██   ██░▒▓█  ▄ 
+  ▒ ▓███▀ ░░▓█▒░██▓░██████▒░ ████▓▒░░▒████▒
+  ░ ░▒ ▒  ░ ▒ ░░▒░▒░ ▒░▓  ░░ ▒░▒░▒░ ░░ ▒░ ░
+    ░  ▒    ▒ ░▒░ ░░ ░ ▒  ░  ░ ▒ ▒░  ░ ░  ░
+  ░         ░  ░░ ░  ░ ░   ░ ░ ░ ▒     ░   
+  ░ ░       ░  ░  ░    ░  ░    ░ ░     ░  ░
+  ░                                        
+
+
+
+--== load window
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ChloeRewite/CHX/refs/heads/main/UILibrary/X/x"))()
+--== load addons
+_G.Ch = loadstring(game:HttpGet("https://raw.githubusercontent.com/ChloeRewite/CHX/refs/heads/main/UILibrary/X/Ch.lua"))()
