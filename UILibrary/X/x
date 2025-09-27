@@ -440,7 +440,7 @@ function chloex(msg, delay, color, title, desc)
 	})
 end
 
-function Chloex:MakeGui(GuiConfig)
+function Chloex:Window(GuiConfig)
 	local GuiConfig = GuiConfig or {}
 	GuiConfig.Title = GuiConfig.Title or "Chloe X"
 	GuiConfig.Footer = GuiConfig.Footer or "Chloee :3"
@@ -2495,19 +2495,5 @@ function Chloex:MakeGui(GuiConfig)
 	end
 	return Tabs
 end
-
-Tabs = setmetatable({}, {
-    __newindex = function(t, key, value)
-        if typeof(value) == "table" and typeof(value[1]) == "string" then
-            local name, icon = value[1], value[2]
-            rawset(t, key, Window:CreateTab({
-                Name = name,
-                Icon = icon or ""
-            }))
-        else
-            rawset(t, key, value)
-        end
-    end
-})
 
 return Chloex
