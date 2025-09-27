@@ -1425,7 +1425,7 @@ function Chloex:Window(GuiConfig)
 				ParagraphContent.Text = ParagraphConfig.Content
 				ParagraphContent.TextColor3 = Color3.fromRGB(255, 255, 255)
 				ParagraphContent.TextSize = 12
-				ParagraphContent.TextTransparency = 0.6
+				ParagraphContent.TextTransparency = 0
 				ParagraphContent.TextXAlignment = Enum.TextXAlignment.Left
 				ParagraphContent.TextYAlignment = Enum.TextYAlignment.Top
 				ParagraphContent.BackgroundTransparency = 1
