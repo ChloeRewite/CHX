@@ -1,6 +1,5 @@
 -- Ch.lua
 return function(Window, Tabs)
-
     local Players = game:GetService("Players")
     local TeleportService = game:GetService("TeleportService")
     local RunService = game:GetService("RunService")
@@ -16,11 +15,11 @@ return function(Window, Tabs)
         Content = [[
 <font color='rgb(255,200,0)'>This game is still under development.</font>
 
-If you found any <font color='rgb(255,0,0)'>bug / error / patched features</font>,  
-please report to the <font color='rgb(0,191,255)'>official Discord server</font> in the report channel.  
+If you found any <font color='rgb(255,0,0)'>bug / error / patched features</font>,
+please report to the <font color='rgb(0,191,255)'>official Discord server</font> in the report channel.
 They will fix it as soon as possible!
 
-For information and updates, check <font color='rgb(174,0,255)'>Discord</font> :3  
+For information and updates, check <font color='rgb(174,0,255)'>Discord</font> :3
 
 <font color='rgb(135,206,250)'>Thank you for using Chloe X!</font>
         ]]
@@ -32,7 +31,7 @@ For information and updates, check <font color='rgb(174,0,255)'>Discord</font> :
         Callback = function()
             if setclipboard then
                 setclipboard("https://discord.gg/PaPvGUE8UC")
-                chloex("Discord link has been copied to clipboard!") 
+                chloex("Discord link has been copied to clipboard!")
             end
         end
     })
@@ -158,16 +157,28 @@ For information and updates, check <font color='rgb(174,0,255)'>Discord</font> :
         Callback = function(value)
             if value then
                 if not game.CoreGui:FindFirstChild("BlackScreen") then
+                    -- cari Chloeex dan pastiin DisplayOrder lebih tinggi
+                    local ChloeexGui = game.CoreGui:FindFirstChild("Chloeex")
+                    if ChloeexGui then
+                        ChloeexGui.DisplayOrder = 10
+                    end
+
+                    -- bikin blackscreen gui
                     local frame = Instance.new("ScreenGui")
                     frame.Name = "BlackScreen"
                     frame.IgnoreGuiInset = true
                     frame.ResetOnSpawn = false
                     frame.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+                    frame.DisplayOrder = 1 -- lebih rendah dari Chloeex
                     frame.Parent = game.CoreGui
-                    local bg = Instance.new("Frame", frame)
+
+                    local bg = Instance.new("Frame")
                     bg.Size = UDim2.new(1, 0, 1, 0)
                     bg.BackgroundColor3 = Color3.new(0, 0, 0)
+                    bg.ZIndex = 0
+                    bg.Parent = frame
                 end
+
                 RunService:Set3dRenderingEnabled(false)
             else
                 local bs = game.CoreGui:FindFirstChild("BlackScreen")
@@ -176,6 +187,7 @@ For information and updates, check <font color='rgb(174,0,255)'>Discord</font> :
             end
         end
     })
+
 
     --== Utility
     local UtilitySection = Tabs.Misc:AddSection("Utility")
@@ -285,5 +297,4 @@ For information and updates, check <font color='rgb(174,0,255)'>Discord</font> :
             VirtualUser:ClickButton2(Vector2.new())
         end)
     end
-
 end
