@@ -268,4 +268,22 @@ For information and updates, check <font color='rgb(174,0,255)'>Discord</font> :
         end
     end)
 
+    --== Anti AFK
+    local GC = getconnections or get_signal_cons
+    if GC then
+        for _, v in pairs(GC(LocalPlayer.Idled)) do
+            if v.Disable then
+                v:Disable()
+            elseif v.Disconnect then
+                v:Disconnect()
+            end
+        end
+    else
+        local VirtualUser = cloneref and cloneref(game:GetService("VirtualUser")) or game:GetService("VirtualUser")
+        LocalPlayer.Idled:Connect(function()
+            VirtualUser:CaptureController()
+            VirtualUser:ClickButton2(Vector2.new())
+        end)
+    end
+
 end
