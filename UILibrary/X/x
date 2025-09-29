@@ -1,10 +1,10 @@
 local HttpService = game:GetService("HttpService")
 
 if not isfolder("Chloe X") then
-	makefolder("Chloe X")
+    makefolder("Chloe X")
 end
 if not isfolder("Chloe X/Config") then
-	makefolder("Chloe X/Config")
+    makefolder("Chloe X/Config")
 end
 
 local gameName = tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name)
@@ -14,36 +14,44 @@ gameName = gameName:gsub("%s+", "_")
 local ConfigFile = "Chloe X/Config/Chloe_" .. gameName .. ".json"
 
 ConfigData = {}
-Elements = {}
+Elements   = {}
+CURRENT_VERSION = 1
 
 function SaveConfig()
-	if writefile then
-		writefile(ConfigFile, HttpService:JSONEncode(ConfigData))
-	end
+    if writefile then
+        ConfigData._version = CURRENT_VERSION
+        writefile(ConfigFile, HttpService:JSONEncode(ConfigData))
+    end
 end
 
 function LoadConfigFromFile()
-	if isfile and isfile(ConfigFile) then
-		local success, result = pcall(function()
-			return HttpService:JSONDecode(readfile(ConfigFile))
-		end)
-		if success and type(result) == "table" then
-			ConfigData = result
-		else
-			warn("Fail Report To CHX.")
-			ConfigData = {}
-		end
-	else
-		ConfigData = {}
-	end
+    if isfile and isfile(ConfigFile) then
+        local success, result = pcall(function()
+            return HttpService:JSONDecode(readfile(ConfigFile))
+        end)
+        if success and type(result) == "table" then
+            if result._version == CURRENT_VERSION then
+                ConfigData = result
+            else
+                warn(("Config mismatch! Old version %s vs new %s, reset config."):format(
+                    tostring(result._version), tostring(CURRENT_VERSION)
+                ))
+                ConfigData = { _version = CURRENT_VERSION }
+            end
+        else
+            ConfigData = { _version = CURRENT_VERSION }
+        end
+    else
+        ConfigData = { _version = CURRENT_VERSION }
+    end
 end
 
 function LoadConfigElements()
-	for key, element in pairs(Elements) do
-		if ConfigData[key] ~= nil and element.Set then
-			element:Set(ConfigData[key], true)
-		end
-	end
+    for key, element in pairs(Elements) do
+        if ConfigData[key] ~= nil and element.Set then
+            element:Set(ConfigData[key], true)
+        end
+    end
 end
 
 LoadConfigFromFile()
@@ -441,11 +449,16 @@ function chloex(msg, delay, color, title, desc)
 end
 
 function Chloex:Window(GuiConfig)
-	local GuiConfig = GuiConfig or {}
-	GuiConfig.Title = GuiConfig.Title or "Chloe X"
-	GuiConfig.Footer = GuiConfig.Footer or "Chloee :3"
-	GuiConfig.Color = GuiConfig.Color or Color3.fromRGB(255, 0, 255)
-	GuiConfig["Tab Width"] = GuiConfig["Tab Width"] or 120
+    GuiConfig = GuiConfig or {}
+    GuiConfig.Title   = GuiConfig.Title or "Chloe X"
+    GuiConfig.Footer  = GuiConfig.Footer or "Chloee :3"
+    GuiConfig.Color   = GuiConfig.Color or Color3.fromRGB(255, 0, 255)
+    GuiConfig["Tab Width"] = GuiConfig["Tab Width"] or 120
+    GuiConfig.Version = GuiConfig.Version or 1
+
+    CURRENT_VERSION = GuiConfig.Version
+    LoadConfigFromFile()
+	
 	local GuiFunc = {}
 
 	local Chloeex = Instance.new("ScreenGui");
