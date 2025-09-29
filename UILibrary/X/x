@@ -15,7 +15,7 @@ local ConfigFile = "Chloe X/Config/Chloe_" .. gameName .. ".json"
 
 ConfigData = {}
 Elements   = {}
-CURRENT_VERSION = 1
+CURRENT_VERSION = nil
 
 function SaveConfig()
     if writefile then
@@ -25,6 +25,7 @@ function SaveConfig()
 end
 
 function LoadConfigFromFile()
+    if not CURRENT_VERSION then return end
     if isfile and isfile(ConfigFile) then
         local success, result = pcall(function()
             return HttpService:JSONDecode(readfile(ConfigFile))
@@ -33,9 +34,6 @@ function LoadConfigFromFile()
             if result._version == CURRENT_VERSION then
                 ConfigData = result
             else
-                warn(("Config mismatch! Old version %s vs new %s, reset config."):format(
-                    tostring(result._version), tostring(CURRENT_VERSION)
-                ))
                 ConfigData = { _version = CURRENT_VERSION }
             end
         else
@@ -53,8 +51,6 @@ function LoadConfigElements()
         end
     end
 end
-
-LoadConfigFromFile()
 
 
 local UserInputService = game:GetService("UserInputService")
