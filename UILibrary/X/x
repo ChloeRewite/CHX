@@ -1,63 +1,63 @@
 local HttpService = game:GetService("HttpService")
 
 if not isfolder("Chloe X") then
-    makefolder("Chloe X")
+	makefolder("Chloe X")
 end
 if not isfolder("Chloe X/Config") then
-    makefolder("Chloe X/Config")
+	makefolder("Chloe X/Config")
 end
 
-local gameName = tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name)
-gameName = gameName:gsub("[^%w_ ]", "")
-gameName = gameName:gsub("%s+", "_")
+local gameName   = tostring(game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name)
+gameName         = gameName:gsub("[^%w_ ]", "")
+gameName         = gameName:gsub("%s+", "_")
 
 local ConfigFile = "Chloe X/Config/Chloe_" .. gameName .. ".json"
 
-ConfigData = {}
-Elements   = {}
-CURRENT_VERSION = nil
+ConfigData       = {}
+Elements         = {}
+CURRENT_VERSION  = nil
 
 function SaveConfig()
-    if writefile then
-        ConfigData._version = CURRENT_VERSION
-        writefile(ConfigFile, HttpService:JSONEncode(ConfigData))
-    end
+	if writefile then
+		ConfigData._version = CURRENT_VERSION
+		writefile(ConfigFile, HttpService:JSONEncode(ConfigData))
+	end
 end
 
 function LoadConfigFromFile()
-    if not CURRENT_VERSION then return end
-    if isfile and isfile(ConfigFile) then
-        local success, result = pcall(function()
-            return HttpService:JSONDecode(readfile(ConfigFile))
-        end)
-        if success and type(result) == "table" then
-            if result._version == CURRENT_VERSION then
-                ConfigData = result
-            else
-                ConfigData = { _version = CURRENT_VERSION }
-            end
-        else
-            ConfigData = { _version = CURRENT_VERSION }
-        end
-    else
-        ConfigData = { _version = CURRENT_VERSION }
-    end
+	if not CURRENT_VERSION then return end
+	if isfile and isfile(ConfigFile) then
+		local success, result = pcall(function()
+			return HttpService:JSONDecode(readfile(ConfigFile))
+		end)
+		if success and type(result) == "table" then
+			if result._version == CURRENT_VERSION then
+				ConfigData = result
+			else
+				ConfigData = { _version = CURRENT_VERSION }
+			end
+		else
+			ConfigData = { _version = CURRENT_VERSION }
+		end
+	else
+		ConfigData = { _version = CURRENT_VERSION }
+	end
 end
 
 function LoadConfigElements()
-    for key, element in pairs(Elements) do
-        if ConfigData[key] ~= nil and element.Set then
-            element:Set(ConfigData[key], true)
-        end
-    end
+	for key, element in pairs(Elements) do
+		if ConfigData[key] ~= nil and element.Set then
+			element:Set(ConfigData[key], true)
+		end
+	end
 end
-
 
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
 local CoreGui = game:GetService("CoreGui")
+local viewport = workspace.CurrentCamera.ViewportSize
 
 local function isMobileDevice()
 	return UserInputService.TouchEnabled
@@ -66,6 +66,18 @@ local function isMobileDevice()
 end
 
 local isMobile = isMobileDevice()
+
+local function safeSize(pxWidth, pxHeight)
+	local scaleX = pxWidth / viewport.X
+	local scaleY = pxHeight / viewport.Y
+
+	if isMobile then
+		if scaleX > 0.5 then scaleX = 0.5 end
+		if scaleY > 0.3 then scaleY = 0.3 end
+	end
+
+	return UDim2.new(scaleX, 0, scaleY, 0)
+end
 
 local function MakeDraggable(topbarobject, object)
 	local function CustomPos(topbarobject, object)
@@ -445,16 +457,16 @@ function chloex(msg, delay, color, title, desc)
 end
 
 function Chloex:Window(GuiConfig)
-    GuiConfig = GuiConfig or {}
-    GuiConfig.Title   = GuiConfig.Title or "Chloe X"
-    GuiConfig.Footer  = GuiConfig.Footer or "Chloee :3"
-    GuiConfig.Color   = GuiConfig.Color or Color3.fromRGB(255, 0, 255)
-    GuiConfig["Tab Width"] = GuiConfig["Tab Width"] or 120
-    GuiConfig.Version = GuiConfig.Version or 1
+	GuiConfig              = GuiConfig or {}
+	GuiConfig.Title        = GuiConfig.Title or "Chloe X"
+	GuiConfig.Footer       = GuiConfig.Footer or "Chloee :3"
+	GuiConfig.Color        = GuiConfig.Color or Color3.fromRGB(255, 0, 255)
+	GuiConfig["Tab Width"] = GuiConfig["Tab Width"] or 120
+	GuiConfig.Version      = GuiConfig.Version or 1
 
-    CURRENT_VERSION = GuiConfig.Version
-    LoadConfigFromFile()
-	
+	CURRENT_VERSION        = GuiConfig.Version
+	LoadConfigFromFile()
+
 	local GuiFunc = {}
 
 	local Chloeex = Instance.new("ScreenGui");
@@ -493,9 +505,9 @@ function Chloex:Window(GuiConfig)
 	DropShadowHolder.BackgroundTransparency = 1
 	DropShadowHolder.BorderSizePixel = 0
 	if isMobile then
-		DropShadowHolder.Size = UDim2.new(0, 500, 0, 300)
+		DropShadowHolder.Size = safeSize(500, 300)
 	else
-		DropShadowHolder.Size = UDim2.new(0, 900, 0, 500)
+		DropShadowHolder.Size = safeSize(900, 500)
 	end
 	DropShadowHolder.ZIndex = 0
 	DropShadowHolder.Name = "DropShadowHolder"
@@ -2279,7 +2291,7 @@ function Chloex:Window(GuiConfig)
 				ScrollSelect.Size = UDim2.new(1, 0, 1, -30)
 				ScrollSelect.Position = UDim2.new(0, 0, 0, 30)
 				ScrollSelect.ScrollBarImageTransparency = 1
-				ScrollSelect.BorderSizePixel = 0  
+				ScrollSelect.BorderSizePixel = 0
 				ScrollSelect.BackgroundTransparency = 1
 				ScrollSelect.ScrollBarThickness = 0
 				ScrollSelect.CanvasSize = UDim2.new(0, 0, 0, 0)
