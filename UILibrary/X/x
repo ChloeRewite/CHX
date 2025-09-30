@@ -504,6 +504,8 @@ function Chloex:Window(GuiConfig)
 
 	DropShadowHolder.BackgroundTransparency = 1
 	DropShadowHolder.BorderSizePixel = 0
+	DropShadowHolder.AnchorPoint = Vector2.new(0.5, 0.5)
+	DropShadowHolder.Position = UDim2.new(0.5, 0, 0.5, 0)
 	if isMobile then
 		DropShadowHolder.Size = safeSize(500, 300)
 	else
