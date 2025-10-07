@@ -8,7 +8,7 @@ return function(Window, Tabs)
     local UserInputService = game:GetService("UserInputService")
 
     --== Info Section
-    local InfoSection = Tabs.Info:AddSection("Information")
+    local InfoSection = Tabs.Info:AddSection("Chloe X Information", true)
 
     InfoSection:AddParagraph({
         Title = "Chloe X Alert!",
@@ -69,7 +69,7 @@ If you have suggestions or found bugs, please report them to <font color="rgb(0,
     InfoSection:AddDivider()
 
     InfoSection:AddButton({
-        Button = "ServerHop Lowest",
+        Title = "ServerHop Lowest",
         Callback = function()
             task.spawn(function()
                 local HttpService = game:GetService("HttpService")
@@ -111,7 +111,7 @@ If you have suggestions or found bugs, please report them to <font color="rgb(0,
             end)
         end,
 
-        SubButton = "ServerHop Random",
+        SubTitle = "ServerHop Random",
         SubCallback = function()
             task.spawn(function()
                 local HttpService = game:GetService("HttpService")
@@ -152,7 +152,7 @@ If you have suggestions or found bugs, please report them to <font color="rgb(0,
     })
 
     InfoSection:AddButton({
-        Button = "Rejoin Server",
+        Title = "Rejoin Server",
         Callback = function()
             local TeleportService = game:GetService("TeleportService")
             local Players = game:GetService("Players")
