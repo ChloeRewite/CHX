@@ -11,87 +11,152 @@ return function(Window, Tabs)
     local InfoSection = Tabs.Info:AddSection("Information")
 
     InfoSection:AddParagraph({
-        Title = "Welcome To Chloe X!",
+        Title = "Chloe X Alert!",
         Content = [[
-<font color='rgb(255,200,0)'>This game is still under development.</font>
+This script is still under development!
+There is a possibility it may get detected if used in public servers!
+If you have suggestions or found bugs, please report them to <font color="rgb(0,170,255)">Discord Chloe X</font>!<br/>
+<b>Use at your own risk!</b>
+]],
+        Icon = "water"
+    })
 
-If you found any <font color='rgb(255,0,0)'>bug / error / patched features</font>,
-please report to the <font color='rgb(0,191,255)'>official Discord server</font> in the report channel.
-They will fix it as soon as possible!
 
-For information and updates, check <font color='rgb(174,0,255)'>Discord</font> :3
+    InfoSection:AddParagraph({
+        Title = "CHLOE X Discord",
+        Content = "Official link discord Chloe X!",
+        Icon = "dcs",
+        ButtonText = "COPY LINK DISCORD",
+        ButtonCallback = function()
+            if setclipboard then
+                setclipboard("https://discord.gg/J5KdfSHD")
+                chloex("Succesfully copied link!")
+            end
+        end
+    })
 
-<font color='rgb(135,206,250)'>Thank you for using Chloe X!</font>
-        ]]
+    InfoSection:AddDivider()
+
+    local Players = game:GetService("Players")
+    local TeleportService = game:GetService("TeleportService")
+    local LocalPlayer = Players.LocalPlayer
+
+    local currentJobId = "CHX-" .. tostring(game.JobId)
+
+    InfoSection:AddPanel({
+        Title = "Server Info",
+        Content = string.format(
+            "<b><font color=\"rgb(0,200,255)\">Player</font></b> : <font color=\"rgb(255,255,255)\">%d/%d Player Active</font>\n<b><font color=\"rgb(255,255,0)\">JobID</font></b> : <font color=\"rgb(200,200,200)\">%s</font>",
+            #Players:GetPlayers(), Players.MaxPlayers, currentJobId
+        ),
+        Placeholder = "Input JobID",
+        Button = "Copy JobID",
+        Callback = function()
+            if setclipboard then
+                setclipboard(currentJobId)
+                chloex("Succesfully copied!")
+            end
+        end,
+        SubButton = "Join JobID",
+        SubCallback = function(text)
+            if text and text ~= "" then
+                local cleaned = text:gsub("^CHX%-", "")
+                TeleportService:TeleportToPlaceInstance(game.PlaceId, cleaned, LocalPlayer)
+            end
+        end
+    })
+
+    InfoSection:AddDivider()
+
+    InfoSection:AddButton({
+        Button = "ServerHop Lowest",
+        Callback = function()
+            task.spawn(function()
+                local HttpService = game:GetService("HttpService")
+                local TeleportService = game:GetService("TeleportService")
+                local PlaceId = game.PlaceId
+                local Cursor
+                local LowestServer = nil
+                local LowestPlayers = math.huge
+
+                repeat
+                    local url = "https://games.roblox.com/v1/games/" ..
+                        PlaceId .. "/servers/Public?sortOrder=Asc&limit=100" ..
+                        (Cursor and "&cursor=" .. Cursor or "")
+                    local success, response = pcall(function()
+                        return game:HttpGet(url)
+                    end)
+                    if success and response then
+                        local data = HttpService:JSONDecode(response)
+                        for _, server in ipairs(data.data) do
+                            if server.playing < server.maxPlayers and server.id ~= game.JobId then
+                                if server.playing < LowestPlayers then
+                                    LowestPlayers = server.playing
+                                    LowestServer = server.id
+                                end
+                            end
+                        end
+                        Cursor = data.nextPageCursor
+                    else
+                        break
+                    end
+                    task.wait(0.2)
+                until not Cursor
+
+                if LowestServer then
+                    TeleportService:TeleportToPlaceInstance(PlaceId, LowestServer, game.Players.LocalPlayer)
+                else
+                    chloex("Tidak ada server lain ditemukan.")
+                end
+            end)
+        end,
+
+        SubButton = "ServerHop Random",
+        SubCallback = function()
+            task.spawn(function()
+                local HttpService = game:GetService("HttpService")
+                local TeleportService = game:GetService("TeleportService")
+                local PlaceId = game.PlaceId
+                local Cursor
+                local Servers = {}
+
+                repeat
+                    local url = "https://games.roblox.com/v1/games/" ..
+                        PlaceId .. "/servers/Public?sortOrder=Asc&limit=100" ..
+                        (Cursor and "&cursor=" .. Cursor or "")
+                    local success, response = pcall(function()
+                        return game:HttpGet(url)
+                    end)
+                    if success and response then
+                        local data = HttpService:JSONDecode(response)
+                        for _, server in ipairs(data.data) do
+                            if server.playing < server.maxPlayers and server.id ~= game.JobId then
+                                table.insert(Servers, server.id)
+                            end
+                        end
+                        Cursor = data.nextPageCursor
+                    else
+                        break
+                    end
+                    task.wait(0.2)
+                until not Cursor
+
+                if #Servers > 0 then
+                    local RandomServer = Servers[math.random(1, #Servers)]
+                    TeleportService:TeleportToPlaceInstance(PlaceId, RandomServer, game.Players.LocalPlayer)
+                else
+                    chloex("Tidak ada server lain ditemukan.")
+                end
+            end)
+        end
     })
 
     InfoSection:AddButton({
-        Title = "Copy Discord Link",
-        Content = "Click for copy link discord official Chloe X",
+        Button = "Rejoin Server",
         Callback = function()
-            if setclipboard then
-                setclipboard("https://discord.gg/PaPvGUE8UC")
-                chloex("Discord link has been copied to clipboard!")
-            end
-        end
-    })
-
-    local ServerSection = Tabs.Info:AddSection("Server Information")
-
-    local serverParagraph = ServerSection:AddParagraph({
-        Title = "Server Info",
-        Content = "Loading..."
-    })
-
-    task.spawn(function()
-        local start = os.clock()
-        while task.wait(1) do
-            local elapsed = os.clock() - start
-            local h = math.floor(elapsed / 3600)
-            local m = math.floor((elapsed % 3600) / 60)
-            local s = math.floor(elapsed % 60)
-
-            serverParagraph:SetContent(string.format(
-                "Current Player : %d/%d\nJob Id : %s\nTime Play : %02d:%02d:%02d",
-                #Players:GetPlayers(),
-                Players.MaxPlayers,
-                game.JobId,
-                h, m, s
-            ))
-        end
-    end)
-
-    ServerSection:AddButton({
-        Title = "Copy Job Id",
-        Content = "Click to copy this server JobId",
-        Callback = function()
-            if setclipboard then
-                setclipboard(game.JobId)
-                chloex("Job Id has been copied to clipboard!")
-            end
-        end
-    })
-
-    local jobId = ""
-    ServerSection:AddInput({
-        Title = "Target Job Id",
-        Content = "Enter Job Id here",
-        Default = "",
-        Callback = function(value)
-            jobId = value
-        end
-    })
-
-    ServerSection:AddButton({
-        Title = "Join Job Id",
-        Content = "Teleport to the given Job Id",
-        Callback = function()
-            if jobId ~= "" then
-                TeleportService:TeleportToPlaceInstance(game.PlaceId, jobId, LocalPlayer)
-                chloex("Attempting to join Job Id: " .. jobId)
-            else
-                chloex("Please enter a Job Id first!")
-            end
+            local TeleportService = game:GetService("TeleportService")
+            local Players = game:GetService("Players")
+            TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, Players.LocalPlayer)
         end
     })
 
